@@ -1,0 +1,33 @@
+{
+  "name": "in-browser-ai",
+  "version": "0.0.1",
+  "description": "Run modern deep learning models in the browser.",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/visheratin/in-browser-ai.git"
+  },
+  "keywords": [
+    "deep-learning",
+    "AI",
+    "NLP",
+    "CV",
+    "computer-vision"
+  ],
+  "author": "Alexander Visheratin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/visheratin/in-browser-ai/issues"
+  },
+  "homepage": "https://github.com/visheratin/in-browser-ai#readme",
+  "dependencies": {
+    "@types/jest": "^29.2.3",
+    "jest": "^29.3.1",
+    "jimp": "^0.16.2",
+    "onnxruntime-web": "^1.13.1",
+    "ts-jest": "^29.0.3"
+  }
+}
