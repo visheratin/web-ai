@@ -1,5 +1,6 @@
+// @ts-nocheck
 import Config from "./config";
-import { Metadata } from "./metadata";
+import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
 import { createSession } from "../session";
 import Jimp from "jimp";
@@ -23,12 +24,12 @@ export type ObjectDetectionResult = {
 };
 
 export class ObjectDetectionModel {
-  metadata: Metadata;
+  metadata: ImageMetadata;
   private config: Config | null;
   private preprocessor: Preprocessor;
   private session: ort.InferenceSession | null;
 
-  constructor(metadata: Metadata, config: Config | null) {
+  constructor(metadata: ImageMetadata, config: Config | null) {
     this.metadata = metadata;
     this.session = null;
     this.config = config;
@@ -59,6 +60,9 @@ export class ObjectDetectionModel {
     const feeds: Record<string, ort.Tensor> = {};
     feeds[this.session!.inputNames[0]] = tensor;
     const output = await this.session?.run(feeds);
+    if (!output) {
+      throw Error("model output is undefined");
+    }
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     let classIndices: number[] = [];

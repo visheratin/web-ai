@@ -1,5 +1,5 @@
 export const softmax = (arr: number[]) => {
-  return arr.map((value, index) => {
+  return arr.map((value, _) => {
     return (
       Math.exp(value) /
       arr

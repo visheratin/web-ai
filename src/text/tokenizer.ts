@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * This tokenizer is a copy of
  * https://github.com/praeclarum/transformers-js/blob/main/src/tokenizers.js
@@ -26,6 +27,22 @@
  */
 
 class Tokenizer {
+  vocab: any;
+  unkTokenId: any;
+  specialTokens: any;
+  specialTokenIds: Map<unknown, unknown>;
+  normalizer: any;
+  preTokenizer: any;
+  decoder: any;
+  tokenToIds: Map<unknown, unknown>;
+  bosToken: any;
+  bosTokenId: any;
+  eosToken: string;
+  eosTokenId: any;
+  unkToken: any;
+  trie: CharTrie;
+  minScore: number;
+  unkScore: number;
   constructor(
     vocab,
     unkTokenId,
@@ -92,7 +109,7 @@ class Tokenizer {
         sentence.slice(beginPos)
       )) {
         tokens.push(token);
-        const tokenId = this.getTokenId(token);
+        const tokenId = this.getTokenId(token) as number;
         const tokenScore = this.vocab[tokenId][1];
         const n = token.length;
         lattice.insert(beginPos, n, tokenScore, tokenId);
@@ -153,6 +170,7 @@ class Tokenizer {
 export default Tokenizer;
 
 class CharTrie {
+  root: CharTrieNode;
   constructor() {
     this.root = CharTrieNode.default();
   }
@@ -184,6 +202,8 @@ class CharTrie {
 }
 
 class CharTrieNode {
+  isLeaf: any;
+  children: any;
   constructor(isLeaf, children) {
     this.isLeaf = isLeaf;
     this.children = children;
@@ -194,6 +214,13 @@ class CharTrieNode {
 }
 
 class TokenLattice {
+  sentence: any;
+  len: any;
+  bosTokenId: any;
+  eosTokenId: any;
+  nodes: any[];
+  beginNodes: any[];
+  endNodes: any[];
   constructor(sentence, bosTokenId, eosTokenId) {
     this.sentence = sentence;
     this.len = sentence.length;
@@ -281,6 +308,13 @@ class TokenLattice {
 }
 
 class TokenLatticeNode {
+  tokenId: any;
+  nodeId: any;
+  pos: any;
+  length: any;
+  score: any;
+  prev: any;
+  backtraceScore: number;
   constructor(tokenId, nodeId, pos, length, score) {
     this.tokenId = tokenId;
     this.nodeId = nodeId;
@@ -329,6 +363,9 @@ class TokenProcessor {
 }
 
 class MetaspaceTokenProcessor extends TokenProcessor {
+  addPrefixSpace: any;
+  replacement: any;
+  strRep: any;
   constructor(add_prefix_space, replacement, str_rep) {
     super();
     this.addPrefixSpace = add_prefix_space;
@@ -364,6 +401,7 @@ class MetaspaceTokenProcessor extends TokenProcessor {
 }
 
 class PrecompiledTokenProcessor extends TokenProcessor {
+  charsmap: any;
   constructor(charsmap) {
     super();
     this.charsmap = charsmap;
@@ -375,6 +413,7 @@ class PrecompiledTokenProcessor extends TokenProcessor {
 }
 
 class SequenceTokenProcessor extends TokenProcessor {
+  tokenizers: any;
   constructor(tokenizers) {
     super();
     this.tokenizers = tokenizers;

@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { createSession } from "../session";
 import Tokenizer from "./tokenizer";
-import { Metadata } from "./metadata";
-import T5ForConditionalGeneration from "./transformers";
+import { TextMetadata } from "./metadata";
+import { T5ForConditionalGeneration } from "./transformers";
 
 export type Seq2SeqResult = {
   text: string;
@@ -11,13 +12,13 @@ export type Seq2SeqResult = {
 };
 
 export class Seq2SeqModel {
-  metadata: Metadata;
+  metadata: TextMetadata;
   initialized: boolean;
   private tokenizer: Tokenizer | null;
   private model: T5ForConditionalGeneration | null;
   private cache: Map<string, string>;
 
-  constructor(metadata: Metadata) {
+  constructor(metadata: TextMetadata) {
     this.metadata = metadata;
     this.initialized = false;
     this.cache = new Map<string, string>();

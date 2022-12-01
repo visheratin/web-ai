@@ -1,9 +1,4 @@
-/**
- * This file is a modified version of
- * https://github.com/praeclarum/transformers-js/blob/main/src/transformers.js
- *
- */
-
+// @ts-nocheck
 import * as ort from "onnxruntime-web";
 
 interface GenerateOptions {
@@ -11,7 +6,7 @@ interface GenerateOptions {
   topK: number;
 }
 
-class T5ForConditionalGeneration {
+export class T5ForConditionalGeneration {
   encoderSession: ort.InferenceSession;
   decoderSession: ort.InferenceSession;
 
@@ -57,7 +52,7 @@ class T5ForConditionalGeneration {
     return outputTokenIds;
   }
 
-  sampleLogitsGreedily(logits: ort.Tensor) {
+  sampleLogitsGreedily(logits: ort.Tensor): number {
     let shape = logits.dims;
     let [batchSize, seqLength, vocabSize] = shape;
     let n = batchSize * seqLength * vocabSize;
@@ -74,12 +69,12 @@ class T5ForConditionalGeneration {
     return argmaxi;
   }
 
-  sampleLogitsTopK(logits: ort.Tensor, k: number) {
+  sampleLogitsTopK(logits: ort.Tensor, k: number): number {
     let shape = logits.dims;
     let [batchSize, seqLength, vocabSize] = shape;
     let n = batchSize * seqLength * vocabSize;
     let startIndex = n - vocabSize;
-    let logs = logits.data.slice(startIndex);
+    let logs = logits.data.slice(startIndex) as Float32Array;
     k = Math.min(k, vocabSize);
     let logitAndId = Array.from(logs)
       .map((x, i) => [x, i])
@@ -104,7 +99,7 @@ class T5ForConditionalGeneration {
   async forward(
     inputIds: number[],
     decoderInputIds: number[],
-    encoderOutputs: ort.Tensor
+    encoderOutputs: ort.Tensor | null
   ): Promise<Seq2SeqLMOutput> {
     const inputIdsTensor = new ort.Tensor(
       "int64",
@@ -152,12 +147,38 @@ class T5ForConditionalGeneration {
   }
 }
 
-export default T5ForConditionalGeneration;
-
 class Seq2SeqLMOutput {
-  logits: number[];
-  constructor(logits: number[], encoderOutputs) {
+  logits: ort.Tensor;
+  encoderOutputs: any;
+  constructor(logits: ort.Tensor, encoderOutputs) {
     this.logits = logits;
     this.encoderOutputs = encoderOutputs;
+  }
+}
+
+export class T5Encoder {
+  encoderSession: ort.InferenceSession;
+
+  constructor(encoderSession: ort.InferenceSession) {
+    this.encoderSession = encoderSession;
+  }
+
+  async forward(inputIds: number[]): Promise<ort.Tensor> {
+    const inputIdsTensor = new ort.Tensor(
+      "int64",
+      new BigInt64Array(inputIds.map((x) => BigInt(x))),
+      [1, inputIds.length]
+    );
+    const encoderAttentionMaskTensor = new ort.Tensor(
+      "int64",
+      new BigInt64Array(inputIds.length).fill(1n),
+      [1, inputIds.length]
+    );
+    const encoderFeeds = {
+      input_ids: inputIdsTensor,
+      attention_mask: encoderAttentionMaskTensor,
+    };
+    const encoderResults = await this.encoderSession.run(encoderFeeds);
+    return encoderResults.hidden_states;
   }
 }

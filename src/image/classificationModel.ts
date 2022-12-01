@@ -1,5 +1,6 @@
+// @ts-nocheck
 import Config from "./config";
-import { Metadata } from "./metadata";
+import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
 import { createSession } from "../session";
 import Jimp from "jimp";
@@ -19,15 +20,16 @@ export type ClassificationResult = {
 };
 
 export class ClassificationModel {
-  metadata: Metadata;
+  metadata: ImageMetadata;
   private config: Config | null;
-  private preprocessor: Preprocessor;
+  private preprocessor: Preprocessor | null;
   private session: ort.InferenceSession | null;
 
-  constructor(metadata: Metadata, config: Config | null) {
+  constructor(metadata: ImageMetadata, config: Config | null) {
     this.metadata = metadata;
     this.session = null;
     this.config = config;
+    this.preprocessor = null;
   }
 
   init = async (): Promise<number> => {
@@ -50,7 +52,7 @@ export class ClassificationModel {
     num: number = 3
   ): Promise<ClassificationResult> => {
     let image = await Jimp.read(input);
-    const tensor = this.preprocessor.process(image);
+    const tensor = this.preprocessor!.process(image);
     const start = new Date();
     const output = await this.runInference(tensor);
     const end = new Date();
@@ -64,7 +66,7 @@ export class ClassificationModel {
       for (let j = 0; j < res.length; j++) {
         if (res[j].confidence < result[i]) {
           res[j] = {
-            class: this.config.classes.get(i),
+            class: this.config!.classes.get(i),
             confidence: result[i],
           };
           break;
@@ -80,8 +82,8 @@ export class ClassificationModel {
   private runInference = async (input: ort.Tensor): Promise<Tensor> => {
     const feeds: Record<string, ort.Tensor> = {};
     feeds[this.session!.inputNames[0]] = input;
-    const outputData = await this.session.run(feeds);
-    const output = outputData[this.session.outputNames[0]];
+    const outputData = await this.session!.run(feeds);
+    const output = outputData[this.session!.outputNames[0]];
     return new Tensor(output);
   };
 }

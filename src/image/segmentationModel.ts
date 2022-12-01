@@ -1,5 +1,6 @@
+// @ts-nocheck
 import Config from "./config";
-import { Metadata } from "./metadata";
+import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
 import { createSession } from "../session";
 import Jimp from "jimp";
@@ -13,12 +14,12 @@ type SegmentationResult = {
 };
 
 export class SegmentationModel {
-  metadata: Metadata;
+  metadata: ImageMetadata;
   private config: Config | null;
   private preprocessor: Preprocessor;
   private session: ort.InferenceSession | null;
 
-  constructor(metadata: Metadata, config: Config | null) {
+  constructor(metadata: ImageMetadata, config: Config | null) {
     this.metadata = metadata;
     this.session = null;
     this.config = config;
