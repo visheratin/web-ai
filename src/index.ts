@@ -5,6 +5,7 @@ export {
   FeatureExtractionModel,
   FeatureExtractionResult,
   ListTextModels,
+  TextModelType,
 } from "./text";
 export {
   Metadata as ImageMetadata,
@@ -13,4 +14,6 @@ export {
   ObjectDetectionModel,
   ObjectDetectionPrediction,
   SegmentationModel,
+  ListImageModels,
+  ImageModelType,
 } from "./image";

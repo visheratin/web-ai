@@ -1,9 +1,19 @@
 import { TextMetadata } from "./metadata";
+import { TextModelType } from "./modeType";
 
-export const ListTextModels = (tags: string[]): TextMetadata[] => {
-  return models.filter((model) => {
-    return tags.every((tag) => model.tags.includes(tag));
-  });
+export const ListTextModels = (
+  tags?: string[],
+  type?: TextModelType
+): TextMetadata[] => {
+  if (tags) {
+    return models.filter((model) => {
+      return tags.every((tag) => model.tags.includes(tag));
+    });
+  } else {
+    return models.filter((model) => {
+      return model.type == type;
+    });
+  }
 };
 
 const models: TextMetadata[] = [
@@ -11,6 +21,7 @@ const models: TextMetadata[] = [
     id: "grammar-t5-efficient-tiny-quant",
     title: "T5 Efficient TINY quantized",
     description: "",
+    type: TextModelType.Grammar,
     sizeMB: 32,
     modelPaths: new Map<string, string>([
       [
@@ -30,6 +41,7 @@ const models: TextMetadata[] = [
     id: "grammar-t5-efficient-mini-quant",
     title: "T5 Efficient MINI quantized",
     description: "",
+    type: TextModelType.Grammar,
     sizeMB: 55,
     modelPaths: new Map<string, string>([
       [
@@ -49,6 +61,7 @@ const models: TextMetadata[] = [
     id: "grammar-t5-efficient-tiny",
     title: "T5 Efficient TINY",
     description: "",
+    type: TextModelType.Grammar,
     sizeMB: 122,
     modelPaths: new Map<string, string>([
       [
@@ -68,6 +81,7 @@ const models: TextMetadata[] = [
     id: "grammar-t5-efficient-tiny",
     title: "T5 Efficient MINI",
     description: "",
+    type: TextModelType.Grammar,
     sizeMB: 214,
     modelPaths: new Map<string, string>([
       [
