@@ -43,14 +43,7 @@ class Tokenizer {
   trie: CharTrie;
   minScore: number;
   unkScore: number;
-  constructor(
-    vocab,
-    unkTokenId,
-    specialTokens,
-    normalizer,
-    preTokenizer,
-    decoder
-  ) {
+  constructor(vocab, unkTokenId, specialTokens, normalizer, preTokenizer, decoder) {
     this.vocab = vocab;
     this.unkTokenId = unkTokenId;
     this.specialTokens = specialTokens;
@@ -81,7 +74,7 @@ class Tokenizer {
       config.added_tokens,
       normalizer,
       preTokenizer,
-      decoder
+      decoder,
     );
   }
 
@@ -105,9 +98,7 @@ class Tokenizer {
       const mblen = 1;
       let hasSingleNode = false;
       const tokens = [];
-      for (let token of this.trie.commonPrefixSearch(
-        sentence.slice(beginPos)
-      )) {
+      for (let token of this.trie.commonPrefixSearch(sentence.slice(beginPos))) {
         tokens.push(token);
         const tokenId = this.getTokenId(token) as number;
         const tokenScore = this.vocab[tokenId][1];
@@ -125,19 +116,14 @@ class Tokenizer {
   }
 
   tokenize(normalized) {
-    const lattice = new TokenLattice(
-      normalized,
-      this.bosTokenId,
-      this.eosTokenId
-    );
+    const lattice = new TokenLattice(normalized, this.bosTokenId, this.eosTokenId);
     this.populateNodes(lattice);
     const tokenIds = lattice.tokenIds();
     return tokenIds;
   }
 
   encode(text) {
-    if (text === null || text === undefined || text.length === 0)
-      return [this.eosTokenId];
+    if (text === null || text === undefined || text.length === 0) return [this.eosTokenId];
     const normalized = this.normalize(text);
     const pre = this.preTokenize([normalized]);
     const tokens = [];
@@ -326,13 +312,7 @@ class TokenLatticeNode {
   }
 
   clone() {
-    const n = new TokenLatticeNode(
-      this.tokenId,
-      this.nodeId,
-      this.pos,
-      this.length,
-      this.score
-    );
+    const n = new TokenLatticeNode(this.tokenId, this.nodeId, this.pos, this.length, this.score);
     n.prev = this.prev;
     n.backtraceScore = this.backtraceScore;
     return n;
@@ -343,17 +323,15 @@ class TokenProcessor {
   static fromConfig(config) {
     switch (config.type) {
       case "Metaspace":
-        return new MetaspaceTokenProcessor(
-          config.add_prefix_space,
-          config.replacement,
-          config.str_rep
-        );
+        return new MetaspaceTokenProcessor(config.add_prefix_space, config.replacement, config.str_rep);
       case "Precompiled":
         return new PrecompiledTokenProcessor(config.precompiled_charsmap);
       case "Sequence":
-        return new SequenceTokenProcessor(
-          config.pretokenizers.map((x) => TokenProcessor.fromConfig(x))
-        );
+        if (config.pretokenizers) {
+          return new SequenceTokenProcessor(config.pretokenizers.map((x) => TokenProcessor.fromConfig(x)));
+        } else {
+          return new SequenceTokenProcessor(config.normalizers.map((x) => TokenProcessor.fromConfig(x)));
+        }
       case "WhitespaceSplit":
         return new WhitespaceSplitTokenProcessor();
       default:

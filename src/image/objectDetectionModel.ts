@@ -38,9 +38,7 @@ export class ObjectDetectionModel {
   init = async (): Promise<number> => {
     const start = new Date();
     this.session = await createSession(this.metadata.modelPath);
-    const preprocessorConfig = await PreprocessorConfig.fromFile(
-      this.metadata.preprocessorPath
-    );
+    const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     if (this.config === null) {
       this.config = await Config.fromFile(this.metadata.configPath);
@@ -50,10 +48,7 @@ export class ObjectDetectionModel {
     return elapsed;
   };
 
-  process = async (
-    input: string | ArrayBuffer,
-    threshold: number
-  ): Promise<ObjectDetectionResult> => {
+  process = async (input: string | ArrayBuffer, threshold: number): Promise<ObjectDetectionResult> => {
     let image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
@@ -102,11 +97,7 @@ export class ObjectDetectionModel {
     for (let i = 0; i < indices.length; i++) {
       const cls = this.config?.classes.get(classIndices[i]);
       const color = this.config?.colors.get(classIndices[i]);
-      const hex =
-        "#" +
-        componentToHex(color[0]) +
-        componentToHex(color[1]) +
-        componentToHex(color[2]);
+      const hex = "#" + componentToHex(color[0]) + componentToHex(color[1]) + componentToHex(color[2]);
       const box = boxes[i];
       res.objects.push({
         class: cls as string,

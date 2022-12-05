@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "ES2020",
     "strict": true,
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "watch": true,
+    "watch": false,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
+    "checkJs": false,
     "esModuleInterop": true,
     "noImplicitAny": false,
     "outDir": "./dist"
@@ -16,6 +17,7 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "test"
   ]
 }

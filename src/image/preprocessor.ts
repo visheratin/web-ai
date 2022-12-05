@@ -18,29 +18,15 @@ class Preprocessor {
           image = image.resize(this.config.size, -1, "bilinearInterpolation");
         }
       } else {
-        image = image.resize(
-          this.config.size,
-          this.config.size,
-          "bilinearInterpolation"
-        );
+        image = image.resize(this.config.size, this.config.size, "bilinearInterpolation");
       }
     }
     if (this.config.centerCrop) {
       const startX = (image.bitmap.width - this.config.cropSize) / 2;
       const startY = (image.bitmap.height - this.config.cropSize) / 2;
-      image = image.crop(
-        startX,
-        startY,
-        this.config.cropSize,
-        this.config.cropSize
-      );
+      image = image.crop(startX, startY, this.config.cropSize, this.config.cropSize);
     }
-    const tensor = this.imageDataToTensor(image, [
-      1,
-      3,
-      image.bitmap.width,
-      image.bitmap.height,
-    ]);
+    const tensor = this.imageDataToTensor(image, [1, 3, image.bitmap.width, image.bitmap.height]);
     return tensor;
   };
 
@@ -52,28 +38,14 @@ class Preprocessor {
    */
   private imageDataToTensor = (image: Jimp, dims: number[]): ort.Tensor => {
     var imageBufferData = image.bitmap.data;
-    const [redArray, greenArray, blueArray] = new Array(
-      new Array<number>(),
-      new Array<number>(),
-      new Array<number>()
-    );
+    const [redArray, greenArray, blueArray] = new Array(new Array<number>(), new Array<number>(), new Array<number>());
     for (let i = 0; i < imageBufferData.length; i += 4) {
-      if (
-        this.config.normalize.enabled &&
-        this.config.normalize.mean &&
-        this.config.normalize.std
-      ) {
-        let value =
-          (imageBufferData[i] / 255.0 - this.config.normalize.mean[0]) /
-          this.config.normalize.std[0];
+      if (this.config.normalize.enabled && this.config.normalize.mean && this.config.normalize.std) {
+        let value = (imageBufferData[i] / 255.0 - this.config.normalize.mean[0]) / this.config.normalize.std[0];
         redArray.push(value);
-        value =
-          (imageBufferData[i + 1] / 255.0 - this.config.normalize.mean[1]) /
-          this.config.normalize.std[1];
+        value = (imageBufferData[i + 1] / 255.0 - this.config.normalize.mean[1]) / this.config.normalize.std[1];
         greenArray.push(value);
-        value =
-          (imageBufferData[i + 2] / 255.0 - this.config.normalize.mean[2]) /
-          this.config.normalize.std[2];
+        value = (imageBufferData[i + 2] / 255.0 - this.config.normalize.mean[2]) / this.config.normalize.std[2];
         blueArray.push(value);
       } else {
         let value = imageBufferData[i] / 255.0;

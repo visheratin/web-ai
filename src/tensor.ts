@@ -14,7 +14,7 @@ export class Tensor {
     for (let i = 0; i < indices.length; i++) {
       if (indices[i] >= this.ortTensor.dims[i]) {
         throw new Error(
-          `index for dimension ${i} (${indices[i]}) is larger than the dimension size (${this.ortTensor.dims[i]})`
+          `index for dimension ${i} (${indices[i]}) is larger than the dimension size (${this.ortTensor.dims[i]})`,
         );
       }
     }
@@ -37,7 +37,7 @@ export class Tensor {
     for (let i = 0; i < indices.length; i++) {
       if (indices[i] >= this.ortTensor.dims[i]) {
         throw new Error(
-          `index for dimension ${i} (${indices[i]}) is larger than the dimension size (${this.ortTensor.dims[i]})`
+          `index for dimension ${i} (${indices[i]}) is larger than the dimension size (${this.ortTensor.dims[i]})`,
         );
       }
     }
@@ -55,9 +55,7 @@ export class Tensor {
 
   argmax = (dim: number): Tensor => {
     if (dim >= this.ortTensor.dims.length) {
-      throw new Error(
-        "dim must be smaller than the number of dimensions in tensor"
-      );
+      throw new Error("dim must be smaller than the number of dimensions in tensor");
     }
     let outDims: number[] = [];
     let size = 1;
@@ -70,12 +68,8 @@ export class Tensor {
     if (outDims.length == 0) {
       outDims = [1];
     }
-    let argmax = new Tensor(
-      new OrtTensor(new Float32Array(size).fill(0), outDims)
-    );
-    let maxValues = new Tensor(
-      new OrtTensor(new Float32Array(size).fill(-Infinity), outDims)
-    );
+    let argmax = new Tensor(new OrtTensor(new Float32Array(size).fill(0), outDims));
+    let maxValues = new Tensor(new OrtTensor(new Float32Array(size).fill(-Infinity), outDims));
     let indices = new Array(this.ortTensor.dims.length).fill(0);
     this.argmaxIter(0, dim, indices, argmax, maxValues, 0);
     return argmax;
@@ -87,7 +81,7 @@ export class Tensor {
     indices: number[],
     argmax: Tensor,
     maxValues: Tensor,
-    depth: number
+    depth: number,
   ) => {
     if (dim == targetDim) {
       this.argmaxIter(dim + 1, targetDim, indices, argmax, maxValues, depth);
@@ -114,14 +108,7 @@ export class Tensor {
           }
         }
       } else {
-        this.argmaxIter(
-          dim + 1,
-          targetDim,
-          indices,
-          argmax,
-          maxValues,
-          depth + 1
-        );
+        this.argmaxIter(dim + 1, targetDim, indices, argmax, maxValues, depth + 1);
       }
     }
   };

@@ -1,19 +1,18 @@
 import { ImageMetadata } from "./metadata";
 import { ImageModelType } from "./modelType";
 
-export const ListImageModels = (
-  tags?: string[],
-  type?: ImageModelType
-): ImageMetadata[] => {
-  if (tags) {
-    return models.filter((model) => {
-      return tags.every((tag) => model.tags.includes(tag));
-    });
-  } else {
-    return models.filter((model) => {
-      return model.type == type;
-    });
-  }
+export const ListImageModels = (tags?: string[], type?: ImageModelType): ImageMetadata[] => {
+  return models.filter((model) => {
+    let tagCheck = true;
+    if (tags && tags.length > 0) {
+      tagCheck = tags.every((tag) => model.tags.includes(tag));
+    }
+    let typeCheck = true;
+    if (type) {
+      typeCheck = model.type == type;
+    }
+    return tagCheck && typeCheck;
+  });
 };
 
 const classificationExamples: string[] = [
@@ -41,10 +40,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 22,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit-small.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit-small.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_preprocessor_config.json",
     examples: classificationExamples,
@@ -56,10 +53,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 9,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit-x-small.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit-x-small.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_preprocessor_config.json",
     examples: classificationExamples,
@@ -71,10 +66,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 5,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit-xx-small.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit-xx-small.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_preprocessor_config.json",
     examples: classificationExamples,
@@ -86,10 +79,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 95,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b2.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b2.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_preprocessor_config.json",
     examples: classificationExamples,
@@ -101,10 +92,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 24,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b2-quant.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b2-quant.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_preprocessor_config.json",
     examples: classificationExamples,
@@ -116,10 +105,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 52,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b1.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b1.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_preprocessor_config.json",
     examples: classificationExamples,
@@ -131,10 +118,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 13,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b1-quant.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b1-quant.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_preprocessor_config.json",
     examples: classificationExamples,
@@ -146,10 +131,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 14,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b0.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b0.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_preprocessor_config.json",
     examples: classificationExamples,
@@ -161,10 +144,8 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Classification,
     sizeMB: 4,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b0-quant.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer-b0-quant.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/segformer_preprocessor_config.json",
     examples: classificationExamples,
@@ -176,12 +157,9 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.ObjectDetection,
     sizeMB: 25,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/model.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/config.json",
-    preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/preprocessor_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/model.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/config.json",
+    preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["object-detection", "yolo"],
   },
@@ -191,12 +169,9 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.ObjectDetection,
     sizeMB: 25,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/model_quant.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/config.json",
-    preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/preprocessor_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/model_quant.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/config.json",
+    preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/yolo/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["object-detection", "yolo"],
   },
@@ -206,12 +181,9 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Segmentation,
     sizeMB: 4,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/b0.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/config.json",
-    preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/preprocessor_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/b0.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/config.json",
+    preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
   },
@@ -221,12 +193,9 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Segmentation,
     sizeMB: 14,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/b1.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/config.json",
-    preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/preprocessor_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/b1.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/config.json",
+    preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
   },
@@ -236,12 +205,9 @@ export const models: ImageMetadata[] = [
     description: "",
     type: ImageModelType.Segmentation,
     sizeMB: 64,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/b4.onnx",
-    configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/config.json",
-    preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/preprocessor_config.json",
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/b4.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/config.json",
+    preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/segment/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
   },

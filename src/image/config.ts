@@ -16,9 +16,7 @@ export class Config {
 
   static parseConfig = (configData): Config => {
     let res = new Config();
-    for (const [idxString, className] of Object.entries(
-      configData["id2label"]
-    )) {
+    for (const [idxString, className] of Object.entries(configData["id2label"])) {
       const idx = Number(idxString);
       res.classes.set(idx, className as string);
       if ("colors" in configData && idxString in configData["colors"]) {
@@ -39,15 +37,11 @@ export class Config {
     if (this.colors && this.classes && this.classes.size != this.colors.size) {
       throw new Error("lengths of classes and colors do not match");
     }
-    this.classes.forEach(
-      (value: string, key: number, _: Map<number, string>) => {
-        if (this.colors && !this.colors.has(key)) {
-          throw new Error(
-            `class ${value} (code ${key}) is not present in colors`
-          );
-        }
+    this.classes.forEach((value: string, key: number, _: Map<number, string>) => {
+      if (this.colors && !this.colors.has(key)) {
+        throw new Error(`class ${value} (code ${key}) is not present in colors`);
       }
-    );
+    });
   };
 }
 
@@ -57,11 +51,7 @@ const convertToRGB = (hexColor: string): number[] => {
   if (rgbValue === null || rgbValue.length != 3) {
     throw new Error(`invalid hex color: ${hexColor}`);
   }
-  const result = [
-    parseInt(rgbValue[0], 16),
-    parseInt(rgbValue[1], 16),
-    parseInt(rgbValue[2], 16),
-  ];
+  const result = [parseInt(rgbValue[0], 16), parseInt(rgbValue[1], 16), parseInt(rgbValue[2], 16)];
   return result;
 };
 

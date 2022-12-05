@@ -28,9 +28,7 @@ export class SegmentationModel {
   init = async (): Promise<number> => {
     const start = new Date();
     this.session = await createSession(this.metadata.modelPath);
-    const preprocessorConfig = await PreprocessorConfig.fromFile(
-      this.metadata.preprocessorPath
-    );
+    const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     if (this.config === null) {
       this.config = await Config.fromFile(this.metadata.configPath);
@@ -40,9 +38,7 @@ export class SegmentationModel {
     return elapsed;
   };
 
-  process = async (
-    input: string | ArrayBuffer
-  ): Promise<SegmentationResult> => {
+  process = async (input: string | ArrayBuffer): Promise<SegmentationResult> => {
     const image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
@@ -60,11 +56,7 @@ export class SegmentationModel {
       pixels[i + 2] = color[2];
       pixels[i + 3] = 255;
     }
-    const imageData = new ImageData(
-      pixels,
-      output.ortTensor.dims[2],
-      output.ortTensor.dims[3]
-    );
+    const imageData = new ImageData(pixels, output.ortTensor.dims[2], output.ortTensor.dims[3]);
     let resCanvas = document.createElement("canvas");
     resCanvas.width = imageData.width;
     resCanvas.height = imageData.height;
@@ -82,9 +74,7 @@ export class SegmentationModel {
     let diff = 0;
     for (let [idx, color] of this.config?.colors) {
       diff =
-        Math.abs(color[0] - inputColor[0]) +
-        Math.abs(color[1] - inputColor[1]) +
-        Math.abs(color[2] - inputColor[2]);
+        Math.abs(color[0] - inputColor[0]) + Math.abs(color[1] - inputColor[1]) + Math.abs(color[2] - inputColor[2]);
       if (diff < minDiff) {
         minDiff = diff;
         className = this.config?.classes.get(idx);

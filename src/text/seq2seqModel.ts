@@ -62,10 +62,7 @@ export class Seq2SeqModel {
     };
     const inputTokenIds = this.tokenizer?.encode(input);
     const start = new Date();
-    const outputTokenIds = await this.model?.generate(
-      inputTokenIds,
-      generationOptions
-    );
+    const outputTokenIds = await this.model?.generate(inputTokenIds, generationOptions);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     let output: string = this.tokenizer?.decode(outputTokenIds, true).trim();

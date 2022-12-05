@@ -35,9 +35,7 @@ export class ClassificationModel {
   init = async (): Promise<number> => {
     const start = new Date();
     this.session = await createSession(this.metadata.modelPath);
-    const preprocessorConfig = await PreprocessorConfig.fromFile(
-      this.metadata.preprocessorPath
-    );
+    const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     if (this.config === null) {
       this.config = await Config.fromFile(this.metadata.configPath);
@@ -47,10 +45,7 @@ export class ClassificationModel {
     return elapsed;
   };
 
-  process = async (
-    input: string | ArrayBuffer,
-    num: number = 3
-  ): Promise<ClassificationResult> => {
+  process = async (input: string | ArrayBuffer, num: number = 3): Promise<ClassificationResult> => {
     let image = await Jimp.read(input);
     const tensor = this.preprocessor!.process(image);
     const start = new Date();

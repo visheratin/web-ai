@@ -10,18 +10,12 @@ export class T5ForConditionalGeneration {
   encoderSession: ort.InferenceSession;
   decoderSession: ort.InferenceSession;
 
-  constructor(
-    encoderSession: ort.InferenceSession,
-    decoderSession: ort.InferenceSession
-  ) {
+  constructor(encoderSession: ort.InferenceSession, decoderSession: ort.InferenceSession) {
     this.encoderSession = encoderSession;
     this.decoderSession = decoderSession;
   }
 
-  async generate(
-    inputTokenIds: number[],
-    options: GenerateOptions
-  ): Promise<number[]> {
+  async generate(inputTokenIds: number[], options: GenerateOptions): Promise<number[]> {
     const maxLength = options.maxLength || 100;
     const topK = options.topK || 0;
     const startOfDecoderTokenId = 0;
@@ -36,11 +30,7 @@ export class T5ForConditionalGeneration {
     }
     let outputTokenIds = [startOfDecoderTokenId];
     while (shouldContinue && numOutputTokens < maxOutputTokens) {
-      let output = await this.forward(
-        inputTokenIds,
-        outputTokenIds,
-        encoderOutputs
-      );
+      let output = await this.forward(inputTokenIds, outputTokenIds, encoderOutputs);
       encoderOutputs = output.encoderOutputs;
       let newTokenId = sampler(output.logits);
       outputTokenIds.push(newTokenId);
@@ -99,18 +89,16 @@ export class T5ForConditionalGeneration {
   async forward(
     inputIds: number[],
     decoderInputIds: number[],
-    encoderOutputs: ort.Tensor | null
+    encoderOutputs: ort.Tensor | null,
   ): Promise<Seq2SeqLMOutput> {
-    const inputIdsTensor = new ort.Tensor(
-      "int64",
-      new BigInt64Array(inputIds.map((x) => BigInt(x))),
-      [1, inputIds.length]
-    );
-    const encoderAttentionMaskTensor = new ort.Tensor(
-      "int64",
-      new BigInt64Array(inputIds.length).fill(1n),
-      [1, inputIds.length]
-    );
+    const inputIdsTensor = new ort.Tensor("int64", new BigInt64Array(inputIds.map((x) => BigInt(x))), [
+      1,
+      inputIds.length,
+    ]);
+    const encoderAttentionMaskTensor = new ort.Tensor("int64", new BigInt64Array(inputIds.length).fill(1n), [
+      1,
+      inputIds.length,
+    ]);
     if (encoderOutputs === null) {
       const encoderFeeds = {
         input_ids: inputIdsTensor,
@@ -120,21 +108,16 @@ export class T5ForConditionalGeneration {
       const encoderHiddenStates = encoderResults.hidden_states;
       encoderOutputs = encoderHiddenStates;
     }
-    const decoderInputIdsTensor = new ort.Tensor(
-      "int64",
-      new BigInt64Array(decoderInputIds.map((x) => BigInt(x))),
-      [1, decoderInputIds.length]
-    );
-    const attentionMaskTensor = new ort.Tensor(
-      "int64",
-      new BigInt64Array(inputIds.length).fill(1n),
-      [1, inputIds.length]
-    );
+    const decoderInputIdsTensor = new ort.Tensor("int64", new BigInt64Array(decoderInputIds.map((x) => BigInt(x))), [
+      1,
+      decoderInputIds.length,
+    ]);
+    const attentionMaskTensor = new ort.Tensor("int64", new BigInt64Array(inputIds.length).fill(1n), [
+      1,
+      inputIds.length,
+    ]);
     const encoderOutputsClone = structuredClone(encoderOutputs);
-    const encoderOutputsTensor = new ort.Tensor(
-      encoderOutputsClone.data,
-      encoderOutputsClone.dims
-    );
+    const encoderOutputsTensor = new ort.Tensor(encoderOutputsClone.data, encoderOutputsClone.dims);
     const decoderFeeds = {
       input_ids: decoderInputIdsTensor,
       encoder_attention_mask: attentionMaskTensor,
@@ -164,16 +147,14 @@ export class T5Encoder {
   }
 
   async forward(inputIds: number[]): Promise<ort.Tensor> {
-    const inputIdsTensor = new ort.Tensor(
-      "int64",
-      new BigInt64Array(inputIds.map((x) => BigInt(x))),
-      [1, inputIds.length]
-    );
-    const encoderAttentionMaskTensor = new ort.Tensor(
-      "int64",
-      new BigInt64Array(inputIds.length).fill(1n),
-      [1, inputIds.length]
-    );
+    const inputIdsTensor = new ort.Tensor("int64", new BigInt64Array(inputIds.map((x) => BigInt(x))), [
+      1,
+      inputIds.length,
+    ]);
+    const encoderAttentionMaskTensor = new ort.Tensor("int64", new BigInt64Array(inputIds.length).fill(1n), [
+      1,
+      inputIds.length,
+    ]);
     const encoderFeeds = {
       input_ids: inputIdsTensor,
       attention_mask: encoderAttentionMaskTensor,
