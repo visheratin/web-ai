@@ -1,7 +1,13 @@
+import { FeatureExtractionModel } from "./featureExtractionModel";
+import { TextModel } from "./interfaces";
 import { TextMetadata } from "./metadata";
 import { TextModelType } from "./modeType";
+import { Seq2SeqModel } from "./seq2seqModel";
 
 export const ListTextModels = (tags?: string[], type?: TextModelType): TextMetadata[] => {
+  if (!tags && !type) {
+    return models;
+  }
   return models.filter((model) => {
     let tagCheck = true;
     if (tags && tags.length > 0) {
@@ -13,6 +19,21 @@ export const ListTextModels = (tags?: string[], type?: TextModelType): TextMetad
     }
     return tagCheck && typeCheck;
   });
+};
+
+export const GetModel = (id: string): TextModel | undefined => {
+  for (let modelMetadata of models) {
+    if (modelMetadata.id === id) {
+      switch (modelMetadata.type) {
+        case TextModelType.FeatureExtraction: {
+          return new FeatureExtractionModel(modelMetadata);
+        }
+        case TextModelType.Seq2Seq: {
+          return new Seq2SeqModel(modelMetadata);
+        }
+      }
+    }
+  }
 };
 
 const models: TextMetadata[] = [
@@ -69,58 +90,26 @@ const models: TextMetadata[] = [
     tags: ["grammar", "t5"],
   },
   {
-    id: "t5-efficient-tiny-quant",
-    title: "T5 Efficient TINY quantized",
-    description: "",
-    type: TextModelType.FeatureExtraction,
-    sizeMB: 32,
-    modelPaths: new Map<string, string>([
-      [
-        "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/feature-extraction/t5-efficient-tiny-encoder-quant.onnx",
-      ],
-      [
-        "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/feature-extraction/t5-efficient-tiny-decoder-quant.onnx",
-      ],
-    ]),
-    tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/tokenizer.json",
-    tags: ["feature-extraction", "t5"],
-  },
-  {
     id: "t5-efficient-mini-quant",
     title: "T5 Efficient MINI quantized",
     description: "",
     type: TextModelType.FeatureExtraction,
     sizeMB: 55,
     modelPaths: new Map<string, string>([
-      ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/t5-efficient-mini-encoder-quant.onnx"],
-      ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/t5-efficient-mini-decoder-quant.onnx"],
-    ]),
-    tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/tokenizer.json",
-    tags: ["feature-extraction", "t5"],
-  },
-  {
-    id: "t5-efficient-tiny",
-    title: "T5 Efficient TINY",
-    description: "",
-    type: TextModelType.FeatureExtraction,
-    sizeMB: 122,
-    modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/feature-extraction/t5-efficient-tiny-encoder.onnx",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/feature-extraction/t5-efficient-mini-encoder-quant.onnx",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/feature-extraction/t5-efficient-tiny-decoder.onnx",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/feature-extraction/t5-efficient-mini-decoder-quant.onnx",
       ],
     ]),
     tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/tokenizer.json",
     tags: ["feature-extraction", "t5"],
   },
   {
-    id: "t5-efficient-tiny",
+    id: "t5-efficient-mini",
     title: "T5 Efficient MINI",
     description: "",
     type: TextModelType.FeatureExtraction,

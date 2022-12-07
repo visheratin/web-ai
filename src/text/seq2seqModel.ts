@@ -1,29 +1,24 @@
-// @ts-nocheck
 import { createSession } from "../session";
 import Tokenizer from "./tokenizer";
 import { TextMetadata } from "./metadata";
 import { T5ForConditionalGeneration } from "./transformers";
+import { TextModel, TextProcessingResult } from "./interfaces";
 
-export type Seq2SeqResult = {
+export type Seq2SeqResult = TextProcessingResult & {
   text: string;
-  cached: boolean;
-  tokensNum: number;
-  elapsed: number;
 };
 
-export class Seq2SeqModel {
+export class Seq2SeqModel implements TextModel {
   metadata: TextMetadata;
   initialized: boolean;
-  private tokenizer: Tokenizer | null;
-  private model: T5ForConditionalGeneration | null;
+  private tokenizer?: Tokenizer;
+  private model?: T5ForConditionalGeneration;
   private cache: Map<string, string>;
 
   constructor(metadata: TextMetadata) {
     this.metadata = metadata;
     this.initialized = false;
     this.cache = new Map<string, string>();
-    this.model = null;
-    this.tokenizer = null;
   }
 
   init = async (): Promise<number> => {
@@ -48,6 +43,9 @@ export class Seq2SeqModel {
   };
 
   process = async (input: string): Promise<Seq2SeqResult> => {
+    if (!this.initialized || !this.model || !this.tokenizer) {
+      throw Error("the model is not initialized");
+    }
     if (this.cache.has(input)) {
       return {
         text: this.cache.get(input) as string,
@@ -60,17 +58,20 @@ export class Seq2SeqModel {
       maxLength: 500,
       topK: 0,
     };
-    const inputTokenIds = this.tokenizer?.encode(input);
+    const inputTokenIds = this.tokenizer.encode(input);
+    if (!inputTokenIds) {
+      throw Error("unable to get tokens for the text");
+    }
     const start = new Date();
-    const outputTokenIds = await this.model?.generate(inputTokenIds, generationOptions);
+    const outputTokenIds = await this.model.generate(inputTokenIds, generationOptions);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    let output: string = this.tokenizer?.decode(outputTokenIds, true).trim();
+    let output: string = this.tokenizer.decode(outputTokenIds, true).trim();
     output = output.trim();
     return {
       text: output,
       cached: false,
-      tokensNum: inputTokenIds?.length!,
+      tokensNum: inputTokenIds.length,
       elapsed: elapsed,
     };
   };

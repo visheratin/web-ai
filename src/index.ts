@@ -1,6 +1,6 @@
 export {
   TextMetadata as TextMetadata,
-  Seq2SeqModel,
+  default as Seq2SeqModel,
   Seq2SeqResult,
   FeatureExtractionModel,
   FeatureExtractionResult,

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Config from "./config";
 import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
@@ -7,22 +6,22 @@ import Jimp from "jimp";
 import { Tensor } from "../tensor";
 import Preprocessor from "./preprocessor";
 import PreprocessorConfig from "./preprocessorConfig";
+import { ImageModel, ImageProcessingResult } from "./interfaces";
 
-type SegmentationResult = {
+type SegmentationResult = ImageProcessingResult & {
   data: HTMLCanvasElement;
-  elapsed: number;
 };
 
-export class SegmentationModel {
+export class SegmentationModel implements ImageModel {
   metadata: ImageMetadata;
-  private config: Config | null;
-  private preprocessor: Preprocessor;
-  private session: ort.InferenceSession | null;
+  initialized: boolean;
+  private config?: Config;
+  private preprocessor?: Preprocessor;
+  private session?: ort.InferenceSession;
 
-  constructor(metadata: ImageMetadata, config: Config | null) {
+  constructor(metadata: ImageMetadata) {
     this.metadata = metadata;
-    this.session = null;
-    this.config = config;
+    this.initialized = false;
   }
 
   init = async (): Promise<number> => {
@@ -30,15 +29,18 @@ export class SegmentationModel {
     this.session = await createSession(this.metadata.modelPath);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
-    if (this.config === null) {
-      this.config = await Config.fromFile(this.metadata.configPath);
-    }
+    this.config = await Config.fromFile(this.metadata.configPath);
+    this.initialized = true;
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     return elapsed;
   };
 
-  process = async (input: string | ArrayBuffer): Promise<SegmentationResult> => {
+  process = async (input: string | Buffer): Promise<SegmentationResult> => {
+    if (!this.initialized || !this.preprocessor) {
+      throw Error("the model is not initialized");
+    }
+    // @ts-ignore
     const image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
@@ -60,7 +62,7 @@ export class SegmentationModel {
     let resCanvas = document.createElement("canvas");
     resCanvas.width = imageData.width;
     resCanvas.height = imageData.height;
-    resCanvas.getContext("2d").putImageData(imageData, 0, 0);
+    resCanvas.getContext("2d")?.putImageData(imageData, 0, 0);
     const result: SegmentationResult = {
       data: resCanvas,
       elapsed: elapsed,
@@ -69,6 +71,9 @@ export class SegmentationModel {
   };
 
   getClass = (inputColor: Uint8ClampedArray | number[]): string => {
+    if (!this.initialized || !this.config) {
+      throw Error("the model is not initialized");
+    }
     let className = "";
     let minDiff = Infinity;
     let diff = 0;
@@ -77,13 +82,16 @@ export class SegmentationModel {
         Math.abs(color[0] - inputColor[0]) + Math.abs(color[1] - inputColor[1]) + Math.abs(color[2] - inputColor[2]);
       if (diff < minDiff) {
         minDiff = diff;
-        className = this.config?.classes.get(idx);
+        className = this.config?.classes.get(idx) as string;
       }
     }
     return className;
   };
 
   private argmaxColors = (tensor: ort.Tensor): number[][] => {
+    if (!this.initialized || !this.config) {
+      throw Error("the model is not initialized");
+    }
     const modelClasses = this.config?.colors;
     let result: number[][] = [];
     const size = 128 * 128;
@@ -93,19 +101,27 @@ export class SegmentationModel {
       let maxValue = -1000;
       for (let i = 0; i < modelClasses.size; i++) {
         if (tensor.data[idx + i * size] > maxValue) {
-          maxValue = tensor.data[idx + i * size];
+          maxValue = tensor.data[idx + i * size] as number;
           maxIdx = i;
         }
       }
       classNumbers.add(maxIdx);
-      result.push(modelClasses?.get(maxIdx));
+      const color = modelClasses.get(maxIdx);
+      if (!color) {
+        result.push([0, 0, 0]);
+      } else {
+        result.push(color);
+      }
     }
     return result;
   };
 
   private runInference = async (input: ort.Tensor): Promise<Tensor> => {
+    if (!this.initialized || !this.session) {
+      throw Error("the model is not initialized");
+    }
     const feeds: Record<string, ort.Tensor> = {};
-    feeds[this.session!.inputNames[0]] = input;
+    feeds[this.session.inputNames[0]] = input;
     const outputData = await this.session.run(feeds);
     const output = outputData[this.session.outputNames[0]];
     return new Tensor(output);

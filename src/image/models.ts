@@ -1,7 +1,14 @@
+import { ClassificationModel } from "./classificationModel";
+import { ImageModel } from "./interfaces";
 import { ImageMetadata } from "./metadata";
 import { ImageModelType } from "./modelType";
+import { ObjectDetectionModel } from "./objectDetectionModel";
+import { SegmentationModel } from "./segmentationModel";
 
 export const ListImageModels = (tags?: string[], type?: ImageModelType): ImageMetadata[] => {
+  if (!tags && !type) {
+    return models;
+  }
   return models.filter((model) => {
     let tagCheck = true;
     if (tags && tags.length > 0) {
@@ -13,6 +20,24 @@ export const ListImageModels = (tags?: string[], type?: ImageModelType): ImageMe
     }
     return tagCheck && typeCheck;
   });
+};
+
+export const GetModel = (id: string): ImageModel | undefined => {
+  for (let modelMetadata of models) {
+    if (modelMetadata.id === id) {
+      switch (modelMetadata.type) {
+        case ImageModelType.Classification: {
+          return new ClassificationModel(modelMetadata);
+        }
+        case ImageModelType.ObjectDetection: {
+          return new ObjectDetectionModel(modelMetadata);
+        }
+        case ImageModelType.Segmentation: {
+          return new SegmentationModel(modelMetadata);
+        }
+      }
+    }
+  }
 };
 
 const classificationExamples: string[] = [

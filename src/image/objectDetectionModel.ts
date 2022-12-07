@@ -7,6 +7,7 @@ import Jimp from "jimp";
 import Preprocessor from "./preprocessor";
 import PreprocessorConfig from "./preprocessorConfig";
 import { softmax } from "./utils";
+import { ImageModel, ImageProcessingResult } from "./interfaces";
 
 export type ObjectDetectionPrediction = {
   class: string;
@@ -18,18 +19,18 @@ export type ObjectDetectionPrediction = {
   height: number;
 };
 
-export type ObjectDetectionResult = {
+export type ObjectDetectionResult = ImageProcessingResult & {
   objects: ObjectDetectionPrediction[];
-  elapsed: number;
 };
 
-export class ObjectDetectionModel {
+export class ObjectDetectionModel implements ImageModel {
   metadata: ImageMetadata;
+  initialized: boolean;
   private config: Config | null;
   private preprocessor: Preprocessor;
   private session: ort.InferenceSession | null;
 
-  constructor(metadata: ImageMetadata, config: Config | null) {
+  constructor(metadata: ImageMetadata, config?: Config) {
     this.metadata = metadata;
     this.session = null;
     this.config = config;
@@ -48,7 +49,7 @@ export class ObjectDetectionModel {
     return elapsed;
   };
 
-  process = async (input: string | ArrayBuffer, threshold: number): Promise<ObjectDetectionResult> => {
+  process = async (input: string | ArrayBuffer): Promise<ObjectDetectionResult> => {
     let image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
@@ -76,6 +77,7 @@ export class ObjectDetectionModel {
           maxIdx = j;
         }
       }
+      const threshold = 0.9;
       if (max > threshold) {
         classIndices.push(maxIdx);
         classConfidences.push(max);
