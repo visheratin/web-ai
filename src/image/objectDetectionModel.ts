@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Config from "./config";
 import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
@@ -7,7 +6,7 @@ import Jimp from "jimp";
 import Preprocessor from "./preprocessor";
 import PreprocessorConfig from "./preprocessorConfig";
 import { softmax } from "./utils";
-import { ImageModel, ImageProcessingResult } from "./interfaces";
+import { IImageModel, ImageProcessingResult } from "./interfaces";
 
 export type ObjectDetectionPrediction = {
   class: string;
@@ -23,17 +22,16 @@ export type ObjectDetectionResult = ImageProcessingResult & {
   objects: ObjectDetectionPrediction[];
 };
 
-export class ObjectDetectionModel implements ImageModel {
+export class ObjectDetectionModel implements IImageModel {
   metadata: ImageMetadata;
   initialized: boolean;
-  private config: Config | null;
-  private preprocessor: Preprocessor;
-  private session: ort.InferenceSession | null;
+  private config?: Config;
+  private preprocessor?: Preprocessor;
+  private session?: ort.InferenceSession;
 
-  constructor(metadata: ImageMetadata, config?: Config) {
+  constructor(metadata: ImageMetadata) {
     this.metadata = metadata;
-    this.session = null;
-    this.config = config;
+    this.initialized = false;
   }
 
   init = async (): Promise<number> => {
@@ -49,13 +47,17 @@ export class ObjectDetectionModel implements ImageModel {
     return elapsed;
   };
 
-  process = async (input: string | ArrayBuffer): Promise<ObjectDetectionResult> => {
+  process = async (input: string | Buffer): Promise<ObjectDetectionResult> => {
+    if (!this.initialized || !this.session || !this.preprocessor || !this.config) {
+      throw Error("the model is not initialized");
+    }
+    // @ts-ignore
     let image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
     const feeds: Record<string, ort.Tensor> = {};
     feeds[this.session!.inputNames[0]] = tensor;
-    const output = await this.session?.run(feeds);
+    const output = await this.session.run(feeds);
     if (!output) {
       throw Error("model output is undefined");
     }
@@ -68,6 +70,7 @@ export class ObjectDetectionModel implements ImageModel {
       const s = output["logits"].dims[2] * i;
       const f = output["logits"].dims[2] * (i + 1);
       const data = output["logits"].data.slice(s, f);
+      // @ts-ignore
       const classes = softmax(data);
       let max = 0;
       let maxIdx = 0;
@@ -88,8 +91,11 @@ export class ObjectDetectionModel implements ImageModel {
     for (let i = 0; i < indices.length; i++) {
       const index = indices[i];
       let box = output["boxes"].data.slice(4 * index, 4 * (index + 1));
+      // @ts-ignore
       box[0] = box[0] - box[2] / 2;
+      // @ts-ignore
       box[1] = box[1] - box[3] / 2;
+      // @ts-ignore
       boxes.push(box);
     }
     let res: ObjectDetectionResult = {
@@ -97,12 +103,18 @@ export class ObjectDetectionModel implements ImageModel {
       elapsed: elapsed,
     };
     for (let i = 0; i < indices.length; i++) {
-      const cls = this.config?.classes.get(classIndices[i]);
-      const color = this.config?.colors.get(classIndices[i]);
+      const cls = this.config.classes.get(classIndices[i]);
+      if (!cls) {
+        continue;
+      }
+      const color = this.config.colors.get(classIndices[i]);
+      if (!color) {
+        continue;
+      }
       const hex = "#" + componentToHex(color[0]) + componentToHex(color[1]) + componentToHex(color[2]);
       const box = boxes[i];
       res.objects.push({
-        class: cls as string,
+        class: cls,
         color: hex,
         confidence: classConfidences[i],
         x: box[0],

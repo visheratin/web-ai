@@ -2,13 +2,13 @@ import { createSession } from "../session";
 import Tokenizer from "./tokenizer";
 import { TextMetadata } from "./metadata";
 import { T5ForConditionalGeneration } from "./transformers";
-import { TextModel, TextProcessingResult } from "./interfaces";
+import { ITextModel, TextProcessingResult } from "./interfaces";
 
 export type Seq2SeqResult = TextProcessingResult & {
   text: string;
 };
 
-export class Seq2SeqModel implements TextModel {
+export class Seq2SeqModel implements ITextModel {
   metadata: TextMetadata;
   initialized: boolean;
   private tokenizer?: Tokenizer;

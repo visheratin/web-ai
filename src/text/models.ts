@@ -1,8 +1,5 @@
-import { FeatureExtractionModel } from "./featureExtractionModel";
-import { TextModel } from "./interfaces";
 import { TextMetadata } from "./metadata";
 import { TextModelType } from "./modeType";
-import { Seq2SeqModel } from "./seq2seqModel";
 
 export const ListTextModels = (tags?: string[], type?: TextModelType): TextMetadata[] => {
   if (!tags && !type) {
@@ -21,22 +18,7 @@ export const ListTextModels = (tags?: string[], type?: TextModelType): TextMetad
   });
 };
 
-export const GetModel = (id: string): TextModel | undefined => {
-  for (let modelMetadata of models) {
-    if (modelMetadata.id === id) {
-      switch (modelMetadata.type) {
-        case TextModelType.FeatureExtraction: {
-          return new FeatureExtractionModel(modelMetadata);
-        }
-        case TextModelType.Seq2Seq: {
-          return new Seq2SeqModel(modelMetadata);
-        }
-      }
-    }
-  }
-};
-
-const models: TextMetadata[] = [
+export const models: TextMetadata[] = [
   {
     id: "grammar-t5-efficient-tiny-quant",
     title: "T5 Efficient TINY quantized",
@@ -77,7 +59,7 @@ const models: TextMetadata[] = [
     tags: ["grammar", "t5"],
   },
   {
-    id: "grammar-t5-efficient-tiny",
+    id: "grammar-t5-efficient-mini",
     title: "T5 Efficient MINI",
     description: "",
     type: TextModelType.Seq2Seq,

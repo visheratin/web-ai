@@ -1,35 +1,32 @@
-// @ts-nocheck
 import Config from "./config";
 import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
 import { createSession } from "../session";
 import Jimp from "jimp";
-import { Tensor } from "../tensor";
 import Preprocessor from "./preprocessor";
 import PreprocessorConfig from "./preprocessorConfig";
 import { softmax } from "./utils";
+import { IImageModel, ImageProcessingResult } from "./interfaces";
 
 export type ClassificationPrediction = {
   class: string;
   confidence: number;
 };
 
-export type ClassificationResult = {
+export type ClassificationResult = ImageProcessingResult & {
   results: ClassificationPrediction[];
-  elapsed: number;
 };
 
-export class ClassificationModel {
+export class ClassificationModel implements IImageModel {
   metadata: ImageMetadata;
-  private config: Config | null;
-  private preprocessor: Preprocessor | null;
-  private session: ort.InferenceSession | null;
+  initialized: boolean;
+  private config?: Config;
+  private preprocessor?: Preprocessor;
+  private session?: ort.InferenceSession;
 
-  constructor(metadata: ImageMetadata, config: Config | null) {
+  constructor(metadata: ImageMetadata) {
     this.metadata = metadata;
-    this.session = null;
-    this.config = config;
-    this.preprocessor = null;
+    this.initialized = false;
   }
 
   init = async (): Promise<number> => {
@@ -37,17 +34,20 @@ export class ClassificationModel {
     this.session = await createSession(this.metadata.modelPath);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
-    if (this.config === null) {
-      this.config = await Config.fromFile(this.metadata.configPath);
-    }
+    this.config = await Config.fromFile(this.metadata.configPath);
+    this.initialized = true;
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     return elapsed;
   };
 
-  process = async (input: string | ArrayBuffer, num: number = 3): Promise<ClassificationResult> => {
+  process = async (input: string | Buffer, num: number = 3): Promise<ClassificationResult> => {
+    if (!this.initialized || !this.preprocessor || !this.config) {
+      throw Error("the model is not initialized");
+    }
+    // @ts-ignore
     let image = await Jimp.read(input);
-    const tensor = this.preprocessor!.process(image);
+    const tensor = this.preprocessor.process(image);
     const start = new Date();
     const output = await this.runInference(tensor);
     const end = new Date();
@@ -56,12 +56,17 @@ export class ClassificationModel {
       class: "unknown",
       confidence: 0,
     });
-    const result = softmax(output.ortTensor.data);
-    for (let i = 0; i < output.ortTensor.data.length; i++) {
+    // @ts-ignore
+    const result = softmax(output.data);
+    for (let i = 0; i < output.data.length; i++) {
       for (let j = 0; j < res.length; j++) {
         if (res[j].confidence < result[i]) {
+          const cls = this.config.classes.get(i);
+          if (!cls) {
+            continue;
+          }
           res[j] = {
-            class: this.config!.classes.get(i),
+            class: cls,
             confidence: result[i],
           };
           break;
@@ -74,11 +79,14 @@ export class ClassificationModel {
     };
   };
 
-  private runInference = async (input: ort.Tensor): Promise<Tensor> => {
+  private runInference = async (input: ort.Tensor): Promise<ort.Tensor> => {
+    if (!this.initialized || !this.session) {
+      throw Error("the model is not initialized");
+    }
     const feeds: Record<string, ort.Tensor> = {};
-    feeds[this.session!.inputNames[0]] = input;
-    const outputData = await this.session!.run(feeds);
-    const output = outputData[this.session!.outputNames[0]];
-    return new Tensor(output);
+    feeds[this.session.inputNames[0]] = input;
+    const outputData = await this.session.run(feeds);
+    const output = outputData[this.session.outputNames[0]];
+    return output;
   };
 }

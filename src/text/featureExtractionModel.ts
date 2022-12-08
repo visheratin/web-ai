@@ -4,13 +4,13 @@ import { TextMetadata } from "./metadata";
 import { T5Encoder } from "./transformers";
 import * as ort from "onnxruntime-web";
 import { Tensor } from "../tensor";
-import { TextModel, TextProcessingResult } from "./interfaces";
+import { ITextModel, TextProcessingResult } from "./interfaces";
 
 export type FeatureExtractionResult = TextProcessingResult & {
   result: number[];
 };
 
-export class FeatureExtractionModel implements TextModel {
+export class FeatureExtractionModel implements ITextModel {
   metadata: TextMetadata;
   initialized: boolean;
   private tokenizer?: Tokenizer;

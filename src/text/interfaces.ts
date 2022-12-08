@@ -1,6 +1,6 @@
 import { TextMetadata } from "./metadata";
 
-export interface TextModel {
+export interface ITextModel {
   metadata: TextMetadata;
   initialized: boolean;
 

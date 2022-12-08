@@ -1,6 +1,6 @@
 import { ImageMetadata } from "./metadata";
 
-export interface ImageModel {
+export interface IImageModel {
   metadata: ImageMetadata;
   initialized: boolean;
 

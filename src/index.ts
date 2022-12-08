@@ -1,6 +1,9 @@
 export {
+  ITextModel,
+  TextModel,
+  TextProcessingResult,
   TextMetadata as TextMetadata,
-  default as Seq2SeqModel,
+  Seq2SeqModel,
   Seq2SeqResult,
   FeatureExtractionModel,
   FeatureExtractionResult,
@@ -8,6 +11,9 @@ export {
   TextModelType,
 } from "./text";
 export {
+  IImageModel,
+  ImageModel,
+  ImageProcessingResult,
   Metadata as ImageMetadata,
   ClassificationModel,
   ClassificationPrediction,

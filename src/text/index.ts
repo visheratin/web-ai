@@ -3,3 +3,5 @@ export * from "./seq2seqModel";
 export * from "./featureExtractionModel";
 export * from "./models";
 export * from "./modeType";
+export * from "./interfaces";
+export * from "./textModel";

@@ -3,16 +3,15 @@ import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
 import { createSession } from "../session";
 import Jimp from "jimp";
-import { Tensor } from "../tensor";
 import Preprocessor from "./preprocessor";
 import PreprocessorConfig from "./preprocessorConfig";
-import { ImageModel, ImageProcessingResult } from "./interfaces";
+import { IImageModel, ImageProcessingResult } from "./interfaces";
 
 type SegmentationResult = ImageProcessingResult & {
   data: HTMLCanvasElement;
 };
 
-export class SegmentationModel implements ImageModel {
+export class SegmentationModel implements IImageModel {
   metadata: ImageMetadata;
   initialized: boolean;
   private config?: Config;
@@ -47,8 +46,8 @@ export class SegmentationModel implements ImageModel {
     const output = await this.runInference(tensor);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    const argmax = this.argmaxColors(output.ortTensor);
-    const size = output.ortTensor.dims[2] * output.ortTensor.dims[3] * 4;
+    const argmax = this.argmaxColors(output);
+    const size = output.dims[2] * output.dims[3] * 4;
     const arrayBuffer = new ArrayBuffer(size);
     const pixels = new Uint8ClampedArray(arrayBuffer);
     for (let i = 0; i < size; i += 4) {
@@ -58,7 +57,7 @@ export class SegmentationModel implements ImageModel {
       pixels[i + 2] = color[2];
       pixels[i + 3] = 255;
     }
-    const imageData = new ImageData(pixels, output.ortTensor.dims[2], output.ortTensor.dims[3]);
+    const imageData = new ImageData(pixels, output.dims[2], output.dims[3]);
     let resCanvas = document.createElement("canvas");
     resCanvas.width = imageData.width;
     resCanvas.height = imageData.height;
@@ -116,7 +115,7 @@ export class SegmentationModel implements ImageModel {
     return result;
   };
 
-  private runInference = async (input: ort.Tensor): Promise<Tensor> => {
+  private runInference = async (input: ort.Tensor): Promise<ort.Tensor> => {
     if (!this.initialized || !this.session) {
       throw Error("the model is not initialized");
     }
@@ -124,6 +123,6 @@ export class SegmentationModel implements ImageModel {
     feeds[this.session.inputNames[0]] = input;
     const outputData = await this.session.run(feeds);
     const output = outputData[this.session.outputNames[0]];
-    return new Tensor(output);
+    return output;
   };
 }
