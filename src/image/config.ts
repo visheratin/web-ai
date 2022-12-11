@@ -1,3 +1,13 @@
+/**
+ * Configuration for the image model.
+ *
+ * @param classes - map where keys are class IDs and values are class names.
+ * @param colors - map where keys are class IDs and values are class colors.
+ *
+ * @remarks
+ * If the colors are not present in the config file, they will be randomly
+ * populated during the configuration creation.
+ */
 export class Config {
   classes: Map<number, string>;
   colors: Map<number, number[]>;
@@ -7,6 +17,13 @@ export class Config {
     this.colors = new Map<number, number[]>();
   }
 
+  /**
+   * Reads the configuration from the file.
+   *
+   * @param configPath - URL to the configuration file.
+   *
+   * @returns configuration for the image model.
+   */
   static fromFile = async (configPath: string): Promise<Config> => {
     const configData = await fetch(configPath).then((resp) => resp.json());
     const config = this.parseConfig(configData);
@@ -14,6 +31,13 @@ export class Config {
     return config;
   };
 
+  /**
+   * Parses the configuration from the JSON data.
+   *
+   * @param configData - JSON data read from the configuration file.
+   *
+   * @returns configuration for the image model.
+   */
   static parseConfig = (configData): Config => {
     let res = new Config();
     for (const [idxString, className] of Object.entries(configData["id2label"])) {
@@ -23,16 +47,18 @@ export class Config {
         const color = configData["colors"][idxString];
         res.colors.set(idx, color);
       } else {
-        const hexColor = Math.floor(Math.random() * 16777215)
-          .toString(16)
-          .padStart(6, "0");
-        const color = convertToRGB(hexColor);
-        res.colors.set(idx, color);
+        const r = Math.round(Math.random() * 256);
+        const g = Math.round(Math.random() * 256);
+        const b = Math.round(Math.random() * 256);
+        res.colors.set(idx, [r, g, b]);
       }
     }
     return res;
   };
 
+  /**
+   * Checks the configuration for correctness. Throws an error if the configuration is not valid.
+   */
   validate = () => {
     if (this.colors && this.classes && this.classes.size != this.colors.size) {
       throw new Error("lengths of classes and colors do not match");
@@ -44,15 +70,5 @@ export class Config {
     });
   };
 }
-
-const convertToRGB = (hexColor: string): number[] => {
-  hexColor = hexColor.replace("#", "");
-  const rgbValue = hexColor.match(/.{1,2}/g);
-  if (rgbValue === null || rgbValue.length != 3) {
-    throw new Error(`invalid hex color: ${hexColor}`);
-  }
-  const result = [parseInt(rgbValue[0], 16), parseInt(rgbValue[1], 16), parseInt(rgbValue[2], 16)];
-  return result;
-};
 
 export default Config;

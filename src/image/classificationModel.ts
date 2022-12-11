@@ -8,15 +8,38 @@ import PreprocessorConfig from "./preprocessorConfig";
 import { softmax } from "./utils";
 import { IImageModel, ImageProcessingResult } from "./interfaces";
 
+/**
+ * Class predicted by the model.
+ *
+ * @param class - class name.
+ * @param confidence - how confident the model is in the prediction. Value in range [0,1].
+ */
 export type ClassificationPrediction = {
   class: string;
   confidence: number;
 };
 
+/**
+ * Output of the classification model.
+ *
+ * @param results - array of `ClassificationPrediction` values.
+ * @param elapsed - time taken to process the input, in seconds.
+ */
 export type ClassificationResult = ImageProcessingResult & {
   results: ClassificationPrediction[];
 };
 
+/**
+ * Model for classifying images.
+ *
+ * @implements IImageModel
+ *
+ * @remarks
+ * The model is initialized via `init()` function. The model cannot be used if it is not initialized.
+ *
+ * @param metadata - information about the model.
+ * @param initialized - flag indicating if the model was initialized.
+ */
 export class ClassificationModel implements IImageModel {
   metadata: ImageMetadata;
   initialized: boolean;
@@ -29,6 +52,11 @@ export class ClassificationModel implements IImageModel {
     this.initialized = false;
   }
 
+  /**
+   * Initializes the model for running.
+   *
+   * @returns Time taken to initialize the model, in seconds.
+   */
   init = async (): Promise<number> => {
     const start = new Date();
     this.session = await createSession(this.metadata.modelPath);
@@ -41,6 +69,14 @@ export class ClassificationModel implements IImageModel {
     return elapsed;
   };
 
+  /**
+   * Processes the image and generates the classification predictions.
+   *
+   * @param input - either URL to the image or Buffer with the image.
+   * @param num - maximum number of predictions to generate.
+   *
+   * @returns classification predictions.
+   */
   process = async (input: string | Buffer, num: number = 3): Promise<ClassificationResult> => {
     if (!this.initialized || !this.preprocessor || !this.config) {
       throw Error("the model is not initialized");
