@@ -1,6 +1,6 @@
 {
   "name": "in-browser-ai",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Run modern deep learning models in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -39,6 +39,7 @@
     "jest": "^29.3.1",
     "jimp": "^0.16.2",
     "onnxruntime-web": "1.13.1",
+    "pako": "^2.1.0",
     "ts-jest": "^29.0.3"
   },
   "devDependencies": {
