@@ -8,7 +8,7 @@ import PreprocessorConfig from "./preprocessorConfig";
 import { IImageModel, ImageProcessingResult } from "./interfaces";
 
 type SegmentationResult = ImageProcessingResult & {
-  data: HTMLCanvasElement;
+  canvas: HTMLCanvasElement;
 };
 
 export class SegmentationModel implements IImageModel {
@@ -63,7 +63,7 @@ export class SegmentationModel implements IImageModel {
     resCanvas.height = imageData.height;
     resCanvas.getContext("2d")?.putImageData(imageData, 0, 0);
     const result: SegmentationResult = {
-      data: resCanvas,
+      canvas: resCanvas,
       elapsed: elapsed,
     };
     return result;

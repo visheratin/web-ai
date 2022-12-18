@@ -11,8 +11,8 @@ export const ListImageModels = (tags?: string[], type?: ImageModelType): ImageMe
   }
   return models.filter((model) => {
     let tagCheck = true;
-    if (tags && tags.length > 0) {
-      tagCheck = tags.every((tag) => model.tags.includes(tag));
+    if (model.tags && tags && tags.length > 0) {
+      tagCheck = tags.every((tag) => model.tags!.includes(tag));
     }
     let typeCheck = true;
     if (type) {

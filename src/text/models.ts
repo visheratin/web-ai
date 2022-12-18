@@ -7,12 +7,12 @@ export const ListTextModels = (tags?: string[], type?: TextModelType): TextMetad
   }
   return models.filter((model) => {
     let tagCheck = true;
-    if (tags && tags.length > 0) {
-      tagCheck = tags.every((tag) => model.tags.includes(tag));
+    if (model.tags && tags && tags.length > 0) {
+      tagCheck = tags.every((tag) => model.tags!.includes(tag));
     }
     let typeCheck = true;
     if (type) {
-      typeCheck = model.type == type;
+      typeCheck = model.type === type;
     }
     return tagCheck && typeCheck;
   });

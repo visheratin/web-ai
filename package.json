@@ -1,6 +1,6 @@
 {
   "name": "in-browser-ai",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "Run modern deep learning models in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
