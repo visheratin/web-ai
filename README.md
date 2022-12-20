@@ -3,6 +3,10 @@
 - ONNX Runtime
 - Hugging Face compatible
 
+## Status
+
+The library is under active development. If something does not work correctly, please file an issue on GitHub. Contributions are very welcome.
+
 ## Model types
 
 ### Text models
@@ -56,19 +60,17 @@ const model = ImageModel.create("yolos-tiny-quant")
 
 ### Create model from metadata
 
-The second way is via the model metadata. This method allows to use custom ONNX models. In this case, we would also need
+The second way to create a model is via the model metadata. This method allows to use custom ONNX models. In this case, we need
 to use a specific model class.
 
-For `Seq2Seq` text models:
+#### Text models
+
+The metadata for text models is defined by the `TextMetadata` class. Not all fields are required for the model creation. The minimal example for the `Seq2Seq` model is:
 
 ```TypeScript
 import { Seq2SeqModel, TextMetadata } from "in-browser-ai";
 
 const metadata: TextMetadata = {
-    id: "t5-efficient-tiny",
-    title: "T5 Efficient MINI",
-    type: TextModelType.Seq2Seq,
-    sizeMB: 127,
     modelPaths: new Map<string, string>([
       [
         "encoder",
@@ -80,36 +82,15 @@ const metadata: TextMetadata = {
       ],
     ]),
     tokenizerPath: "https://huggingface.co/visheratin/t5-efficient-tiny-grammar-correction/resolve/main/tokenizer.json",
-    tags: ["grammar-correction", "t5"],
   }
 
 const model = new Seq2SeqModel(metadata);
 ```
 
-Not all fields of the `TextMetadata` class are required for the model creation. The minimal example for the `Seq2Seq` model is:
-
-```TypeScript
-import { TextMetadata } from "in-browser-ai";
-
-const metadata: TextMetadata = {
-    modelPaths: new Map<string, string>([
-      [
-        "encoder",
-        "https://huggingface.co/visheratin/t5-efficient-tiny-grammar-correction/resolve/main/encoder_model.onnx",
-      ],
-      [
-        "decoder",
-        "https://huggingface.co/visheratin/t5-efficient-tiny-grammar-correction/resolve/main/decoder_with_past_model.onnx",
-      ],
-    ]),
-    tokenizerPath: "https://huggingface.co/visheratin/t5-efficient-tiny-grammar-correction/resolve/main/tokenizer.json",
-  }
-```
-
 The minimal example for the `FeatureExtraction` model is:
 
 ```TypeScript
-import { TextMetadata } from "in-browser-ai";
+import { FeatureExtractionModel, TextMetadata } from "in-browser-ai";
 
 const metadata: TextMetadata = {
     modelPaths: new Map<string, string>([
@@ -120,6 +101,35 @@ const metadata: TextMetadata = {
     ]),
     tokenizerPath: "https://huggingface.co/visheratin/t5-efficient-tiny-grammar-correction/resolve/main/tokenizer.json",
   }
+
+const model = new FeatureExtractionModel(metadata);
+```
+
+#### Image models
+
+The metadata for image models is defined by the `ImageMetadata` class. Not all fields are required for the model creation. The minimal example for all image models is:
+
+```TypeScript
+import { ImageMetadata } from "in-browser-ai";
+
+const metadata: ImageMetadata = {
+    modelPath: "https://huggingface.co/visheratin/segformer-b0-finetuned-ade-512-512/resolve/main/b0.onnx.gz",
+    configPath: "https://huggingface.co/visheratin/segformer-b0-finetuned-ade-512-512/resolve/main/config.json",
+    preprocessorPath: "https://huggingface.co/visheratin/segformer-b0-finetuned-ade-512-512/resolve/main/preprocessor_config.json",
+  }
+```
+
+Then, the model can be created:
+
+```TypeScript
+import { ClassificationModel, ObjectDetectionModel, SegmentationModel } from "in-browser-ai";
+
+const model = new ClassificationModel(metadata);
+// or
+const model = new ObjectDetectionModel(metadata);
+// or
+const model = new SegmentationModel(metadata);
+
 ```
 
 ## Built-in models
@@ -139,3 +149,8 @@ const metadata: TextMetadata = {
 #### Text feature extraction
 
 ## Future development
+
+- Improve grammar correction model.
+- Extend text models beyond T5.
+- Distil [Flan-T5-small](https://huggingface.co/google/flan-t5-small) model to make it more usable in the browser.
+- Add audio models ([Whisper-small](https://huggingface.co/openai/whisper-small)).

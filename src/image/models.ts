@@ -1,9 +1,5 @@
-import { ClassificationModel } from "./classificationModel";
-import { IImageModel } from "./interfaces";
 import { ImageMetadata } from "./metadata";
 import { ImageModelType } from "./modelType";
-import { ObjectDetectionModel } from "./objectDetectionModel";
-import { SegmentationModel } from "./segmentationModel";
 
 export const ListImageModels = (tags?: string[], type?: ImageModelType): ImageMetadata[] => {
   if (!tags && !type) {
