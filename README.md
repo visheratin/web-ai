@@ -57,7 +57,7 @@ For image models:
 ```TypeScript
 import { ImageModel } from "in-browser-ai";
 
-const model = ImageModel.create("yolos-tiny-quant")
+const result = ImageModel.create("yolos-tiny-quant")
 console.log(result.elapsed)
 const model = result.model
 ```
