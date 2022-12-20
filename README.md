@@ -47,7 +47,9 @@ For text models:
 ```TypeScript
 import { TextModel } from "in-browser-ai";
 
-const model = TextModel.create("grammar-t5-efficient-tiny")
+const result = TextModel.create("grammar-t5-efficient-tiny")
+console.log(result.elapsed)
+const model = result.model
 ```
 
 For image models:
@@ -56,12 +58,14 @@ For image models:
 import { ImageModel } from "in-browser-ai";
 
 const model = ImageModel.create("yolos-tiny-quant")
+console.log(result.elapsed)
+const model = result.model
 ```
 
 ### Create model from metadata
 
 The second way to create a model is via the model metadata. This method allows to use custom ONNX models. In this case, we need
-to use a specific model class.
+to use a specific model class. Please note that when creating the model from the metadata, you need to call an `init()` method before using the model. This is needed to create inference sessions, download configurations files, and create internal structures.
 
 #### Text models
 
@@ -85,6 +89,8 @@ const metadata: TextMetadata = {
   }
 
 const model = new Seq2SeqModel(metadata);
+const elapsed = await model.init();
+console.log(elapsed);
 ```
 
 The minimal example for the `FeatureExtraction` model is:
@@ -103,6 +109,8 @@ const metadata: TextMetadata = {
   }
 
 const model = new FeatureExtractionModel(metadata);
+const elapsed = await model.init();
+console.log(elapsed);
 ```
 
 #### Image models
@@ -130,6 +138,96 @@ const model = new ObjectDetectionModel(metadata);
 // or
 const model = new SegmentationModel(metadata);
 
+const elapsed = await model.init();
+console.log(elapsed);
+```
+
+## Data processing
+
+### Text models
+
+The processing is done using a `process()` method.
+
+`Seq2Seq` models output text:
+
+```TypeScript
+const input = "Test text input"
+const output = await model.process(input)
+console.log(output.text)
+console.log(`Sentence of length ${input.length} (${output.tokensNum} tokens) was processed in ${output.elapsed} seconds`)
+```
+
+`FeatureExtraction` models output numeric array:
+
+```TypeScript
+const input = "Test text input"
+const output = await model.process(input)
+console.log(output.result)
+console.log(`Sentence of length ${input.length} (${output.tokensNum} tokens) was processed in ${output.elapsed} seconds`)
+```
+
+### Image models
+
+For the image models, the processing is also done using a `process()` method.
+
+`Segmentation` models output HTML canvas, which can be overlayed on the original image:
+
+```TypeScript
+const input = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Georgia5and120loop.jpg/640px-Georgia5and120loop.jpg"
+const output = await model.process(input)
+var destCtx = canvas.getContext("2d");
+destCtx.globalAlpha = 0.4;
+destCtx.drawImage(result.canvas, 0, 0, result.canvas.width, result.canvas.height,
+  0, 0, canvas.width, canvas.height);
+console.log(output.elapsed)
+```
+
+If you want to determine the class from the output canvas, you can use the `getClass()` method:
+
+```TypeScript
+// xCoord and yCoord are coordinates of the target pixel on the canvas
+const rect = canvas.getBoundingClientRect();
+const ctx = canvas.getContext("2d");
+const x = xCoord - rect.left;
+const y = yCoord - rect.top;
+const c = ctx!.getImageData(x, y, 1, 1).data;
+const className = model.instance.getClass(c);
+console.log(className);
+```
+
+`Object detection` models output a list of bounding box predictions along with their classes and colors. Bounding boxes can be used to draw them over the original image:
+
+```TypeScript
+const input = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Georgia5and120loop.jpg/640px-Georgia5and120loop.jpg"
+const output = await model.process(input)
+for (let object of output.objects) {
+  var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  rect.setAttributeNS(null, "x", (sizes[0] * object.x).toString());
+  rect.setAttributeNS(null, "y", (sizes[1] * object.y).toString());
+  rect.setAttributeNS(null, "width", (sizes[0] * object.width).toString());
+  rect.setAttributeNS(
+    null,
+    "height",
+    (sizes[1] * object.height).toString()
+  );
+  const color = object.color;
+  rect.setAttributeNS(null, "fill", color);
+  rect.setAttributeNS(null, "stroke", color);
+  rect.setAttributeNS(null, "stroke-width", "2");
+  rect.setAttributeNS(null, "fill-opacity", "0.35");
+  // svgRoot is a root SVG element on the page
+  svgRoot.appendChild(rect);
+}
+```
+
+`Classification` models output an array of predicted classes along with the confidence scores in range [0,1] sorted by confidence in the descending order. When running the `process()` method, you can specify the number of returned predictions (default is 3):
+
+```TypeScript
+const input = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Georgia5and120loop.jpg/640px-Georgia5and120loop.jpg"
+const output = await model.process(input, 5)
+for (let item of output.results) {
+  console.log(item.class, item.confidence)
+}
 ```
 
 ## Built-in models
