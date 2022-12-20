@@ -5,13 +5,13 @@ import { ImageModelType } from "./modelType";
 import { ObjectDetectionModel } from "./objectDetectionModel";
 import { SegmentationModel } from "./segmentationModel";
 
-export interface ImageModelResult {
+export interface InitImageModelResult {
   model: IImageModel;
   elapsed: number;
 }
 
 export class ImageModel {
-  static create = async (id: string): Promise<ImageModelResult | undefined> => {
+  static create = async (id: string): Promise<InitImageModelResult | undefined> => {
     for (let modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {

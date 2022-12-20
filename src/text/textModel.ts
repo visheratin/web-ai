@@ -4,13 +4,13 @@ import { models } from "./models";
 import { TextModelType } from "./modeType";
 import { Seq2SeqModel } from "./seq2seqModel";
 
-export interface TextModelResult {
+export interface InitTextModelResult {
   model: ITextModel;
   elapsed: number;
 }
 
 export class TextModel {
-  static create = async (id: string): Promise<TextModelResult | undefined> => {
+  static create = async (id: string): Promise<InitTextModelResult | undefined> => {
     for (let modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
