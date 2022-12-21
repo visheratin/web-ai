@@ -1,7 +1,12 @@
 # In-browser AI
 
-- ONNX Runtime
-- Hugging Face compatible
+In-browser AI is a TypeScript library that allows you to run modern deep learning models directly in your web browser. You can easily add AI capabilities to your web applications without the need for complex server-side infrastructure.
+
+Features:
+
+- Easy to use. Create a model with one line of code, get the result with another one.
+- Powered by [ONNX runtime](https://onnxruntime.ai/). In-browser AI runs the models using ONNX runtime for Web, which has rich support of all kinds of operators. It means that any model will work just fine.
+- Compatible with [Hugging Face hub](https://huggingface.co/models). In-browser AI utilizes model configuration files in the same format as the hub, which makes it even easier to integrate existing models.
 
 ## Status
 
@@ -232,19 +237,44 @@ for (let item of output.results) {
 
 ## Built-in models
 
-### Image models
-
-#### Semantic segmentation
-
-#### Classification
-
-#### Object detection
-
 ### Text models
 
 #### Grammar correction
 
-#### Text feature extraction
+- `grammar-t5-efficient-mini` - larger model for grammar correction (197 MB). Works the best overall.
+- `grammar-t5-efficient-mini-quant` - minified (quantized) version of the `grammar-t5-efficient-mini` model. Quantization makes the performance slightly worse but the size is 5 times smaller than the original one.
+- `grammar-t5-efficient-tiny` - small model for grammar correction (113 MB). Works a bit worse than the larger model but is almost twice smaller.
+- `grammar-t5-efficient-tiny-quant` - minified (quantized) version of the `grammar-t5-efficient-tiny` model. Quantization makes the performance slightly worse but the size is 4 times smaller than the original one. It is the smallest model, only 24 MB in total.
+
+#### Feature extraction
+
+- `t5-efficient-mini` - larger model for feature extraction (94 MB). Works the best overall.
+- `t5-efficient-mini-quant` - minified (quantized) version of the `t5-efficient-mini` model. Quantization makes the performance slightly worse but the size is almost 3 times smaller than the original one - 38 MB.
+
+### Image models
+
+#### Semantic segmentation
+
+- `segformer-b0-segmentation-quant` - the smallest model for indoor and outdoor scenes (3 MB). Provides a decent quality but the object borders are not always correct.
+- `segformer-b1-segmentation-quant` - larger model for indoor and outdoor scenes (9 MB). Provides good quality and better object borders.
+- `segformer-b4-segmentation-quant` - the largest model for indoor and outdoor scenes (41 MB). Provides the best quality.
+
+#### Classification
+
+- `mobilevit-small` - small model (19 MB) for classification of a large range of classes - people, animals, indoor and outdoor objects.
+- `mobilevit-xsmall` - even smaller model (8 MB) for classification of a large range of classes - people, animals, indoor and outdoor objects.
+- `mobilevit-xxsmall` - the smallest model (5 MB) for classification of a large range of classes - people, animals, indoor and outdoor objects.
+- `segformer-b2-classification` - larger model for indoor and outdoor scenes (88 MB).
+- `segformer-b2-classification-quant` - minified (quantized) version of the `segformer-b2-classification` model (17 MB). Provides comparable results with the original.
+- `segformer-b1-classification` - smaller model for indoor and outdoor scenes (48 MB).
+- `segformer-b1-classification-quant` - minified (quantized) version of the `segformer-b1-classification` model (9 MB). Provides comparable results with the original.
+- `segformer-b0-classification` - the smallest model for indoor and outdoor scenes (13 MB).
+- `segformer-b0-classification-quant` - minified (quantized) version of the `segformer-b0-classification` model (3 MB). Provides comparable results with the original.
+
+#### Object detection
+
+- `yolos-tiny` - small (23 MB) but powerful model for finding a large range of classes - people, animals, indoor and outdoor objects.
+- `yolos-tiny-quant` - minified (quantized) version of the `yolos-tiny` model. The borders are slightly off compared to the original but the size is 3 times smaller (7 MB).
 
 ## Future development
 

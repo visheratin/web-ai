@@ -42,7 +42,7 @@ export const models: ImageMetadata[] = [
     title: "MobileViT small",
     description: "",
     type: ImageModelType.Classification,
-    sizeMB: 22,
+    sizeMB: 19,
     modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit-small.onnx.gz",
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
     preprocessorPath:
@@ -55,7 +55,7 @@ export const models: ImageMetadata[] = [
     title: "MobileViT extra small",
     description: "",
     type: ImageModelType.Classification,
-    sizeMB: 9,
+    sizeMB: 8,
     modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit-x-small.onnx.gz",
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
     preprocessorPath:

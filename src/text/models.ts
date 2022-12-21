@@ -37,7 +37,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient MINI quantized",
     description: "",
     type: TextModelType.Seq2Seq,
-    sizeMB: 55,
+    sizeMB: 38,
     modelPaths: new Map<string, string>([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/mini-encoder-quant.onnx.gz"],
       ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/mini-decoder-init-quant.onnx.gz"],
@@ -50,7 +50,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient TINY",
     description: "",
     type: TextModelType.Seq2Seq,
-    sizeMB: 122,
+    sizeMB: 113,
     modelPaths: new Map<string, string>([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/tiny-encoder.onnx.gz"],
       ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/tiny-decoder-init.onnx.gz"],
@@ -63,7 +63,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient MINI",
     description: "",
     type: TextModelType.Seq2Seq,
-    sizeMB: 214,
+    sizeMB: 197,
     modelPaths: new Map<string, string>([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/mini-encoder.onnx.gz"],
       ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/grammar/mini-decoder-init.onnx.gz"],
@@ -76,7 +76,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient MINI quantized",
     description: "",
     type: TextModelType.FeatureExtraction,
-    sizeMB: 55,
+    sizeMB: 38,
     modelPaths: new Map<string, string>([
       [
         "encoder",
@@ -95,7 +95,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient MINI",
     description: "",
     type: TextModelType.FeatureExtraction,
-    sizeMB: 214,
+    sizeMB: 94,
     modelPaths: new Map<string, string>([
       [
         "encoder",
@@ -114,7 +114,7 @@ export const models: TextMetadata[] = [
     title: "T5 Flan small",
     description: "",
     type: TextModelType.Seq2Seq,
-    sizeMB: 355,
+    sizeMB: 330,
     modelPaths: new Map<string, string>([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/flan/flan-t5-small-encoder.onnx.gz"],
       ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/flan/flan-t5-small-decoder.onnx.gz"],
