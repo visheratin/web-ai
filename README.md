@@ -12,6 +12,10 @@ Features:
 
 The library is under active development. If something does not work correctly, please file an issue on GitHub. Contributions are very welcome.
 
+## Sponsors
+
+Continuing work on this project is sponsored by [Reflect](https://reflect.app/home) - awesome app for taking notes.
+
 ## Model types
 
 ### Text models
