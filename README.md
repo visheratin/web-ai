@@ -56,7 +56,7 @@ For text models:
 ```TypeScript
 import { TextModel } from "in-browser-ai";
 
-const result = TextModel.create("grammar-t5-efficient-tiny")
+const result = await TextModel.create("grammar-t5-efficient-tiny")
 console.log(result.elapsed)
 const model = result.model
 ```
@@ -66,7 +66,7 @@ For image models:
 ```TypeScript
 import { ImageModel } from "in-browser-ai";
 
-const result = ImageModel.create("yolos-tiny-quant")
+const result = await ImageModel.create("yolos-tiny-quant")
 console.log(result.elapsed)
 const model = result.model
 ```
