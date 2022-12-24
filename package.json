@@ -1,6 +1,6 @@
 {
   "name": "in-browser-ai",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Run modern deep learning models in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,9 +35,11 @@
   },
   "homepage": "https://github.com/visheratin/in-browser-ai#readme",
   "dependencies": {
-    "jimp": "^0.16.2",
     "onnxruntime-web": "1.13.1",
     "pako": "^2.1.0"
+  },
+  "peerDependencies": {
+    "jimp": "^0.16.2"
   },
   "devDependencies": {
     "@types/jest": "^29.2.3",

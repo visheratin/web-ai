@@ -45,6 +45,12 @@ The library can be insatlled via `npm`:
 npm install in-browser-ai
 ```
 
+If you plan to use image models, you also need to install `jimp`:
+
+```
+npm install jimp
+```
+
 ## Create model instance
 
 ### Create model from ID
