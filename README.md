@@ -5,7 +5,7 @@ In-browser AI is a TypeScript library that allows you to run modern deep learnin
 Features:
 
 - Easy to use. Create a model with one line of code, get the result with another one.
-- Powered by [ONNX runtime](https://onnxruntime.ai/). In-browser AI runs the models using ONNX runtime for Web, which has rich support of all kinds of operators. It means that any model will work just fine.
+- Powered by [ONNX runtime](https://onnxruntime.ai/). In-browser AI runs the models using ONNX runtime for Web, which has rich support for of all kinds of operators. It means that any model will work just fine.
 - Compatible with [Hugging Face hub](https://huggingface.co/models). In-browser AI utilizes model configuration files in the same format as the hub, which makes it even easier to integrate existing models.
 
 ## Status
@@ -21,11 +21,11 @@ Continuing work on this project is sponsored by [Reflect](https://reflect.app/ho
 ### Text models
 
 - Sequence-to-sequence (`TextModelType.Seq2Seq`). These models are used to transform the text into another text. Examples of such transformations are translation, summarization, and grammar correction.
-- Feature extarction (`TextModelType.FeatureExtraction`). These models are used to transform the text into an array of numbers - embedding. Generated vectors are useful for semantic search or cluster analysis because embeddings of semantically similar text are similar and can be compared using [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity).
+- Feature extraction (`TextModelType.FeatureExtraction`). These models are used to transform the text into an array of numbers - embedding. Generated vectors are useful for semantic search or cluster analysis because embeddings of semantically similar text are similar and can be compared using [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity).
 
 ### Image models
 
-- Semantic segmentation (`ImageModelType.Segmentation`). These models cluster images into parts which belong to the same object class. In other words, segmentation models detect exact shape of the objects in the image and classify them. The example of image segmentation is below.
+- Semantic segmentation (`ImageModelType.Segmentation`). These models cluster images into parts which belong to the same object class. In other words, segmentation models detect the exact shape of the objects in the image and classify them. An example of object detection is below:
 
   ![Semantic segmentation example](/images/segment.jpg)
 
@@ -33,13 +33,13 @@ Continuing work on this project is sponsored by [Reflect](https://reflect.app/ho
 
   ![Object detection example](/images/detection.jpg)
 
-- Classification (`ImageModelType.Classification`). These models do not find exact objects in the images but they only determine what type of object is the most likely in the image. Because of that, this type of models is the most useful when there is only one distinct class of objects present in the image. In the example below, the image is classified as "Egyptian cat".
+- Classification (`ImageModelType.Classification`). These models do not find exact objects in the images but they only determine what type of object is the most likely in the image. Because of that, this type of model is the most useful when there is only one distinct class of objects present in the image. In the example below, the image is classified as "Egyptian cat".
 
   ![Object detection example](/images/classification.jpg)
 
 ## Installation
 
-The library can be insatlled via `npm`:
+The library can be installed via `npm`:
 
 ```
 npm install in-browser-ai
@@ -79,8 +79,8 @@ const model = result.model
 
 ### Create model from metadata
 
-The second way to create a model is via the model metadata. This method allows to use custom ONNX models. In this case, we need
-to use a specific model class. Please note that when creating the model from the metadata, you need to call an `init()` method before using the model. This is needed to create inference sessions, download configurations files, and create internal structures.
+The second way to create a model is via the model metadata. This method allows the use of custom ONNX models. In this case, we need
+to use a specific model class. Please note that when creating the model from the metadata, you need to call an `init()` method before using the model. This is needed to create inference sessions, download configuration files, and create internal structures.
 
 #### Text models
 
