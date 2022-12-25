@@ -1,6 +1,6 @@
 {
-  "name": "in-browser-ai",
-  "version": "0.0.9",
+  "name": "web-ai",
+  "version": "0.1.0",
   "description": "Run modern deep learning models in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/visheratin/in-browser-ai.git"
+    "url": "git+https://github.com/visheratin/web-ai.git"
   },
   "keywords": [
     "deep-learning",
@@ -31,9 +31,9 @@
   "author": "Alexander Visheratin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/visheratin/in-browser-ai/issues"
+    "url": "https://github.com/visheratin/web-ai/issues"
   },
-  "homepage": "https://github.com/visheratin/in-browser-ai#readme",
+  "homepage": "https://github.com/visheratin/web-ai#readme",
   "dependencies": {
     "onnxruntime-web": "1.13.1",
     "pako": "^2.1.0"

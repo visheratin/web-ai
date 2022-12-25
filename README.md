@@ -42,7 +42,7 @@ Continuing work on this project is sponsored by [Reflect](https://reflect.app/ho
 The library can be insatlled via `npm`:
 
 ```
-npm install in-browser-ai
+npm install web-ai
 ```
 
 If you plan to use image models, you also need to install `jimp`:
@@ -60,7 +60,7 @@ The first way of creating a model is using the model identifier. This method wor
 For text models:
 
 ```TypeScript
-import { TextModel } from "in-browser-ai";
+import { TextModel } from "web-ai";
 
 const result = await TextModel.create("grammar-t5-efficient-tiny")
 console.log(result.elapsed)
@@ -70,7 +70,7 @@ const model = result.model
 For image models:
 
 ```TypeScript
-import { ImageModel } from "in-browser-ai";
+import { ImageModel } from "web-ai";
 
 const result = await ImageModel.create("yolos-tiny-quant")
 console.log(result.elapsed)
@@ -87,7 +87,7 @@ to use a specific model class. Please note that when creating the model from the
 The metadata for text models is defined by the `TextMetadata` class. Not all fields are required for the model creation. The minimal example for the `Seq2Seq` model is:
 
 ```TypeScript
-import { Seq2SeqModel, TextMetadata } from "in-browser-ai";
+import { Seq2SeqModel, TextMetadata } from "web-ai";
 
 const metadata: TextMetadata = {
     modelPaths: new Map<string, string>([
@@ -111,7 +111,7 @@ console.log(elapsed);
 The minimal example for the `FeatureExtraction` model is:
 
 ```TypeScript
-import { FeatureExtractionModel, TextMetadata } from "in-browser-ai";
+import { FeatureExtractionModel, TextMetadata } from "web-ai";
 
 const metadata: TextMetadata = {
     modelPaths: new Map<string, string>([
@@ -133,7 +133,7 @@ console.log(elapsed);
 The metadata for image models is defined by the `ImageMetadata` class. Not all fields are required for the model creation. The minimal example for all image models is:
 
 ```TypeScript
-import { ImageMetadata } from "in-browser-ai";
+import { ImageMetadata } from "web-ai";
 
 const metadata: ImageMetadata = {
     modelPath: "https://huggingface.co/visheratin/segformer-b0-finetuned-ade-512-512/resolve/main/b0.onnx.gz",
@@ -145,7 +145,7 @@ const metadata: ImageMetadata = {
 Then, the model can be created:
 
 ```TypeScript
-import { ClassificationModel, ObjectDetectionModel, SegmentationModel } from "in-browser-ai";
+import { ClassificationModel, ObjectDetectionModel, SegmentationModel } from "web-ai";
 
 const model = new ClassificationModel(metadata);
 // or
