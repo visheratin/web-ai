@@ -1,12 +1,12 @@
-# In-browser AI
+# Web AI
 
-In-browser AI is a TypeScript library that allows you to run modern deep learning models directly in your web browser. You can easily add AI capabilities to your web applications without the need for complex server-side infrastructure.
+Web AI is a TypeScript library that allows you to run modern deep learning models directly in your web browser. You can easily add AI capabilities to your web applications without the need for complex server-side infrastructure.
 
 Features:
 
 - Easy to use. Create a model with one line of code, get the result with another one.
-- Powered by [ONNX runtime](https://onnxruntime.ai/). In-browser AI runs the models using ONNX runtime for Web, which has rich support for of all kinds of operators. It means that any model will work just fine.
-- Compatible with [Hugging Face hub](https://huggingface.co/models). In-browser AI utilizes model configuration files in the same format as the hub, which makes it even easier to integrate existing models.
+- Powered by [ONNX runtime](https://onnxruntime.ai/). Web AI runs the models using ONNX runtime for Web, which has rich support for of all kinds of operators. It means that any model will work just fine.
+- Compatible with [Hugging Face hub](https://huggingface.co/models). Web AI utilizes model configuration files in the same format as the hub, which makes it even easier to integrate existing models.
 
 ## Status
 
