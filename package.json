@@ -1,5 +1,5 @@
 {
-  "name": "web-ai",
+  "name": "@visheratin/web-ai",
   "version": "0.1.0",
   "description": "Run modern deep learning models in the browser.",
   "main": "dist/index.js",
