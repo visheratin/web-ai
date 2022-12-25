@@ -10,7 +10,7 @@ export interface InitTextModelResult {
 }
 
 export class TextModel {
-  static create = async (id: string): Promise<InitTextModelResult | undefined> => {
+  static create = async (id: string): Promise<InitTextModelResult> => {
     for (let modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
@@ -33,5 +33,6 @@ export class TextModel {
         }
       }
     }
+    throw Error("there is no text model with specified id");
   };
 }

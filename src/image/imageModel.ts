@@ -11,7 +11,7 @@ export interface InitImageModelResult {
 }
 
 export class ImageModel {
-  static create = async (id: string): Promise<InitImageModelResult | undefined> => {
+  static create = async (id: string): Promise<InitImageModelResult> => {
     for (let modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
@@ -42,5 +42,6 @@ export class ImageModel {
         }
       }
     }
+    throw Error("there is no image model with specified id");
   };
 }
