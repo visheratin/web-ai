@@ -23,3 +23,4 @@ export {
   ListImageModels,
   ImageModelType,
 } from "./image";
+export { InitCache } from "./cache";

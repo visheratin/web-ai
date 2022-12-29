@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "rm -rf ./dist && tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/visheratin/web-ai#readme",
   "dependencies": {
+    "localforage": "^1.10.0",
     "onnxruntime-web": "1.13.1",
     "pako": "^2.1.0"
   },
