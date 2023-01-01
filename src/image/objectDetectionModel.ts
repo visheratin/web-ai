@@ -1,12 +1,14 @@
 import Config from "./config";
 import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
-import { createSession } from "../session";
+import { createSession } from "../sessionController";
 import Jimp from "jimp";
 import Preprocessor from "./preprocessor";
 import PreprocessorConfig from "./preprocessorConfig";
 import { softmax } from "./utils";
 import { IImageModel, ImageProcessingResult } from "./interfaces";
+import { Session } from "../session";
+import * as Comlink from "comlink";
 
 export type ObjectDetectionPrediction = {
   class: string;
@@ -27,7 +29,7 @@ export class ObjectDetectionModel implements IImageModel {
   initialized: boolean;
   private config?: Config;
   private preprocessor?: Preprocessor;
-  private session?: ort.InferenceSession;
+  private session?: Session | Comlink.Remote<Session>;
 
   constructor(metadata: ImageMetadata) {
     this.metadata = metadata;
@@ -56,7 +58,8 @@ export class ObjectDetectionModel implements IImageModel {
     const tensor = this.preprocessor.process(image);
     const start = new Date();
     const feeds: Record<string, ort.Tensor> = {};
-    feeds[this.session!.inputNames[0]] = tensor;
+    const inputNames = await this.session.inputNames();
+    feeds[inputNames[0]] = tensor;
     const output = await this.session.run(feeds);
     if (!output) {
       throw Error("model output is undefined");

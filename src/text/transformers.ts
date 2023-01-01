@@ -1,5 +1,7 @@
 // @ts-nocheck
 import * as ort from "onnxruntime-web";
+import { Session } from "../session";
+import * as Comlink from "comlink";
 
 interface GenerateOptions {
   maxLength: number;
@@ -7,10 +9,10 @@ interface GenerateOptions {
 }
 
 export class T5ForConditionalGeneration {
-  encoderSession: ort.InferenceSession;
-  decoderSession: ort.InferenceSession;
+  encoderSession: Session | Comlink.Remote<Session>;
+  decoderSession: Session | Comlink.Remote<Session>;
 
-  constructor(encoderSession: ort.InferenceSession, decoderSession: ort.InferenceSession) {
+  constructor(encoderSession: Session | Comlink.Remote<Session>, decoderSession: Session | Comlink.Remote<Session>) {
     this.encoderSession = encoderSession;
     this.decoderSession = decoderSession;
   }
@@ -140,9 +142,9 @@ class Seq2SeqLMOutput {
 }
 
 export class T5Encoder {
-  encoderSession: ort.InferenceSession;
+  encoderSession: Session | Comlink.Remote<Session>;
 
-  constructor(encoderSession: ort.InferenceSession) {
+  constructor(encoderSession: Session | Comlink.Remote<Session>) {
     this.encoderSession = encoderSession;
   }
 

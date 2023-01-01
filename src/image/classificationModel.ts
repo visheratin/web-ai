@@ -1,12 +1,14 @@
 import Config from "./config";
 import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
-import { createSession } from "../session";
+import { createSession } from "../sessionController";
 import Jimp from "jimp";
 import Preprocessor from "./preprocessor";
 import PreprocessorConfig from "./preprocessorConfig";
 import { softmax } from "./utils";
 import { IImageModel, ImageProcessingResult } from "./interfaces";
+import { Session } from "../session";
+import * as Comlink from "comlink";
 
 /**
  * Class predicted by the model.
@@ -45,7 +47,7 @@ export class ClassificationModel implements IImageModel {
   initialized: boolean;
   private config?: Config;
   private preprocessor?: Preprocessor;
-  private session?: ort.InferenceSession;
+  private session?: Session | Comlink.Remote<Session>;
 
   constructor(metadata: ImageMetadata) {
     this.metadata = metadata;
@@ -120,9 +122,11 @@ export class ClassificationModel implements IImageModel {
       throw Error("the model is not initialized");
     }
     const feeds: Record<string, ort.Tensor> = {};
-    feeds[this.session.inputNames[0]] = input;
+    const inputNames = await this.session.inputNames();
+    feeds[inputNames[0]] = input;
     const outputData = await this.session.run(feeds);
-    const output = outputData[this.session.outputNames[0]];
+    const outputNames = await this.session.outputNames();
+    const output = outputData[outputNames[0]];
     return output;
   };
 }

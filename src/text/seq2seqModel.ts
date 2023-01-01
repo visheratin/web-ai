@@ -1,4 +1,4 @@
-import { createSession } from "../session";
+import { createSession } from "../sessionController";
 import Tokenizer from "./tokenizer";
 import { TextMetadata } from "./metadata";
 import { T5ForConditionalGeneration } from "./transformers";
