@@ -23,13 +23,13 @@ export class FeatureExtractionModel implements ITextModel {
     this.cache = new Map<string, number[]>();
   }
 
-  init = async (): Promise<number> => {
+  init = async (cache_size_mb: number, proxy: boolean): Promise<number> => {
     const start = new Date();
     const modelPath = this.metadata.modelPaths.get("encoder");
     if (!modelPath) {
       throw new Error("model paths do not have the 'encoder' path");
     }
-    const encoderSession = await createSession(modelPath);
+    const encoderSession = await createSession(modelPath, cache_size_mb, proxy);
     this.model = new T5Encoder(encoderSession);
     const response = await fetch(this.metadata.tokenizerPath);
     this.tokenizer = Tokenizer.fromConfig(await response.json());

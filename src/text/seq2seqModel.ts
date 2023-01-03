@@ -21,18 +21,18 @@ export class Seq2SeqModel implements ITextModel {
     this.cache = new Map<string, string>();
   }
 
-  init = async (): Promise<number> => {
+  init = async (cache_size_mb: number, proxy: boolean): Promise<number> => {
     const start = new Date();
     const encoderPath = this.metadata.modelPaths.get("encoder");
     if (!encoderPath) {
       throw new Error("model paths do not have the 'encoder' path");
     }
-    const encoderSession = await createSession(encoderPath);
+    const encoderSession = await createSession(encoderPath, cache_size_mb, proxy);
     const decoderPath = this.metadata.modelPaths.get("decoder");
     if (!decoderPath) {
       throw new Error("model paths do not have the 'decoder' path");
     }
-    const decoderSession = await createSession(decoderPath);
+    const decoderSession = await createSession(decoderPath, cache_size_mb, proxy);
     this.model = new T5ForConditionalGeneration(encoderSession, decoderSession);
     const response = await fetch(this.metadata.tokenizerPath);
     this.tokenizer = Tokenizer.fromConfig(await response.json());

@@ -11,13 +11,17 @@ export interface InitImageModelResult {
 }
 
 export class ImageModel {
-  static create = async (id: string): Promise<InitImageModelResult> => {
+  static create = async (
+    id: string,
+    cache_size_mb: number = 500,
+    proxy: boolean = true,
+  ): Promise<InitImageModelResult> => {
     for (let modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
           case ImageModelType.Classification: {
             let model = new ClassificationModel(modelMetadata);
-            const elapsed = await model.init();
+            const elapsed = await model.init(cache_size_mb, proxy);
             return {
               model: model,
               elapsed: elapsed,
@@ -25,7 +29,7 @@ export class ImageModel {
           }
           case ImageModelType.ObjectDetection: {
             let model = new ObjectDetectionModel(modelMetadata);
-            const elapsed = await model.init();
+            const elapsed = await model.init(cache_size_mb, proxy);
             return {
               model: model,
               elapsed: elapsed,
@@ -33,7 +37,7 @@ export class ImageModel {
           }
           case ImageModelType.Segmentation: {
             let model = new SegmentationModel(modelMetadata);
-            const elapsed = await model.init();
+            const elapsed = await model.init(cache_size_mb, proxy);
             return {
               model: model,
               elapsed: elapsed,

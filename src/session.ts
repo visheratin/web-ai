@@ -3,20 +3,18 @@ import * as ort from "onnxruntime-web";
 import * as pako from "pako";
 import * as Comlink from "comlink";
 
-ort.env.wasm.numThreads = 3;
-ort.env.wasm.simd = true;
-ort.env.wasm.proxy = true;
 ort.env.wasm.wasmPaths = "https://edge-ai-models.s3.us-east-2.amazonaws.com/onnx-13/";
 
 export class Session {
   ortSession: ort.InferenceSession | undefined;
 
-  constructor() {
+  constructor(cache_size_mb: number) {
+    const cache_size = cache_size_mb * 1e6;
     localforage.config({
       name: "Web-AI",
       version: 1.0,
       driver: localforage.INDEXEDDB,
-      size: 500000000, // 500 MB cache size
+      size: cache_size,
       storeName: "model_storage",
     });
   }
@@ -71,4 +69,6 @@ export class Session {
   };
 }
 
-Comlink.expose(Session);
+if (typeof self !== "undefined") {
+  Comlink.expose(Session);
+}
