@@ -7,6 +7,8 @@ Features:
 - Easy to use. Create a model with one line of code, get the result with another one.
 - Powered by [ONNX runtime](https://onnxruntime.ai/). Web AI runs the models using ONNX runtime for Web, which has rich support for of all kinds of operators. It means that any model will work just fine.
 - Compatible with [Hugging Face hub](https://huggingface.co/models). Web AI utilizes model configuration files in the same format as the hub, which makes it even easier to integrate existing models.
+- Built-in caching. Web AI stores the downloaded models in IndexedDB using [localforage](https://github.com/localForage/localForage). You can configure the size of the cache dynamically.
+- Web worker support. All heavy operations - model creation and inference - are offloaded to a separate thread so the UI does not freeze.
 
 ## Status
 
@@ -156,6 +158,15 @@ const model = new SegmentationModel(metadata);
 const elapsed = await model.init();
 console.log(elapsed);
 ```
+
+### Additional parameters
+
+You can configure cache size and execution mode for the model using the following parameters:
+
+1. `cache_size_mb` - cache size, in megabytes. Default value is `500`.
+2. `proxy` - flag specifying whether to offload the model to the web worker. Default value is `true`.
+
+These parameters are available in `create()` and `init()` methods.
 
 ## Data processing
 
