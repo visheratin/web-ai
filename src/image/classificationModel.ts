@@ -59,7 +59,7 @@ export class ClassificationModel implements IImageModel {
    *
    * @returns Time taken to initialize the model, in seconds.
    */
-  init = async (cache_size_mb: number, proxy: boolean): Promise<number> => {
+  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
     const start = new Date();
     this.session = await createSession(this.metadata.modelPath, cache_size_mb, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);

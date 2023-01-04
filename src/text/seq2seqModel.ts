@@ -21,7 +21,7 @@ export class Seq2SeqModel implements ITextModel {
     this.cache = new Map<string, string>();
   }
 
-  init = async (cache_size_mb: number, proxy: boolean): Promise<number> => {
+  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
     const start = new Date();
     const encoderPath = this.metadata.modelPaths.get("encoder");
     if (!encoderPath) {
