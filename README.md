@@ -299,6 +299,7 @@ for (let item of output.results) {
 
 ## Future development
 
+- Add examples for popular web frameworks.
 - Improve grammar correction model.
 - Extend text models beyond T5.
 - Distil [Flan-T5-small](https://huggingface.co/google/flan-t5-small) model to make it more usable in the browser.
