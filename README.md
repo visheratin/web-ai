@@ -44,7 +44,7 @@ Continuing work on this project is sponsored by [Reflect](https://reflect.app/ho
 The library can be installed via `npm`:
 
 ```
-npm install web-ai
+npm install @visheratin/web-ai
 ```
 
 If you plan to use image models, you also need to install `jimp`:
