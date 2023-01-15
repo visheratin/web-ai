@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -15,10 +16,10 @@ export default function Home() {
           <h2>Image models</h2>
           <ol>
             <li>
-              <a href="/demos/classification">Classification</a>
+              <Link href="/demos/classification">Classification</Link>
             </li>
             <li>
-              <a href="/demos/segmentation">Segmentation</a>
+              <Link href="/demos/segmentation">Segmentation</Link>
             </li>
             <li>
               <a href="/demos/object-detection">Object detection</a>
