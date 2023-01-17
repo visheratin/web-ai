@@ -6,6 +6,10 @@ class PreprocessorConfig {
   cropSize: number;
   flipChannels: boolean;
   squareImage: boolean;
+  pad: boolean;
+  padSize: number;
+  rescale: boolean;
+  rescaleFactor: number;
 
   constructor() {
     this.normalize = {
@@ -17,6 +21,10 @@ class PreprocessorConfig {
     this.cropSize = 0;
     this.flipChannels = false;
     this.squareImage = false;
+    this.pad = false;
+    this.padSize = 0;
+    this.rescale = false;
+    this.rescaleFactor = 1.0;
   }
 
   static fromFile = async (configPath: string): Promise<PreprocessorConfig> => {
@@ -56,6 +64,18 @@ class PreprocessorConfig {
     }
     if ("do_square" in configData) {
       res.squareImage = configData["do_square"];
+    }
+    if ("do_pad" in configData) {
+      res.pad = configData["do_pad"];
+    }
+    if ("pad_size" in configData) {
+      res.padSize = configData["pad_size"];
+    }
+    if ("do_rescale" in configData) {
+      res.rescale = configData["do_rescale"];
+    }
+    if ("rescale_factor" in configData) {
+      res.rescaleFactor = configData["rescale_factor"];
     }
     return res;
   };

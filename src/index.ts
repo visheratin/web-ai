@@ -22,4 +22,6 @@ export {
   SegmentationModel,
   ListImageModels,
   ImageModelType,
+  Img2ImgModel,
+  Img2ImgResult,
 } from "./image";

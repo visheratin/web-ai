@@ -214,4 +214,16 @@ export const models: ImageMetadata[] = [
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
   },
+  {
+    id: "superres",
+    title: "Super Resolution",
+    description: "",
+    type: ImageModelType.Img2Img,
+    sizeMB: 5,
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/superres/model.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/classification/mobilevit_config.json",
+    preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/superres/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["img2img", "superres"],
+  },
 ];
