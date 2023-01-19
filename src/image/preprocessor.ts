@@ -29,7 +29,8 @@ class Preprocessor {
     if (this.config.pad) {
       image = this.padImage(image, this.config.padSize);
     }
-    const tensor = this.imageDataToTensor(image, [1, 3, image.bitmap.width, image.bitmap.height]);
+    const dims = [1, 3, image.bitmap.height, image.bitmap.width];
+    const tensor = this.imageDataToTensor(image, dims);
     return tensor;
   };
 

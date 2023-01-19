@@ -64,6 +64,9 @@ export class ClassificationModel implements IImageModel {
     this.session = await createSession(this.metadata.modelPath, cache_size_mb, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
+    if (!this.metadata.configPath) {
+      throw Error("configPath is not defined");
+    }
     this.config = await Config.fromFile(this.metadata.configPath);
     this.initialized = true;
     const end = new Date();

@@ -75,86 +75,49 @@ export class Img2ImgModel implements IImageModel {
     const output = await this.runInference(tensor);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    console.log(output);
+    console.log(elapsed);
     const size = output.dims[2] * output.dims[3];
     const arrayBuffer = new ArrayBuffer(size * 4);
     const pixels = new Uint8ClampedArray(arrayBuffer);
-    for (let y = 0; y < output.dims[3]; y++) {
-      for (let x = 0; x < output.dims[2]; x++) {
-        let value = output.data[y * output.dims[2] + x] as number;
-        if (value < 0) {
-          value = 0;
-        } else {
-          if (value > 1) {
-            value = 1;
-          }
+    for (let i = 0; i < size; i++) {
+      let value = output.data[i] as number;
+      if (value < 0) {
+        value = 0;
+      } else {
+        if (value > 1) {
+          value = 1;
         }
-        value *= 255.0;
-        pixels[4 * (y * output.dims[2] + x)] = value;
-
-        value = output.data[size + y * output.dims[2] + x] as number;
-        if (value < 0) {
-          value = 0;
-        } else {
-          if (value > 1) {
-            value = 1;
-          }
-        }
-        value *= 255.0;
-        pixels[4 * (y * output.dims[2] + x) + 1] = value;
-
-        value = output.data[2 * size + y * output.dims[2] + x] as number;
-        if (value < 0) {
-          value = 0;
-        } else {
-          if (value > 1) {
-            value = 1;
-          }
-        }
-        value *= 255.0;
-        pixels[4 * (y * output.dims[2] + x) + 2] = value;
-        pixels[4 * (y * output.dims[2] + x) + 3] = 255;
       }
+      value *= 255.0;
+      pixels[4 * i] = value;
+
+      value = output.data[size + i] as number;
+      if (value < 0) {
+        value = 0;
+      } else {
+        if (value > 1) {
+          value = 1;
+        }
+      }
+      value *= 255.0;
+      pixels[4 * i + 1] = value;
+
+      value = output.data[2 * size + i] as number;
+      if (value < 0) {
+        value = 0;
+      } else {
+        if (value > 1) {
+          value = 1;
+        }
+      }
+      value *= 255.0;
+      pixels[4 * i + 2] = value;
+      pixels[4 * i + 3] = 255;
     }
-    // for (let i = 0; i < size; i++) {
-    //   let value = output.data[i] as number;
-    //   if (value < 0) {
-    //     value = 0;
-    //   } else {
-    //     if (value > 1) {
-    //       value = 1;
-    //     }
-    //   }
-    //   value *= 255.0;
-    //   pixels[4 * i] = value;
-
-    //   value = output.data[size + i] as number;
-    //   if (value < 0) {
-    //     value = 0;
-    //   } else {
-    //     if (value > 1) {
-    //       value = 1;
-    //     }
-    //   }
-    //   value *= 255.0;
-    //   pixels[4 * i + 1] = value;
-
-    //   value = output.data[2 * size + i] as number;
-    //   if (value < 0) {
-    //     value = 0;
-    //   } else {
-    //     if (value > 1) {
-    //       value = 1;
-    //     }
-    //   }
-    //   value *= 255.0;
-    //   pixels[4 * i + 2] = value;
-    //   pixels[4 * i + 3] = 255;
-    // }
     return {
       data: arrayBuffer,
-      width: output.dims[2],
-      height: output.dims[3],
+      width: output.dims[3],
+      height: output.dims[2],
       elapsed: elapsed,
     };
   };
