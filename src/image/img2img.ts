@@ -14,13 +14,11 @@ import * as Comlink from "comlink";
  * @param data - array buffer with the resulting image.
  */
 export type Img2ImgResult = ImageProcessingResult & {
-  data: ArrayBuffer;
-  width: number;
-  height: number;
+  data: ImageData;
 };
 
 /**
- * Model for classifying images.
+ * Model for generating images from images.
  *
  * @implements IImageModel
  *
@@ -75,49 +73,72 @@ export class Img2ImgModel implements IImageModel {
     const output = await this.runInference(tensor);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    console.log(elapsed);
-    const size = output.dims[2] * output.dims[3];
-    const arrayBuffer = new ArrayBuffer(size * 4);
-    const pixels = new Uint8ClampedArray(arrayBuffer);
-    for (let i = 0; i < size; i++) {
-      let value = output.data[i] as number;
-      if (value < 0) {
-        value = 0;
-      } else {
-        if (value > 1) {
-          value = 1;
-        }
-      }
-      value *= 255.0;
-      pixels[4 * i] = value;
-
-      value = output.data[size + i] as number;
-      if (value < 0) {
-        value = 0;
-      } else {
-        if (value > 1) {
-          value = 1;
-        }
-      }
-      value *= 255.0;
-      pixels[4 * i + 1] = value;
-
-      value = output.data[2 * size + i] as number;
-      if (value < 0) {
-        value = 0;
-      } else {
-        if (value > 1) {
-          value = 1;
-        }
-      }
-      value *= 255.0;
-      pixels[4 * i + 2] = value;
-      pixels[4 * i + 3] = 255;
+    let startX = 0;
+    let startY = 0;
+    let endX = output.dims[3];
+    let endY = output.dims[2];
+    if (this.preprocessor && this.preprocessor.config && this.preprocessor.config.pad) {
+      const padSize = this.preprocessor.config.padSize;
+      const paddedWidth = Math.ceil(image.bitmap.width / padSize) * padSize;
+      const xDiff = paddedWidth - image.bitmap.width;
+      const paddedHeight = Math.ceil(image.bitmap.height / padSize) * padSize;
+      const yDiff = paddedHeight - image.bitmap.height;
+      const xRatio = output.dims[3] / paddedWidth;
+      const yRatio = output.dims[2] / paddedHeight;
+      const xPad = Math.floor((xDiff * xRatio) / 2);
+      const yPad = Math.floor((yDiff * yRatio) / 2);
+      startX = xPad;
+      startY = yPad;
+      endX = Math.ceil(output.dims[3] - xPad);
+      endY = Math.ceil(output.dims[2] - yPad);
     }
+    const width = endX - startX;
+    const height = endY - startY;
+    const size = output.dims[2] * output.dims[3];
+    const arrayBuffer = new ArrayBuffer(width * height * 4);
+    const pixels = new Uint8ClampedArray(arrayBuffer);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const pixIdx = 4 * (y * width + x);
+        const tensorIdx = (y + startY) * output.dims[3] + x + startX;
+        let value = output.data[tensorIdx] as number;
+        if (value < 0) {
+          value = 0;
+        } else {
+          if (value > 1) {
+            value = 1;
+          }
+        }
+        value *= 255.0;
+        pixels[pixIdx] = value;
+
+        value = output.data[size + tensorIdx] as number;
+        if (value < 0) {
+          value = 0;
+        } else {
+          if (value > 1) {
+            value = 1;
+          }
+        }
+        value *= 255.0;
+        pixels[pixIdx + 1] = value;
+
+        value = output.data[2 * size + tensorIdx] as number;
+        if (value < 0) {
+          value = 0;
+        } else {
+          if (value > 1) {
+            value = 1;
+          }
+        }
+        value *= 255.0;
+        pixels[pixIdx + 2] = value;
+        pixels[pixIdx + 3] = 255;
+      }
+    }
+    let imageData = new ImageData(pixels, width, height);
     return {
-      data: arrayBuffer,
-      width: output.dims[3],
-      height: output.dims[2],
+      data: imageData,
       elapsed: elapsed,
     };
   };
