@@ -62,12 +62,15 @@ export class Img2ImgModel implements IImageModel {
    *
    * @returns generated image.
    */
-  process = async (input: string | Buffer, num: number = 3): Promise<Img2ImgResult> => {
+  process = async (input: string | ArrayBuffer, resize: number = 0): Promise<Img2ImgResult> => {
     if (!this.initialized || !this.preprocessor) {
       throw Error("the model is not initialized");
     }
     // @ts-ignore
     let image = await Jimp.read(input);
+    if (resize > 0) {
+      image = this.prepareImage(image);
+    }
     const tensor = this.preprocessor.process(image);
     const start = new Date();
     const output = await this.runInference(tensor);
@@ -141,6 +144,15 @@ export class Img2ImgModel implements IImageModel {
       data: imageData,
       elapsed: elapsed,
     };
+  };
+
+  private prepareImage = (image: Jimp): Jimp => {
+    const { width, height } = image.bitmap;
+    const maxDimension = Math.max(width, height);
+    const scale = 300 / maxDimension;
+    const newWidth = width * scale;
+    const newHeight = height * scale;
+    return image.resize(newWidth, newHeight);
   };
 
   private runInference = async (input: ort.Tensor): Promise<ort.Tensor> => {
