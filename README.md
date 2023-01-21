@@ -16,7 +16,8 @@ The library is under active development. If something does not work correctly, p
 
 ## Sponsors
 
-Continuing work on this project is sponsored by [Reflect](https://reflect.app/home) - awesome app for taking notes.
+- Continuing work on this project is sponsored by [Reflect](https://reflect.app/home) - awesome app for taking notes.
+- Thanks to AlgoveraAI for the grant under their AI project financing [program](https://docs.algovera.ai/docs/Handbook/Grants/Introduction).
 
 ## Model types
 
@@ -38,6 +39,10 @@ Continuing work on this project is sponsored by [Reflect](https://reflect.app/ho
 - Classification (`ImageModelType.Classification`). These models do not find exact objects in the images but they only determine what type of object is the most likely in the image. Because of that, this type of model is the most useful when there is only one distinct class of objects present in the image. In the example below, the image is classified as "Egyptian cat".
 
   ![Object detection example](/images/classification.jpg)
+
+- Image-to-image (`ImageModelType.Img2Img`). These models produce images from other images. There are many [use cases](https://huggingface.co/tasks/image-to-image) for this kind of models. In the example below, you can see example of super-resolution (resizing the image from 256x256 to 1024x1024) with image restoring.
+
+  ![Image-to-image example](/images/img2img.jpg)
 
 ## Installation
 
@@ -296,6 +301,17 @@ for (let item of output.results) {
 
 - `yolos-tiny` - small (23 MB) but powerful model for finding a large range of classes - people, animals, indoor and outdoor objects.
 - `yolos-tiny-quant` - minified (quantized) version of the `yolos-tiny` model. The borders are slightly off compared to the original but the size is 3 times smaller (7 MB).
+
+#### Image-to-image
+
+- `superres-standard` - the model for 2x super-resolution (43 MB). Be aware that the image generation with this model is quite slow - 50+ seconds, depending on hardware and image size.
+- `superres-standard-quant` - minified (quantized) version of the `superres-standard` model (10 MB).
+- `superres-small` - tiny model for 2x super-resolution (4 MB). The model runs much faster than the `superres-standard` - 10+ seconds, depending on hardware and image size.
+- `superres-small-quant` - minified (quantized) version of the `superres-small` model (1.5 MB).
+- `superres-standard-x4` - the model for 4x super-resolution (43 MB). Be aware that the image generation with this model is quite slow - 50+ seconds, depending on hardware and image size.
+- `superres-standard-x4-quant` - minified (quantized) version of the `superres-standard-x4` model (10 MB).
+- `superres-compressed-x4` - the model for 4x super-resolution of compressed images (43 MB). The model not only increases the image resolution, but also improves its quality. Be aware that the image generation with this model is quite slow - 50+ seconds, depending on hardware and image size.
+- `superres-compressed-x4-quant` - minified (quantized) version of the `superres-compressed-x4` model (10 MB).
 
 ## Future development
 
