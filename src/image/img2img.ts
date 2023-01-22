@@ -69,7 +69,7 @@ export class Img2ImgModel implements IImageModel {
     // @ts-ignore
     let image = await Jimp.read(input);
     if (resize > 0) {
-      image = this.prepareImage(image);
+      image = this.prepareImage(image, resize);
     }
     const tensor = this.preprocessor.process(image);
     const start = new Date();
@@ -146,13 +146,16 @@ export class Img2ImgModel implements IImageModel {
     };
   };
 
-  private prepareImage = (image: Jimp): Jimp => {
+  private prepareImage = (image: Jimp, resize: number): Jimp => {
     const { width, height } = image.bitmap;
     const maxDimension = Math.max(width, height);
-    const scale = 300 / maxDimension;
-    const newWidth = width * scale;
-    const newHeight = height * scale;
-    return image.resize(newWidth, newHeight);
+    if (maxDimension > resize) {
+      const scale = resize / maxDimension;
+      const newWidth = width * scale;
+      const newHeight = height * scale;
+      return image.resize(newWidth, newHeight);
+    }
+    return image;
   };
 
   private runInference = async (input: ort.Tensor): Promise<ort.Tensor> => {
