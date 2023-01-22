@@ -1,4 +1,5 @@
 import { ClassificationModel } from "./classificationModel";
+import { Img2ImgModel } from "./img2img";
 import { IImageModel } from "./interfaces";
 import { models } from "./models";
 import { ImageModelType } from "./modelType";
@@ -37,6 +38,14 @@ export class ImageModel {
           }
           case ImageModelType.Segmentation: {
             let model = new SegmentationModel(modelMetadata);
+            const elapsed = await model.init(cache_size_mb, proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+          case ImageModelType.Img2Img: {
+            let model = new Img2ImgModel(modelMetadata);
             const elapsed = await model.init(cache_size_mb, proxy);
             return {
               model: model,

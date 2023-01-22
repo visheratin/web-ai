@@ -1,6 +1,6 @@
 {
   "name": "@visheratin/web-ai",
-  "version": "0.2.5",
+  "version": "0.3.3",
   "description": "Run modern deep learning models in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,6 +44,7 @@
     "jimp": "^0.16.2"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@types/jest": "^29.2.3",
     "jest": "^29.3.1",
     "prettier": "^2.8.0",

@@ -16,7 +16,8 @@ The library is under active development. If something does not work correctly, p
 
 ## Sponsors
 
-Continuing work on this project is sponsored by [Reflect](https://reflect.app/home) - awesome app for taking notes.
+- Continuing work on this project is sponsored by [Reflect](https://reflect.app/home) - awesome app for taking notes.
+- Thanks to AlgoveraAI for the grant under their AI project financing [program](https://docs.algovera.ai/docs/Handbook/Grants/Introduction).
 
 ## Model types
 
@@ -39,12 +40,16 @@ Continuing work on this project is sponsored by [Reflect](https://reflect.app/ho
 
   ![Object detection example](/images/classification.jpg)
 
+- Image-to-image (`ImageModelType.Img2Img`). These models produce images from other images. There are many [use cases](https://huggingface.co/tasks/image-to-image) for this kind of models. In the example below, you can see example of super-resolution (resizing the image from 256x256 to 1024x1024) with image restoring.
+
+  ![Image-to-image example](/images/img2img.jpg)
+
 ## Installation
 
 The library can be installed via `npm`:
 
 ```
-npm install web-ai
+npm install @visheratin/web-ai
 ```
 
 If you plan to use image models, you also need to install `jimp`:
@@ -62,7 +67,7 @@ The first way of creating a model is using the model identifier. This method wor
 For text models:
 
 ```TypeScript
-import { TextModel } from "web-ai";
+import { TextModel } from "@visheratin/web-ai";
 
 const result = await TextModel.create("grammar-t5-efficient-tiny")
 console.log(result.elapsed)
@@ -72,7 +77,7 @@ const model = result.model
 For image models:
 
 ```TypeScript
-import { ImageModel } from "web-ai";
+import { ImageModel } from "@visheratin/web-ai";
 
 const result = await ImageModel.create("yolos-tiny-quant")
 console.log(result.elapsed)
@@ -89,7 +94,7 @@ to use a specific model class. Please note that when creating the model from the
 The metadata for text models is defined by the `TextMetadata` class. Not all fields are required for the model creation. The minimal example for the `Seq2Seq` model is:
 
 ```TypeScript
-import { Seq2SeqModel, TextMetadata } from "web-ai";
+import { Seq2SeqModel, TextMetadata } from "@visheratin/web-ai";
 
 const metadata: TextMetadata = {
     modelPaths: new Map<string, string>([
@@ -113,7 +118,7 @@ console.log(elapsed);
 The minimal example for the `FeatureExtraction` model is:
 
 ```TypeScript
-import { FeatureExtractionModel, TextMetadata } from "web-ai";
+import { FeatureExtractionModel, TextMetadata } from "@visheratin/web-ai";
 
 const metadata: TextMetadata = {
     modelPaths: new Map<string, string>([
@@ -135,7 +140,7 @@ console.log(elapsed);
 The metadata for image models is defined by the `ImageMetadata` class. Not all fields are required for the model creation. The minimal example for all image models is:
 
 ```TypeScript
-import { ImageMetadata } from "web-ai";
+import { ImageMetadata } from "@visheratin/web-ai";
 
 const metadata: ImageMetadata = {
     modelPath: "https://huggingface.co/visheratin/segformer-b0-finetuned-ade-512-512/resolve/main/b0.onnx.gz",
@@ -147,7 +152,7 @@ const metadata: ImageMetadata = {
 Then, the model can be created:
 
 ```TypeScript
-import { ClassificationModel, ObjectDetectionModel, SegmentationModel } from "web-ai";
+import { ClassificationModel, ObjectDetectionModel, SegmentationModel } from "@visheratin/web-ai";
 
 const model = new ClassificationModel(metadata);
 // or
@@ -297,8 +302,20 @@ for (let item of output.results) {
 - `yolos-tiny` - small (23 MB) but powerful model for finding a large range of classes - people, animals, indoor and outdoor objects.
 - `yolos-tiny-quant` - minified (quantized) version of the `yolos-tiny` model. The borders are slightly off compared to the original but the size is 3 times smaller (7 MB).
 
+#### Image-to-image
+
+- `superres-standard` - the model for 2x super-resolution (43 MB). Be aware that the image generation with this model is quite slow - 50+ seconds, depending on hardware and image size.
+- `superres-standard-quant` - minified (quantized) version of the `superres-standard` model (10 MB).
+- `superres-small` - tiny model for 2x super-resolution (4 MB). The model runs much faster than the `superres-standard` - 10+ seconds, depending on hardware and image size.
+- `superres-small-quant` - minified (quantized) version of the `superres-small` model (1.5 MB).
+- `superres-standard-x4` - the model for 4x super-resolution (43 MB). Be aware that the image generation with this model is quite slow - 50+ seconds, depending on hardware and image size.
+- `superres-standard-x4-quant` - minified (quantized) version of the `superres-standard-x4` model (10 MB).
+- `superres-compressed-x4` - the model for 4x super-resolution of compressed images (43 MB). The model not only increases the image resolution, but also improves its quality. Be aware that the image generation with this model is quite slow - 50+ seconds, depending on hardware and image size.
+- `superres-compressed-x4-quant` - minified (quantized) version of the `superres-compressed-x4` model (10 MB).
+
 ## Future development
 
+- Add examples for popular web frameworks.
 - Improve grammar correction model.
 - Extend text models beyond T5.
 - Distil [Flan-T5-small](https://huggingface.co/google/flan-t5-small) model to make it more usable in the browser.

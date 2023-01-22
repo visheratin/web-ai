@@ -41,9 +41,10 @@ export class ObjectDetectionModel implements IImageModel {
     this.session = await createSession(this.metadata.modelPath, cache_size_mb, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
-    if (this.config === null) {
-      this.config = await Config.fromFile(this.metadata.configPath);
+    if (!this.metadata.configPath) {
+      throw Error("configPath is not defined");
     }
+    this.config = await Config.fromFile(this.metadata.configPath);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     return elapsed;
