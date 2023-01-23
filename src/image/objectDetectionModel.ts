@@ -45,6 +45,7 @@ export class ObjectDetectionModel implements IImageModel {
       throw Error("configPath is not defined");
     }
     this.config = await Config.fromFile(this.metadata.configPath);
+    this.initialized = true;
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     return elapsed;
