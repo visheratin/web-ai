@@ -188,6 +188,17 @@ console.log(output.text)
 console.log(`Sentence of length ${input.length} (${output.tokensNum} tokens) was processed in ${output.elapsed} seconds`)
 ```
 
+`Seq2Seq` models also support output streaming via `processStream()` method:
+
+```TypeScript
+const input = "Test text input"
+let output = "";
+for await (const piece of model.processStream(value)) {
+  output = output.concat(piece);
+}
+console.log(output)
+```
+
 `FeatureExtraction` models output numeric array:
 
 ```TypeScript
