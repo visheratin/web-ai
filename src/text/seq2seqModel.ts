@@ -1,8 +1,11 @@
 import { createSession } from "../sessionController";
 import Tokenizer from "./tokenizer";
 import { TextMetadata } from "./metadata";
-import { T5ForConditionalGeneration } from "./transformers";
 import { ITextModel, TextProcessingResult } from "./interfaces";
+import { T5Decoder, T5Encoder } from "./t5model";
+import { generate } from "../utils/generator";
+import * as ort from "onnxruntime-web";
+import { GenerationConfig } from "../utils/generationConfig";
 
 export type Seq2SeqResult = TextProcessingResult & {
   text: string;
@@ -12,7 +15,8 @@ export class Seq2SeqModel implements ITextModel {
   metadata: TextMetadata;
   initialized: boolean;
   private tokenizer?: Tokenizer;
-  private model?: T5ForConditionalGeneration;
+  private encoder?: T5Encoder;
+  private decoder?: T5Decoder;
   private cache: Map<string, string>;
 
   constructor(metadata: TextMetadata) {
@@ -33,7 +37,8 @@ export class Seq2SeqModel implements ITextModel {
       throw new Error("model paths do not have the 'decoder' path");
     }
     const decoderSession = await createSession(decoderPath, cache_size_mb, proxy);
-    this.model = new T5ForConditionalGeneration(encoderSession, decoderSession);
+    this.encoder = new T5Encoder(encoderSession);
+    this.decoder = new T5Decoder(decoderSession);
     const response = await fetch(this.metadata.tokenizerPath);
     this.tokenizer = Tokenizer.fromConfig(await response.json());
     const end = new Date();
@@ -43,7 +48,7 @@ export class Seq2SeqModel implements ITextModel {
   };
 
   process = async (input: string): Promise<Seq2SeqResult> => {
-    if (!this.initialized || !this.model || !this.tokenizer) {
+    if (!this.initialized || !this.encoder || !this.decoder || !this.tokenizer) {
       throw Error("the model is not initialized");
     }
     if (this.cache.has(input)) {
@@ -54,20 +59,27 @@ export class Seq2SeqModel implements ITextModel {
         elapsed: 0,
       };
     }
-    const generationOptions = {
+    const generationOptions: GenerationConfig = {
       maxLength: 500,
-      topK: 0,
+      eosTokenID: 1,
+      bosTokenID: 0,
     };
     const inputTokenIds = this.tokenizer.encode(input);
     if (!inputTokenIds) {
       throw Error("unable to get tokens for the text");
     }
     const start = new Date();
-    const outputTokenIds = await this.model.generate(inputTokenIds, generationOptions);
+    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokenIds.map((x) => BigInt(x))), [
+      1,
+      inputTokenIds.length,
+    ]);
+    let outputTokenIDs: number[] = [];
+    for await (const outputTokenID of generate(tensor, this.encoder, this.decoder, generationOptions)) {
+      outputTokenIDs.push(outputTokenID);
+    }
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    let output: string = this.tokenizer.decode(outputTokenIds, true).trim();
-    output = output.trim();
+    const output: string = this.tokenizer.decode(outputTokenIDs, true).trim();
     return {
       text: output,
       cached: false,
@@ -75,4 +87,35 @@ export class Seq2SeqModel implements ITextModel {
       elapsed: elapsed,
     };
   };
+
+  async *processStream(input: string): AsyncIterable<string> {
+    if (!this.initialized || !this.encoder || !this.decoder || !this.tokenizer) {
+      throw Error("the model is not initialized");
+    }
+    if (this.cache.has(input)) {
+      return this.cache.get(input) as string;
+    }
+    const generationOptions: GenerationConfig = {
+      maxLength: 500,
+      eosTokenID: 1,
+      bosTokenID: 0,
+    };
+    const inputTokenIds = this.tokenizer.encode(input);
+    if (!inputTokenIds) {
+      throw Error("unable to get tokens for the text");
+    }
+    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokenIds.map((x) => BigInt(x))), [
+      1,
+      inputTokenIds.length,
+    ]);
+    let outputTokenIDs: number[] = [];
+    let oldOutput: string = "";
+    for await (const outputTokenID of generate(tensor, this.encoder, this.decoder, generationOptions)) {
+      outputTokenIDs.push(outputTokenID);
+      const output: string = this.tokenizer.decode(outputTokenIDs, true);
+      const diff = output.substring(oldOutput.length);
+      yield diff;
+      oldOutput = output;
+    }
+  }
 }
