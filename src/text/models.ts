@@ -144,4 +144,34 @@ export const models: TextMetadata[] = [
     tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5/tokenizer.json",
     tags: ["general", "t5-flan"],
   },
+  {
+    id: "summarization-t5",
+    title: "T5 for summarization",
+    description: "",
+    type: TextModelType.Seq2Seq,
+    sizeMB: 328,
+    modelPaths: new Map<string, string>([
+      ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/encoder.onnx.gz"],
+      ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/decoder.onnx.gz"],
+    ]),
+    tokenizerPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
+    tags: ["summarization", "t5"],
+    prefixes: ["summarize"],
+  },
+  {
+    id: "summarization-t5-quant",
+    title: "T5 for summarization quantized",
+    description: "",
+    type: TextModelType.Seq2Seq,
+    sizeMB: 63,
+    modelPaths: new Map<string, string>([
+      ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/encoder-quant.onnx.gz"],
+      ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/decoder-quant.onnx.gz"],
+    ]),
+    tokenizerPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
+    tags: ["summarization", "t5"],
+    prefixes: ["summarize"],
+  },
 ];

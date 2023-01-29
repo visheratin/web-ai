@@ -47,9 +47,15 @@ export class Seq2SeqModel implements ITextModel {
     return elapsed;
   };
 
-  process = async (input: string): Promise<Seq2SeqResult> => {
+  process = async (input: string, prefix?: string): Promise<Seq2SeqResult> => {
     if (!this.initialized || !this.encoder || !this.decoder || !this.tokenizer) {
       throw Error("the model is not initialized");
+    }
+    if (prefix && prefix.length > 0) {
+      if (this.metadata.prefixes && !this.metadata.prefixes.includes(prefix)) {
+        throw Error("the prefix is not allowed");
+      }
+      input = prefix + ": " + input;
     }
     if (this.cache.has(input)) {
       return {
@@ -88,9 +94,15 @@ export class Seq2SeqModel implements ITextModel {
     };
   };
 
-  async *processStream(input: string): AsyncIterable<string> {
+  async *processStream(input: string, prefix?: string): AsyncIterable<string> {
     if (!this.initialized || !this.encoder || !this.decoder || !this.tokenizer) {
       throw Error("the model is not initialized");
+    }
+    if (prefix && prefix.length > 0) {
+      if (this.metadata.prefixes && !this.metadata.prefixes.includes(prefix)) {
+        throw Error("the prefix is not allowed");
+      }
+      input = prefix + ": " + input;
     }
     if (this.cache.has(input)) {
       return this.cache.get(input) as string;
