@@ -4,4 +4,5 @@ export type Metadata = {
   description?: string;
   sizeMB?: number;
   tags?: string[];
+  referenceURL?: string;
 };

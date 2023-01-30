@@ -5,6 +5,10 @@ import * as Comlink from "comlink";
 
 ort.env.wasm.wasmPaths = "https://edge-ai-models.s3.us-east-2.amazonaws.com/onnx-13/";
 
+export const clearCache = async () => {
+  await localforage.clear();
+};
+
 export class Session {
   ortSession: ort.InferenceSession | undefined;
 
@@ -26,18 +30,12 @@ export class Session {
       if (cachedData !== null) {
         modelData = cachedData as ArrayBuffer;
       } else {
-        modelData = await fetch(modelPath).then((resp) => resp.arrayBuffer());
-        localforage.setItem(modelPath, modelData);
+        modelData = await this.fetchData(modelPath);
       }
     } catch (err) {
       console.log("unable to load the data from cache");
       console.log(err);
-      modelData = await fetch(modelPath).then((resp) => resp.arrayBuffer());
-      localforage.setItem(modelPath, modelData);
-    }
-    const extension = modelPath.split(".").pop();
-    if (extension === "gz") {
-      modelData = pako.inflate(modelData);
+      modelData = await this.fetchData(modelPath);
     }
     const session = await ort.InferenceSession.create(modelData, {
       executionProviders: ["wasm"],
@@ -45,6 +43,16 @@ export class Session {
       executionMode: "parallel",
     });
     this.ortSession = session;
+  };
+
+  fetchData = async (modelPath: string): Promise<ArrayBuffer> => {
+    const extension = modelPath.split(".").pop();
+    let modelData = await fetch(modelPath).then((resp) => resp.arrayBuffer());
+    if (extension === "gz") {
+      modelData = pako.inflate(modelData);
+    }
+    localforage.setItem(modelPath, modelData);
+    return modelData;
   };
 
   run = async (input: ort.InferenceSession.OnnxValueMapType): Promise<ort.InferenceSession.OnnxValueMapType> => {

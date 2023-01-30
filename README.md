@@ -188,6 +188,29 @@ console.log(output.text)
 console.log(`Sentence of length ${input.length} (${output.tokensNum} tokens) was processed in ${output.elapsed} seconds`)
 ```
 
+`Seq2Seq` models also support output streaming via `processStream()` method:
+
+```TypeScript
+const input = "Test text input"
+let output = "";
+for await (const piece of model.processStream(value)) {
+  output = output.concat(piece);
+}
+console.log(output)
+```
+
+If a `Seq2Seq` model supports task-specific prefixes (e.g., `summarize` or `translate`), you can use them
+to specify what kind of processing is needed:
+
+```TypeScript
+const input = "Test text input"
+const output = await model.process(input, "summarize")
+console.log(output.text)
+console.log(`Sentence of length ${input.length} (${output.tokensNum} tokens) was processed in ${output.elapsed} seconds`)
+```
+
+If the model does not allow the specified prefix, the error will be thrown.
+
 `FeatureExtraction` models output numeric array:
 
 ```TypeScript
@@ -271,6 +294,11 @@ for (let item of output.results) {
 - `grammar-t5-efficient-mini-quant` - minified (quantized) version of the `grammar-t5-efficient-mini` model. Quantization makes the performance slightly worse but the size is 5 times smaller than the original one.
 - `grammar-t5-efficient-tiny` - small model for grammar correction (113 MB). Works a bit worse than the larger model but is almost twice smaller.
 - `grammar-t5-efficient-tiny-quant` - minified (quantized) version of the `grammar-t5-efficient-tiny` model. Quantization makes the performance slightly worse but the size is 4 times smaller than the original one. It is the smallest model, only 24 MB in total.
+
+#### Summarization
+
+- `summarization-t5` - a model for summarization that was trained on CNN news articles.
+- `summarization-t5-quant` - minified (quantized) version of the `summarization-t5` model. Quantization makes the performance slightly worse but the size is 5 times smaller than the original one - 63 MB.
 
 #### Feature extraction
 

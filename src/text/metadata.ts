@@ -5,4 +5,5 @@ export type TextMetadata = Metadata & {
   type?: TextModelType;
   modelPaths: Map<string, string>;
   tokenizerPath: string;
+  prefixes?: string[];
 };
