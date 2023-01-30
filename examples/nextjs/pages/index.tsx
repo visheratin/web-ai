@@ -28,10 +28,7 @@ export default function Home() {
           <h2>Text models</h2>
           <ol>
             <li>
-              <a href="/demos/grammar-correction">Grammar correction</a>
-            </li>
-            <li>
-              <a href="/demos/feature-extraction">Feature extraction</a>
+              <a href="/demos/summarization">Summarization</a>
             </li>
           </ol>
         </div>
