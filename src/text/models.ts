@@ -38,6 +38,7 @@ export const models: TextMetadata[] = [
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
     tags: ["grammar", "t5"],
+    referenceURL: "https://huggingface.co/visheratin/t5-efficient-tiny-grammar-correction",
   },
   {
     id: "grammar-t5-efficient-tiny-quant",
@@ -58,6 +59,7 @@ export const models: TextMetadata[] = [
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
     tags: ["grammar", "t5"],
+    referenceURL: "https://huggingface.co/visheratin/t5-efficient-tiny-grammar-correction",
   },
   {
     id: "grammar-t5-efficient-mini",
@@ -78,6 +80,7 @@ export const models: TextMetadata[] = [
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/tokenizer.json",
     tags: ["grammar", "t5"],
+    referenceURL: "https://huggingface.co/visheratin/t5-efficient-mini-grammar-correction",
   },
   {
     id: "grammar-t5-efficient-mini-quant",
@@ -98,6 +101,7 @@ export const models: TextMetadata[] = [
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/tokenizer.json",
     tags: ["grammar", "t5"],
+    referenceURL: "https://huggingface.co/visheratin/t5-efficient-mini-grammar-correction",
   },
   {
     id: "t5-efficient-mini",
@@ -111,6 +115,7 @@ export const models: TextMetadata[] = [
     ]),
     tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/t5-mini/tokenizer.json",
     tags: ["feature-extraction", "t5"],
+    referenceURL: "https://huggingface.co/google/t5-efficient-mini",
   },
   {
     id: "t5-efficient-mini-quant",
@@ -130,6 +135,7 @@ export const models: TextMetadata[] = [
     ]),
     tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/t5-mini/tokenizer.json",
     tags: ["feature-extraction", "t5"],
+    referenceURL: "https://huggingface.co/google/t5-efficient-mini",
   },
   {
     id: "t5-flan-small",
@@ -141,37 +147,53 @@ export const models: TextMetadata[] = [
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5/encoder.onnx.gz"],
       ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5/decoder.onnx.gz"],
     ]),
-    tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5/tokenizer.json",
+    tokenizerPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
     tags: ["general", "t5-flan"],
+    referenceURL: "https://huggingface.co/google/flan-t5-small",
   },
   {
-    id: "summarization-t5",
-    title: "T5 for summarization",
+    id: "summarization-cnn-dailymail",
+    title: "T5 for text summarization",
     description: "",
     type: TextModelType.Seq2Seq,
     sizeMB: 328,
     modelPaths: new Map<string, string>([
-      ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/encoder.onnx.gz"],
-      ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/decoder.onnx.gz"],
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/encoder.onnx.gz",
+      ],
+      [
+        "decoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/decoder.onnx.gz",
+      ],
     ]),
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
     tags: ["summarization", "t5"],
     prefixes: ["summarize"],
+    referenceURL: "https://huggingface.co/minhtoan/t5-finetune-cnndaily-news",
   },
   {
-    id: "summarization-t5-quant",
-    title: "T5 for summarization quantized",
+    id: "summarization-cnn-dailymail-quant",
+    title: "T5 for text summarization quantized",
     description: "",
     type: TextModelType.Seq2Seq,
     sizeMB: 63,
     modelPaths: new Map<string, string>([
-      ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/encoder-quant.onnx.gz"],
-      ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/decoder-quant.onnx.gz"],
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/encoder-quant.onnx.gz",
+      ],
+      [
+        "decoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/decoder-quant.onnx.gz",
+      ],
     ]),
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
     tags: ["summarization", "t5"],
     prefixes: ["summarize"],
+    referenceURL: "https://huggingface.co/minhtoan/t5-finetune-cnndaily-news",
   },
 ];

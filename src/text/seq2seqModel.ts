@@ -52,7 +52,10 @@ export class Seq2SeqModel implements ITextModel {
       throw Error("the model is not initialized");
     }
     if (prefix && prefix.length > 0) {
-      if (this.metadata.prefixes && !this.metadata.prefixes.includes(prefix)) {
+      if (!this.metadata.prefixes) {
+        throw Error("the model does not support prefixes");
+      }
+      if (!this.metadata.prefixes.includes(prefix)) {
         throw Error("the prefix is not allowed");
       }
       input = prefix + ": " + input;
@@ -99,7 +102,10 @@ export class Seq2SeqModel implements ITextModel {
       throw Error("the model is not initialized");
     }
     if (prefix && prefix.length > 0) {
-      if (this.metadata.prefixes && !this.metadata.prefixes.includes(prefix)) {
+      if (!this.metadata.prefixes) {
+        throw Error("the model does not support prefixes");
+      }
+      if (!this.metadata.prefixes.includes(prefix)) {
         throw Error("the prefix is not allowed");
       }
       input = prefix + ": " + input;

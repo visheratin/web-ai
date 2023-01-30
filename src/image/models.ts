@@ -55,6 +55,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
+    referenceURL: "https://huggingface.co/apple/mobilevit-small",
   },
   {
     id: "mobilevit-small-quant",
@@ -69,6 +70,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
+    referenceURL: "https://huggingface.co/apple/mobilevit-small",
   },
   {
     id: "mobilevit-xsmall",
@@ -82,6 +84,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
+    referenceURL: "https://huggingface.co/apple/mobilevit-x-small",
   },
   {
     id: "mobilevit-xsmall-quant",
@@ -96,6 +99,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
+    referenceURL: "https://huggingface.co/apple/mobilevit-x-small",
   },
   {
     id: "mobilevit-xxsmall",
@@ -110,6 +114,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
+    referenceURL: "https://huggingface.co/apple/mobilevit-xx-small",
   },
   {
     id: "mobilevit-xxsmall-quant",
@@ -124,6 +129,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
+    referenceURL: "https://huggingface.co/apple/mobilevit-xx-small",
   },
   {
     id: "segformer-b2-classification",
@@ -136,6 +142,7 @@ export const models: ImageMetadata[] = [
     preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b2-finetuned-ade-512-512",
   },
   {
     id: "segformer-b2-classification-quant",
@@ -150,6 +157,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b2-finetuned-ade-512-512",
   },
   {
     id: "segformer-b1-classification",
@@ -163,6 +171,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b1-finetuned-ade-512-512",
   },
   {
     id: "segformer-b1-classification-quant",
@@ -177,6 +186,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b1-finetuned-ade-512-512",
   },
   {
     id: "segformer-b0-classification",
@@ -190,6 +200,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b0-finetuned-ade-512-512",
   },
   {
     id: "segformer-b0-classification-quant",
@@ -204,6 +215,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b0-finetuned-ade-512-512",
   },
   {
     id: "yolos-tiny",
@@ -217,6 +229,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["object-detection", "yolo"],
+    referenceURL: "https://huggingface.co/hustvl/yolos-tiny",
   },
   {
     id: "yolos-tiny-quant",
@@ -230,6 +243,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["object-detection", "yolo"],
+    referenceURL: "https://huggingface.co/hustvl/yolos-tiny",
   },
   {
     id: "segformer-b0-segmentation-quant",
@@ -243,6 +257,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b0-finetuned-ade-512-512",
   },
   {
     id: "segformer-b1-segmentation-quant",
@@ -256,6 +271,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b1-finetuned-ade-512-512",
   },
   {
     id: "segformer-b4-segmentation-quant",
@@ -269,6 +285,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
+    referenceURL: "https://huggingface.co/nvidia/segformer-b4-finetuned-ade-512-512",
   },
   {
     id: "superres-standard",
@@ -281,6 +298,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/standard/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
+    referenceURL: "https://huggingface.co/caidas/swin2SR-classical-sr-x2-64",
   },
   {
     id: "superres-standard-quant",
@@ -293,6 +311,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/standard/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
+    referenceURL: "https://huggingface.co/caidas/swin2SR-classical-sr-x2-64",
   },
   {
     id: "superres-small",
@@ -304,6 +323,7 @@ export const models: ImageMetadata[] = [
     preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
+    referenceURL: "https://huggingface.co/caidas/swin2SR-lightweight-x2-64",
   },
   {
     id: "superres-small-quant",
@@ -315,6 +335,7 @@ export const models: ImageMetadata[] = [
     preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
+    referenceURL: "https://huggingface.co/caidas/swin2SR-lightweight-x2-64",
   },
   {
     id: "superres-standard-x4",
@@ -327,6 +348,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/standard-x4/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
+    referenceURL: "https://huggingface.co/caidas/swin2SR-classical-sr-x4-64",
   },
   {
     id: "superres-standard-x4-quant",
@@ -339,6 +361,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/standard-x4/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
+    referenceURL: "https://huggingface.co/caidas/swin2SR-classical-sr-x4-64",
   },
   {
     id: "superres-compressed-x4",
@@ -351,6 +374,7 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
+    referenceURL: "https://huggingface.co/caidas/swin2SR-compressed-sr-x4-48",
   },
   {
     id: "superres-compressed-x4-quant",
@@ -363,5 +387,6 @@ export const models: ImageMetadata[] = [
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
+    referenceURL: "https://huggingface.co/caidas/swin2SR-compressed-sr-x4-48",
   },
 ];
