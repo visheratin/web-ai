@@ -297,8 +297,8 @@ for (let item of output.results) {
 
 #### Summarization
 
-- `summarization-t5` - a model for summarization that was trained on CNN news articles.
-- `summarization-t5-quant` - minified (quantized) version of the `summarization-t5` model. Quantization makes the performance slightly worse but the size is 5 times smaller than the original one - 63 MB.
+- `summarization-cnn-dailymail` - a model for summarization that was trained on CNN and Daily Mail news articles.
+- `summarization-cnn-dailymail-quant` - minified (quantized) version of the `summarization-t5` model. Quantization makes the performance slightly worse but the size is 5 times smaller than the original one - 63 MB.
 
 #### Feature extraction
 
