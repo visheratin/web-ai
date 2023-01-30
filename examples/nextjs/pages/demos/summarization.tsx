@@ -69,6 +69,7 @@ export default function Classification() {
                 className="form-control"
                 disabled={!model || status.processing}
                 placeholder="Insert the text here"
+                rows={12}
               ></textarea>
             </div>
           </div>
@@ -82,7 +83,12 @@ export default function Classification() {
           <div className="row">
             <div className="col-sm-12">
               <h6>Output</h6>
-              <textarea className="form-control" disabled={!model || status.processing} value={output.value}></textarea>
+              <textarea
+                className="form-control"
+                disabled={!model || status.processing}
+                value={output.value}
+                rows={4}
+              ></textarea>
             </div>
           </div>
         </div>
