@@ -1,5 +1,9 @@
 # @visheratin/web-ai
 
+## 0.4.1
+
+- Added links to the original models for all supported models.
+
 ## 0.4.0
 
 - Made seq2seq generation logic more generalizable.
