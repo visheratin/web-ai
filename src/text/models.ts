@@ -104,40 +104,6 @@ export const models: TextMetadata[] = [
     referenceURL: "https://huggingface.co/visheratin/t5-efficient-mini-grammar-correction",
   },
   {
-    id: "t5-efficient-mini",
-    title: "T5 Efficient mini",
-    description: "",
-    type: TextModelType.FeatureExtraction,
-    sizeMB: 94,
-    modelPaths: new Map<string, string>([
-      ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/t5-mini/encoder.onnx.gz"],
-      ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/t5-mini/decoder.onnx.gz"],
-    ]),
-    tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/t5-mini/tokenizer.json",
-    tags: ["feature-extraction", "t5"],
-    referenceURL: "https://huggingface.co/google/t5-efficient-mini",
-  },
-  {
-    id: "t5-efficient-mini-quant",
-    title: "T5 Efficient mini quantized",
-    description: "",
-    type: TextModelType.FeatureExtraction,
-    sizeMB: 38,
-    modelPaths: new Map<string, string>([
-      [
-        "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/t5-mini/encoder-quant.onnx.gz",
-      ],
-      [
-        "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/t5-mini/decoder-quant.onnx.gz",
-      ],
-    ]),
-    tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/t5-mini/tokenizer.json",
-    tags: ["feature-extraction", "t5"],
-    referenceURL: "https://huggingface.co/google/t5-efficient-mini",
-  },
-  {
     id: "t5-flan-small",
     title: "T5 Flan small",
     description: "",
@@ -195,5 +161,53 @@ export const models: TextMetadata[] = [
     tags: ["summarization", "t5"],
     prefixes: ["summarize"],
     referenceURL: "https://huggingface.co/minhtoan/t5-finetune-cnndaily-news",
+  },
+  {
+    id: "sentence-t5",
+    title: "Sentence T5",
+    description: "",
+    type: TextModelType.FeatureExtraction,
+    sizeMB: 190,
+    modelPaths: new Map<string, string>([
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/sentence-t5-base-encoder.onnx.gz",
+      ],
+    ]),
+    tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
+    tags: ["feature-extraction", "t5"],
+    referenceURL: "https://huggingface.co/sentence-transformers/sentence-t5-base",
+  },
+  {
+    id: "sentence-t5-quant",
+    title: "Sentence T5 quantized",
+    description: "",
+    type: TextModelType.FeatureExtraction,
+    sizeMB: 79,
+    modelPaths: new Map<string, string>([
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/sentence-t5-base-encoder-quant.onnx.gz",
+      ],
+    ]),
+    tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
+    tags: ["feature-extraction", "t5"],
+    referenceURL: "https://huggingface.co/sentence-transformers/sentence-t5-base",
+  },
+  {
+    id: "sentence-t5-large-quant",
+    title: "Sentence T5 large quantized",
+    description: "",
+    type: TextModelType.FeatureExtraction,
+    sizeMB: 79,
+    modelPaths: new Map<string, string>([
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/sentence-t5-large-encoder-quant.onnx.gz",
+      ],
+    ]),
+    tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-large/resolve/main/tokenizer.json",
+    tags: ["feature-extraction", "t5"],
+    referenceURL: "https://huggingface.co/sentence-transformers/sentence-t5-large",
   },
 ];
