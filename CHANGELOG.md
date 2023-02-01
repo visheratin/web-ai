@@ -1,5 +1,9 @@
 # @visheratin/web-ai
 
+## 0.4.2
+
+- Added sentence transformer models for high-quality text feature embeddings extraction.
+
 ## 0.4.1
 
 - Added links to the original models for all supported models.
