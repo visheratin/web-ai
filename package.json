@@ -1,6 +1,6 @@
 {
   "name": "@visheratin/web-ai",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Run modern deep learning models in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,13 +35,13 @@
   },
   "homepage": "https://github.com/visheratin/web-ai#readme",
   "dependencies": {
-    "comlink": "^4.3.1",
-    "localforage": "^1.10.0",
+    "comlink": "4.3.1",
+    "localforage": "1.10.0",
     "onnxruntime-web": "1.13.1",
-    "pako": "^2.1.0"
+    "pako": "2.1.0"
   },
   "peerDependencies": {
-    "jimp": "^0.16.2"
+    "jimp": "0.16.2"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",

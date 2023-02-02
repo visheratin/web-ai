@@ -1,5 +1,9 @@
 # @visheratin/web-ai
 
+## 0.4.4
+
+- Fixed dependencies versions to prevent crashing.
+
 ## 0.4.3
 
 - Added vectors normalization for text feature embeddings extraction.
