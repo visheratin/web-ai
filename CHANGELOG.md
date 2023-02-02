@@ -1,5 +1,9 @@
 # @visheratin/web-ai
 
+## 0.4.3
+
+- Added vectors normalization for text feature embeddings extraction.
+
 ## 0.4.2
 
 - Added sentence transformer models for high-quality text feature embeddings extraction.
