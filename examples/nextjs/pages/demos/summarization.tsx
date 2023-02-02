@@ -1,4 +1,3 @@
-import Jimp from "jimp";
 import Head from "next/head";
 import { useLayoutEffect, useRef, useState } from "react";
 import { TextModel, Seq2SeqModel } from "@visheratin/web-ai";
@@ -50,52 +49,47 @@ export default function Classification() {
       <main>
         <div className="container">
           <div className="row">
-            <div className="col"></div>
-            <div className="col sm-9">
-              <div className="row">
-                <div className="col">
-                  <h1>Text summarization example</h1>
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col">
-                  <div className="d-flex align-items-center">
-                    <strong>Status: {status.message}</strong>
-                  </div>
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col-sm-12">
-                  <textarea
-                    ref={inputRef}
-                    className="form-control"
-                    disabled={!model || status.processing}
-                    placeholder="Insert the text here"
-                    rows={12}
-                  ></textarea>
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col-sm-12">
-                  <div className="d-grid gap-2">
-                    <button className="btn btn-lg btn-primary" disabled={!model || status.processing} onClick={process}>
-                      Summarize
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col-sm-12">
-                  <textarea
-                    className="form-control"
-                    disabled={!model || status.processing}
-                    value={output.value}
-                    rows={6}
-                  ></textarea>
-                </div>
+            <div className="col">
+              <h1>Text summarization example</h1>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col">
+              <div className="d-flex align-items-center">
+                <strong>Status: {status.message}</strong>
               </div>
             </div>
-            <div className="col"></div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-sm-12">
+              <textarea
+                ref={inputRef}
+                className="form-control"
+                disabled={!model || status.processing}
+                placeholder="Insert the text here"
+                rows={12}
+              ></textarea>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-sm-3"></div>
+            <div className="col-sm-6">
+              <div className="d-grid gap-2">
+                <button className="btn btn-lg btn-primary" disabled={!model || status.processing} onClick={process}>
+                  Summarize
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-sm-12">
+              <textarea
+                className="form-control"
+                disabled={!model || status.processing}
+                value={output.value}
+                rows={6}
+              ></textarea>
+            </div>
           </div>
         </div>
       </main>
