@@ -51,12 +51,12 @@ export default function Classification() {
     }
     console.log(result2.result);
     const sim = cosineSim(result1.result, result2.result);
-    const result = Math.round(sim * 100);
+    const result = Math.round((sim + Number.EPSILON) * 100) / 100;
     let className = "bg-info";
-    if (result > 75) {
+    if (result > 0.75) {
       className = "bg-success";
     }
-    if (result < 25) {
+    if (result < 0.25) {
       className = "bg-danger";
     }
     setResult({ value: result, className: className });
@@ -140,16 +140,16 @@ export default function Classification() {
                 role="progressbar"
                 aria-label="Success example"
                 aria-valuenow="25"
-                aria-valuemin="0"
+                aria-valuemin="-100"
                 aria-valuemax="100"
               >
-                <div className={result.className} style={{ width: `${result.value}%` }}></div>
+                <div className={result.className} style={{ width: `${result.value * 100}%` }}></div>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col-sm-3"></div>
               <div className="col-sm-6">
-                <p className="text-center">Two text pieces are {result.value}% similar.</p>
+                <p className="text-center">Simimarity score of the text pieces is {result.value}.</p>
               </div>
             </div>
           </div>
