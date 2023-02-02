@@ -1,7 +1,7 @@
 import { createSession } from "../sessionController";
 import Tokenizer from "./tokenizer";
 import { TextMetadata } from "./metadata";
-import { T5Encoder } from "./transformers";
+import { T5Encoder } from "./t5model";
 import * as ort from "onnxruntime-web";
 import { Tensor } from "../tensor";
 import { ITextModel, TextProcessingResult } from "./interfaces";
@@ -56,7 +56,11 @@ export class FeatureExtractionModel implements ITextModel {
       throw Error("input tokens tensor is undefined");
     }
     const start = new Date();
-    const lastHiddenState = await this.model.forward(inputTokenIds);
+    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokenIds.map((x) => BigInt(x))), [
+      1,
+      inputTokenIds.length,
+    ]);
+    const lastHiddenState = await this.model.process(tensor);
     if (!lastHiddenState) {
       throw Error("model output is undefined");
     }
@@ -84,6 +88,19 @@ export class FeatureExtractionModel implements ITextModel {
     }
     for (let i = 0; i < result.length; i++) {
       result[i] /= lastHiddenState.dims[1];
+    }
+    return this.normalize(result);
+  };
+
+  private normalize = (input: number[]): number[] => {
+    let result: number[] = [];
+    let sum = 0;
+    for (let i = 0; i < input.length; i++) {
+      sum += input[i] * input[i];
+    }
+    sum = Math.sqrt(sum);
+    for (let i = 0; i < input.length; i++) {
+      result.push(input[i] / sum);
     }
     return result;
   };
