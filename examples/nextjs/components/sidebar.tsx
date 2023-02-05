@@ -20,13 +20,13 @@ export default function Sidebar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/demos/super-resolution" className="nav-link active">
-                Super-resolution
+              <Link href="/demos/object-detection" className="nav-link active">
+                Object detection
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/demos/object-detection" className="nav-link active">
-                Object detection
+              <Link href="/demos/super-resolution" className="nav-link active">
+                Super-resolution
               </Link>
             </li>
           </ul>

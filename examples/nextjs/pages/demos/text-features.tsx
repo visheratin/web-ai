@@ -1,6 +1,5 @@
-import Jimp from "jimp";
 import Head from "next/head";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TextModel, FeatureExtractionModel } from "@visheratin/web-ai";
 
 export default function Classification() {
@@ -8,7 +7,7 @@ export default function Classification() {
   const input2Ref = useRef<HTMLTextAreaElement>(null);
   const [result, setResult] = useState({ value: 0.0, className: "" });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     loadModel();
   }, []);
 
@@ -36,6 +35,7 @@ export default function Classification() {
       return;
     }
     setStatus({ message: "processing", processing: true });
+    // @ts-ignore
     const result1 = await model.instance.process(value1);
     if (!result1.cached) {
       console.log(
@@ -43,6 +43,7 @@ export default function Classification() {
       );
     }
     console.log(result1.result);
+    // @ts-ignore
     const result2 = await model.instance.process(value2);
     if (!result2.cached) {
       console.log(
@@ -135,14 +136,7 @@ export default function Classification() {
           <div className="row mb-2 mt-4">
             <div className="col-sm-3"></div>
             <div className="col-sm-6">
-              <div
-                className="progress"
-                role="progressbar"
-                aria-label="Success example"
-                aria-valuenow="25"
-                aria-valuemin="-100"
-                aria-valuemax="100"
-              >
+              <div className="progress" role="progressbar">
                 <div className={result.className} style={{ width: `${result.value * 100}%` }}></div>
               </div>
             </div>

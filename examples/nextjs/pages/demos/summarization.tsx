@@ -1,12 +1,12 @@
 import Head from "next/head";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TextModel, Seq2SeqModel } from "@visheratin/web-ai";
 
-export default function Classification() {
+export default function Summarization() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [output, setOutput] = useState({ value: "Here will be the output" });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     loadModel();
   }, []);
 
@@ -31,6 +31,7 @@ export default function Classification() {
     }
     setStatus({ message: "processing", processing: true });
     let output = "";
+    // @ts-ignore
     for await (const piece of model.instance.processStream(value, "summarize")) {
       output = output.concat(piece);
       output = output.replace(" .", ".");

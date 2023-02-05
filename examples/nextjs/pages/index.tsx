@@ -21,12 +21,56 @@ export default function Home() {
       <main>
         <div className="container">
           <div className="row mb-2">
+            <h2>About</h2>
+            <p>
+              Web AI is a TypeScript library that allows you to run modern deep learning models directly in your web
+              browser. You can easily add AI capabilities to your web applications without the need for complex
+              server-side infrastructure.
+            </p>
+            <p>
+              The code is available on{" "}
+              <a href="https://github.com/visheratin/web-ai" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              . The library can be installed from{" "}
+              <a href="https://www.npmjs.com/package/@visheratin/web-ai" target="_blank" rel="noreferrer">
+                NPM
+              </a>
+              .
+            </p>
+            <h4>Features</h4>
+            <dl className="row">
+              <dt className="col-sm-3">Easy to use</dt>
+              <dd className="col-sm-9">Create a model with one line of code, get the result with another one.</dd>
+              <dt className="col-sm-3">Powered by ONNX runtime</dt>
+              <dd className="col-sm-9">
+                Web AI runs the models using ONNX runtime for Web, which has rich support for of all kinds of operators.
+                It means that any model will work just fine.
+              </dd>
+              <dt className="col-sm-3">Compatible with Hugging Face</dt>
+              <dd className="col-sm-9">
+                Web AI utilizes model configuration files in the same format as the hub, which makes it even easier to
+                integrate existing models.
+              </dd>
+              <dt className="col-sm-3">Built-in caching</dt>
+              <dd className="col-sm-9">
+                Web AI stores the downloaded models in IndexedDB using localforage. You can configure the size of the
+                cache dynamically.
+              </dd>
+              <dt className="col-sm-3">Web worker support</dt>
+              <dd className="col-sm-9">
+                All heavy operations - model creation and inference - are offloaded to a separate thread so the UI does
+                not freeze.
+              </dd>
+            </dl>
+          </div>
+          <div className="row mb-2">
             <div className="col">
               <h2>Image models</h2>
             </div>
           </div>
           <div className="row mb-2">
-            <div className="col-md-4 col-sm-12 mb-2">
+            <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Classification</h5>
@@ -38,7 +82,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 col-sm-12 mb-2">
+            <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Segmentation</h5>
@@ -48,17 +92,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 col-sm-12 mb-2">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">Super-resolution</h5>
-                  <Image alt="" src={superresImg} height={200} />
-                  <p className="card-text">Increase images resolution and improve their quality.</p>
-                  <Link href="/demos/super-resolution">Open demo</Link>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 col-sm-12 mb-2">
+            <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Object detection</h5>
@@ -68,12 +102,22 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            <div className="col-md-4 col-sm-12 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Super-resolution</h5>
+                  <Image alt="" src={superresImg} height={200} />
+                  <p className="card-text">Increase images resolution and improve their quality.</p>
+                  <Link href="/demos/super-resolution">Open demo</Link>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="row mb-2 mt-5">
+          <div className="row mb-2">
             <h2>Text models</h2>
           </div>
           <div className="row">
-            <div className="col-md-4 col-sm-12 mb-2">
+            <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Grammar correction</h5>
@@ -83,7 +127,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 col-sm-12 mb-2">
+            <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Summarization</h5>
@@ -93,7 +137,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 col-sm-12 mb-2">
+            <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Features extraction</h5>

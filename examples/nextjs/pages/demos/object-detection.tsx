@@ -87,7 +87,8 @@ export default function Classification() {
     c.height = imageBuffer.bitmap.height;
     const ctx = c.getContext("2d");
     ctx!.putImageData(imageData, 0, 0);
-    imageRef.current.src = c.toDataURL("image/png");
+    imageRef.current!.src = c.toDataURL("image/png");
+    // @ts-ignore
     const result = await model.instance.process(src);
     console.log(`Inference finished in ${result.elapsed} seconds.`);
     for (let object of result.objects) {

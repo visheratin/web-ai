@@ -1,6 +1,6 @@
 import Jimp from "jimp";
 import Head from "next/head";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ImageModel, SegmentationModel, ImageModelType } from "@visheratin/web-ai";
 
 export default function Segmentation() {
@@ -29,7 +29,7 @@ export default function Segmentation() {
 
   const [className, setClassName] = useState({ value: "none" });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setCanvasSize();
     loadModel();
   }, []);
