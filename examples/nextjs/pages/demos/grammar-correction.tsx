@@ -15,7 +15,7 @@ export default function Classification() {
   const [output, setOutput] = useState({ value: "Here will be the output" });
   const [diff, setDiff] = useState({ value: "" });
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const [inputTimeout, setInputTimeout] = useState({ value: null });
+  const [inputTimeout, setInputTimeout] = useState({ value: setTimeout(() => {}, 10) });
 
   useEffect(() => {
     loadModel();
@@ -85,7 +85,7 @@ export default function Classification() {
     setOutput({ value: output });
     const diff = Diff.diffChars(value, output);
     let diffValue = "";
-    diff.forEach((part) => {
+    diff.forEach((part: any) => {
       if (part.added) {
         diffValue += `<span style="color: green; font-weight: bold">${part.value}</span>`;
       } else if (part.removed) {
@@ -126,7 +126,7 @@ export default function Classification() {
                 className="form-control"
                 onChange={inputChanged}
                 rows={6}
-                disabled={!model.instance || !model.instance.initialized || status.processing}
+                disabled={status.processing}
                 placeholder="Start typing here"
               ></textarea>
             </div>
