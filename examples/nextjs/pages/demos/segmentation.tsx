@@ -134,7 +134,7 @@ export default function Segmentation() {
         <div className="container">
           <div className="row">
             <div className="col">
-              <h1>Segmentation example</h1>
+              <h2>Image segmentation</h2>
             </div>
           </div>
           <div className="row">
@@ -145,7 +145,7 @@ export default function Segmentation() {
             </div>
           </div>
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-md-6 col-sm-12">
               <div ref={canvasContainerRef} style={{ position: "relative", height: displayDims.height }}>
                 <img
                   ref={imageRef}
@@ -164,7 +164,7 @@ export default function Segmentation() {
               </div>
               <h6 className="center-align">Selected class: {className.value}</h6>
             </div>
-            <div className="col-sm-6">
+            <div className="col-md-6 col-sm-12">
               <form action="#" onSubmit={(e) => e.preventDefault()}>
                 <h6>Select the image</h6>
                 <div className="row">

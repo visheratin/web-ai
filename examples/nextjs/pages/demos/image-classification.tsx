@@ -97,7 +97,7 @@ export default function Classification() {
         <div className="container">
           <div className="row">
             <div className="col">
-              <h1>Classification example</h1>
+              <h2>Image classification</h2>
             </div>
           </div>
           <div className="row">
@@ -108,7 +108,7 @@ export default function Classification() {
             </div>
           </div>
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-md-6 col-sm-12 mb-2">
               <div ref={imageContainerRef} style={{ position: "relative", height: displayDims.height }}>
                 <img
                   alt=""
@@ -139,7 +139,7 @@ export default function Classification() {
                 </table>
               )}
             </div>
-            <div className="col-sm-6">
+            <div className="col-md-6 col-sm-12 mb-2">
               <form action="#" onSubmit={(e) => e.preventDefault()}>
                 <h6>Select the image</h6>
                 <div className="row">

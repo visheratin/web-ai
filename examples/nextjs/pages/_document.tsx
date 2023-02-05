@@ -6,10 +6,6 @@ export default function Document() {
       <Head />
       <body>
         <Main />
-        <hr />
-        <p className="text-center">
-          Powered by <a href="https://github.com/visheratin/web-ai">Web AI</a>.
-        </p>
         <NextScript />
       </body>
     </Html>
