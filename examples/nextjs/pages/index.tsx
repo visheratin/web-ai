@@ -132,7 +132,7 @@ export default function Home() {
                 <div className="card-body">
                   <h5 className="card-title">Summarization</h5>
                   <Image alt="" src={summaryImg} height={200} />
-                  <p className="card-text">Fix grammar errors in the text.</p>
+                  <p className="card-text">Find the most important ideas in the text.</p>
                   <Link href="/demos/summarization">Open demo</Link>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export default function Home() {
                 <div className="card-body">
                   <h5 className="card-title">Features extraction</h5>
                   <Image alt="" src={vectorImg} height={200} />
-                  <p className="card-text">Fix grammar errors in the text.</p>
+                  <p className="card-text">Turn the text into vectors for sematic search.</p>
                   <Link href="/demos/text-features">Open demo</Link>
                 </div>
               </div>
