@@ -1,5 +1,9 @@
 # @visheratin/web-ai
 
+## 0.4.5
+
+- Added GTR T5 models for feature extraction.
+
 ## 0.4.4
 
 - Fixed dependencies versions to prevent crashing.

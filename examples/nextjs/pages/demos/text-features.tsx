@@ -17,7 +17,7 @@ export default function Classification() {
 
   const loadModel = async () => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await TextModel.create("sentence-t5-quant");
+    const result = await TextModel.create("gtr-t5-quant");
     setModel({ instance: result.model as FeatureExtractionModel });
     setStatus({ message: "ready", processing: false });
   };
