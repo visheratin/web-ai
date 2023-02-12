@@ -24,4 +24,6 @@ export {
   ImageModelType,
   Img2ImgModel,
   Img2ImgResult,
+  ImageFeatureExtractionModel,
+  ImageFeatureExtractionResult,
 } from "./image";
