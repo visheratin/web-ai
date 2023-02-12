@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { TextModel, FeatureExtractionModel } from "@visheratin/web-ai";
+import { TextModel, TextFeatureExtractionModel } from "@visheratin/web-ai";
 
 export default function Classification() {
   const input1Ref = useRef<HTMLTextAreaElement>(null);
@@ -18,7 +18,7 @@ export default function Classification() {
   const loadModel = async () => {
     setStatus({ message: "loading the model", processing: true });
     const result = await TextModel.create("gtr-t5-quant");
-    setModel({ instance: result.model as FeatureExtractionModel });
+    setModel({ instance: result.model as TextFeatureExtractionModel });
     setStatus({ message: "ready", processing: false });
   };
 
@@ -42,7 +42,6 @@ export default function Classification() {
         `Sentence of length ${value1.length} (${result1.tokensNum} tokens) was processed in ${result1.elapsed} seconds`,
       );
     }
-    console.log(result1.result);
     // @ts-ignore
     const result2 = await model.instance.process(value2);
     if (!result2.cached) {
@@ -50,7 +49,6 @@ export default function Classification() {
         `Sentence of length ${value2.length} (${result2.tokensNum} tokens) was processed in ${result2.elapsed} seconds`,
       );
     }
-    console.log(result2.result);
     const sim = cosineSim(result1.result, result2.result);
     const result = Math.round((sim + Number.EPSILON) * 100) / 100;
     let className = "bg-info";
@@ -75,7 +73,6 @@ export default function Classification() {
     }
     m1 = Math.sqrt(m1);
     m2 = Math.sqrt(m2);
-    console.log(dotproduct, m1, m2);
     const sim = dotproduct / (m1 * m2);
     return sim;
   };

@@ -25,6 +25,11 @@ export default function Sidebar() {
               </Link>
             </li>
             <li className="nav-item">
+              <Link href="/demos/image-features" className="nav-link active">
+                Feature extraction
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link href="/demos/super-resolution" className="nav-link active">
                 Super-resolution
               </Link>
@@ -44,7 +49,7 @@ export default function Sidebar() {
             </li>
             <li className="nav-item">
               <Link href="/demos/text-features" className="nav-link active">
-                Text features extraction
+                Feature extraction
               </Link>
             </li>
           </ul>

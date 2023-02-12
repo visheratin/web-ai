@@ -41,7 +41,7 @@ export default function Classification() {
 
   const loadModel = async () => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await ImageModel.create("mobilevit-small");
+    const result = await ImageModel.create("efficientformer-l1-classification-quant");
     setModel({ instance: result.model as ClassificationModel });
     setStatus({ message: "ready", processing: false });
   };

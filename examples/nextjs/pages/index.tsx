@@ -7,7 +7,8 @@ import superresImg from "../public/index/super-resolution.jpg";
 import detectionImg from "../public/index/detection.jpg";
 import grammarImg from "../public/index/grammar.png";
 import summaryImg from "../public/index/lorem.jpg";
-import vectorImg from "../public/index/vector.jpg";
+import textVectorImg from "../public/index/vector.jpg";
+import imageVectorImg from "../public/index/image-vector.png";
 
 export default function Home() {
   return (
@@ -105,6 +106,16 @@ export default function Home() {
             <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
+                  <h5 className="card-title">Feature extraction</h5>
+                  <Image alt="" src={imageVectorImg} height={200} />
+                  <p className="card-text">Turn the images into vectors for sematic search.</p>
+                  <Link href="/demos/image-features">Open demo</Link>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4 col-sm-12 mb-4">
+              <div className="card">
+                <div className="card-body">
                   <h5 className="card-title">Super-resolution</h5>
                   <Image alt="" src={superresImg} height={200} />
                   <p className="card-text">Increase images resolution and improve their quality.</p>
@@ -140,8 +151,8 @@ export default function Home() {
             <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Features extraction</h5>
-                  <Image alt="" src={vectorImg} height={200} />
+                  <h5 className="card-title">Feature extraction</h5>
+                  <Image alt="" src={textVectorImg} height={200} />
                   <p className="card-text">Turn the text into vectors for sematic search.</p>
                   <Link href="/demos/text-features">Open demo</Link>
                 </div>
