@@ -5,8 +5,8 @@ export {
   TextMetadata as TextMetadata,
   Seq2SeqModel,
   Seq2SeqResult,
-  FeatureExtractionModel,
-  FeatureExtractionResult,
+  TextFeatureExtractionModel as FeatureExtractionModel,
+  TextFeatureExtractionResult as FeatureExtractionResult,
   ListTextModels,
   TextModelType,
 } from "./text";

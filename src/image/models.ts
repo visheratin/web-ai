@@ -389,4 +389,125 @@ export const models: ImageMetadata[] = [
     tags: ["img2img", "superres"],
     referenceURL: "https://huggingface.co/caidas/swin2SR-compressed-sr-x4-48",
   },
+  {
+    id: "efficientformer-l1-classification",
+    title: "EfficientFormer small",
+    description: "",
+    type: ImageModelType.Classification,
+    sizeMB: 43,
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/l1.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/config.json",
+    preprocessorPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["classification", "efficientformer"],
+    referenceURL: "https://huggingface.co/snap-research/efficientformer-l1-300",
+  },
+  {
+    id: "efficientformer-l1-classification-quant",
+    title: "EfficientFormer small quantized",
+    description: "",
+    type: ImageModelType.Classification,
+    sizeMB: 11,
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/l1-quant.onnx",
+    configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/config.json",
+    preprocessorPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["classification", "efficientformer"],
+    referenceURL: "https://huggingface.co/snap-research/efficientformer-l1-300",
+  },
+  {
+    id: "efficientformer-l1-feature",
+    title: "EfficientFormer small",
+    description: "",
+    type: ImageModelType.FeatureExtraction,
+    sizeMB: 43,
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l1.onnx",
+    configPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+    preprocessorPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["feature-extraction", "efficientformer"],
+    referenceURL: "https://huggingface.co/snap-research/efficientformer-l1-300",
+  },
+  {
+    id: "efficientformer-l1-feature-quant",
+    title: "EfficientFormer small quantized",
+    description: "",
+    type: ImageModelType.FeatureExtraction,
+    sizeMB: 11,
+    modelPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l1-quant.onnx",
+    configPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+    preprocessorPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["feature-extraction", "efficientformer"],
+    referenceURL: "https://huggingface.co/snap-research/efficientformer-l1-300",
+  },
+  {
+    id: "efficientformer-l3-feature",
+    title: "EfficientFormer medium",
+    description: "",
+    type: ImageModelType.FeatureExtraction,
+    sizeMB: 116,
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l3.onnx",
+    configPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+    preprocessorPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["feature-extraction", "efficientformer"],
+    referenceURL: "https://huggingface.co/snap-research/efficientformer-l3-300",
+  },
+  {
+    id: "efficientformer-l3-feature-quant",
+    title: "EfficientFormer medium quantized",
+    description: "",
+    type: ImageModelType.FeatureExtraction,
+    sizeMB: 30,
+    modelPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l3-quant.onnx",
+    configPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+    preprocessorPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["feature-extraction", "efficientformer"],
+    referenceURL: "https://huggingface.co/snap-research/efficientformer-l3-300",
+  },
+  {
+    id: "efficientformer-l7-feature",
+    title: "EfficientFormer large",
+    description: "",
+    type: ImageModelType.FeatureExtraction,
+    sizeMB: 308,
+    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l7.onnx",
+    configPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+    preprocessorPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["feature-extraction", "efficientformer"],
+    referenceURL: "https://huggingface.co/snap-research/efficientformer-l7-300",
+  },
+  {
+    id: "efficientformer-l7-feature-quant",
+    title: "EfficientFormer large quantized",
+    description: "",
+    type: ImageModelType.FeatureExtraction,
+    sizeMB: 78,
+    modelPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l7-quant.onnx",
+    configPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+    preprocessorPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["feature-extraction", "efficientformer"],
+    referenceURL: "https://huggingface.co/snap-research/efficientformer-l7-300",
+  },
 ];

@@ -196,7 +196,7 @@ export const models: TextMetadata[] = [
     title: "Sentence T5 large quantized",
     description: "",
     type: TextModelType.FeatureExtraction,
-    sizeMB: 79,
+    sizeMB: 242,
     modelPaths: new Map<string, string>([
       [
         "encoder",

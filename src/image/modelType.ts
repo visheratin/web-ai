@@ -4,4 +4,5 @@ export enum ImageModelType {
   Segmentation,
   ObjectDetection,
   Img2Img,
+  FeatureExtraction,
 }

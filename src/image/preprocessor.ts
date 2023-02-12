@@ -11,7 +11,7 @@ class Preprocessor {
 
   process = (image: Jimp): ort.Tensor => {
     if (this.config.resize) {
-      if (this.config.squareImage) {
+      if (!this.config.squareImage) {
         if (image.bitmap.width > image.bitmap.height) {
           image = image.resize(-1, this.config.size, "bilinearInterpolation");
         } else {

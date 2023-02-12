@@ -6,11 +6,11 @@ import * as ort from "onnxruntime-web";
 import { Tensor } from "../tensor";
 import { ITextModel, TextProcessingResult } from "./interfaces";
 
-export type FeatureExtractionResult = TextProcessingResult & {
+export type TextFeatureExtractionResult = TextProcessingResult & {
   result: number[];
 };
 
-export class FeatureExtractionModel implements ITextModel {
+export class TextFeatureExtractionModel implements ITextModel {
   metadata: TextMetadata;
   initialized: boolean;
   private tokenizer?: Tokenizer;
@@ -39,7 +39,7 @@ export class FeatureExtractionModel implements ITextModel {
     return elapsed;
   };
 
-  process = async (input: string): Promise<FeatureExtractionResult> => {
+  process = async (input: string): Promise<TextFeatureExtractionResult> => {
     if (!this.initialized || !this.model || !this.tokenizer) {
       throw Error("the model is not initialized");
     }

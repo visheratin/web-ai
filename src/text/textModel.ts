@@ -1,4 +1,4 @@
-import { FeatureExtractionModel } from "./featureExtractionModel";
+import { TextFeatureExtractionModel } from "./featureExtractionModel";
 import { ITextModel } from "./interfaces";
 import { models } from "./models";
 import { TextModelType } from "./modeType";
@@ -19,7 +19,7 @@ export class TextModel {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
           case TextModelType.FeatureExtraction: {
-            let model = new FeatureExtractionModel(modelMetadata);
+            let model = new TextFeatureExtractionModel(modelMetadata);
             const elapsed = await model.init(cache_size_mb, proxy);
             return {
               model: model,
