@@ -118,7 +118,7 @@ console.log(elapsed);
 The minimal example for the `FeatureExtraction` model is:
 
 ```TypeScript
-import { FeatureExtractionModel, TextMetadata } from "@visheratin/web-ai";
+import { TextFeatureExtractionModel, TextMetadata } from "@visheratin/web-ai";
 
 const metadata: TextMetadata = {
     modelPaths: new Map<string, string>([
@@ -130,7 +130,7 @@ const metadata: TextMetadata = {
     tokenizerPath: "https://huggingface.co/visheratin/t5-efficient-tiny-grammar-correction/resolve/main/tokenizer.json",
   }
 
-const model = new FeatureExtractionModel(metadata);
+const model = new TextFeatureExtractionModel(metadata);
 const elapsed = await model.init();
 console.log(elapsed);
 ```
@@ -302,8 +302,12 @@ for (let item of output.results) {
 
 #### Feature extraction
 
-- `t5-efficient-mini` - larger model for feature extraction (94 MB). Works the best overall.
-- `t5-efficient-mini-quant` - minified (quantized) version of the `t5-efficient-mini` model. Quantization makes the performance slightly worse but the size is almost 3 times smaller than the original one - 38 MB.
+- `gtr-t5-large-quant` - larger model for feature extraction (242 MB). Works the best overall.
+- `gtr-t5` - smaller model (185 MB) that still works very well.
+- `gtr-t5-quant` - minified version (78 MB) of the `gtr-t5` model.
+- `sentence-t5-large-quant` - larger model for feature extraction (242 MB).
+- `sentence-t5` - smaller model (185 MB) that still works quite well.
+- `sentence-t5-quant` - minified version (78 MB) of the `sentence-t5` model.
 
 ### Image models
 
@@ -329,6 +333,15 @@ for (let item of output.results) {
 
 - `yolos-tiny` - small (23 MB) but powerful model for finding a large range of classes - people, animals, indoor and outdoor objects.
 - `yolos-tiny-quant` - minified (quantized) version of the `yolos-tiny` model. The borders are slightly off compared to the original but the size is 3 times smaller (7 MB).
+
+#### Feature extraction
+
+- `efficientformer-l1-feature` - small model (43 MB) for feature extraction. Works well for similar objects.
+- `efficientformer-l1-feature-quant` - minified (11 MB) version of the `efficientformer-l1-feature` model.
+- `efficientformer-l3-feature` - medium model (116 MB) for feature extraction. The best balance between size and quality.
+- `efficientformer-l3-feature-quant` - minified (30 MB) version of the `efficientformer-l3-feature` model.
+- `efficientformer-l7-feature` - large model (308 MB) for feature extraction.
+- `efficientformer-l7-feature-quant` - minified (78 MB) version of the `efficientformer-l7-feature` model.
 
 #### Image-to-image
 
