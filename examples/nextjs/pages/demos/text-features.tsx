@@ -134,7 +134,7 @@ export default function Classification() {
             <div className="col-sm-3"></div>
             <div className="col-sm-6">
               <div className="progress" role="progressbar">
-                <div className={result.className} style={{ width: `${result.value * 100}%` }}></div>
+                <div className={result.className} style={{ width: `${((result.value + 1) / 2) * 100}%` }}></div>
               </div>
             </div>
             <div className="row mb-2">
