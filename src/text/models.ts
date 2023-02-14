@@ -170,6 +170,10 @@ export const models: TextMetadata[] = [
     sizeMB: 190,
     modelPaths: new Map<string, string>([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base.onnx.gz"],
+      [
+        "dense",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base-dense.onnx.gz",
+      ],
     ]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
@@ -185,6 +189,10 @@ export const models: TextMetadata[] = [
       [
         "encoder",
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base-quant.onnx.gz",
+      ],
+      [
+        "dense",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base-dense-quant.onnx.gz",
       ],
     ]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
@@ -202,6 +210,10 @@ export const models: TextMetadata[] = [
         "encoder",
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/large-quant.onnx.gz",
       ],
+      [
+        "dense",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/large-dense-quant.onnx.gz",
+      ],
     ]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-large/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
@@ -215,6 +227,7 @@ export const models: TextMetadata[] = [
     sizeMB: 185,
     modelPaths: new Map<string, string>([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base.onnx.gz"],
+      ["dense", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base-dense.onnx.gz"],
     ]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
@@ -231,6 +244,10 @@ export const models: TextMetadata[] = [
         "encoder",
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base-quant.onnx.gz",
       ],
+      [
+        "dense",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base-dense-quant.onnx.gz",
+      ],
     ]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
@@ -246,6 +263,10 @@ export const models: TextMetadata[] = [
       [
         "encoder",
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/large-quant.onnx.gz",
+      ],
+      [
+        "dense",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/large-dense-quant.onnx.gz",
       ],
     ]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-large/resolve/main/tokenizer.json",
