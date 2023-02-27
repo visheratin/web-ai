@@ -1,10 +1,10 @@
-interface ModelConfig {
-  vocab: (string | number)[][];
-  unk_id: number;
+export interface ModelConfig {
+  vocab: Map<string, number>;
+  unkID: number;
 }
 
-interface Model {
+export interface Model {
   config: ModelConfig;
 
-  process(str: string): number[];
+  process(str: string[]): number[];
 }

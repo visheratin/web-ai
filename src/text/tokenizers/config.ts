@@ -1,3 +1,4 @@
+import { ModelConfig } from "./model";
 import { NormalizerConfig } from "./normalizer";
 import { PreTokenizerConfig } from "./preTokenizer";
 
