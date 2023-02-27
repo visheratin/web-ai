@@ -1,4 +1,5 @@
 import { NormalizerConfig } from "./normalizer";
+import { PreTokenizerConfig } from "./preTokenizer";
 
 export interface TokenizerConfig {
   normalizer: NormalizerConfig;
