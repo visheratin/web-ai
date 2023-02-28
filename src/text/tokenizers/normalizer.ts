@@ -14,7 +14,7 @@ export interface NormalizerConfig {
   normalizers?: NormalizerConfig[];
 }
 
-interface Normalizer {
+export interface Normalizer {
   config: NormalizerConfig;
 
   process(str: string): string;

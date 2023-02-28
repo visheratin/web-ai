@@ -1,8 +1,8 @@
-interface PostProcessingConfig {
+export interface PostProcessingConfig {
   type: string;
 }
 
-interface PostProcessor {
+export interface PostProcessor {
   config: PostProcessingConfig;
 
   process(tokens: string[]): string[];
