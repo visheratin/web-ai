@@ -7,9 +7,9 @@ export interface ModelConfig {
   bosToken: string;
   eosToken: string;
   unknownToken: string;
-  maxInputCharsPerWord: number;
-  continuingSubwordPrefix: string;
-  merges: string[];
+  maxInputCharsPerWord?: number;
+  continuingSubwordPrefix?: string;
+  merges?: string[];
 }
 
 export function NewModel(config: ModelConfig): Model {
@@ -156,7 +156,13 @@ export class WordPiece implements Model {
       throw new Error("unknownToken is not in the vocab");
     }
     this.unknownTokenID = unknownTokenID;
+    if (config.maxInputCharsPerWord === undefined) {
+      throw new Error("maxInputCharsPerWord is not defined");
+    }
     this.maxInputCharsPerWord = config.maxInputCharsPerWord;
+    if (config.continuingSubwordPrefix === undefined) {
+      throw new Error("continuingSubwordPrefix is not defined");
+    }
     this.continuingSubwordPrefix = config.continuingSubwordPrefix;
   }
 
@@ -210,6 +216,9 @@ export class BPE implements Model {
   constructor(config: ModelConfig) {
     this.encoder = config.vocab;
     this.byteEncoder = this.bytesToUnicode();
+    if (config.merges === undefined) {
+      throw new Error("merges is not defined");
+    }
     this.bpeRanks = Object.fromEntries(config.merges.map((x, i) => [x, i]));
   }
 

@@ -4,7 +4,7 @@ interface ReplaceConfig {
   replacement?: string;
 }
 
-export interface NormalizerConfig {
+export class NormalizerConfig {
   type: string;
   replace?: ReplaceConfig;
   cleanText?: boolean;
@@ -12,6 +12,41 @@ export interface NormalizerConfig {
   stripAccents?: boolean;
   lowercase?: boolean;
   normalizers?: NormalizerConfig[];
+
+  constructor() {
+    this.type = "unknown";
+  }
+
+  static fromJSON(jsonData: any): NormalizerConfig {
+    const config = new NormalizerConfig();
+    config.type = jsonData.type;
+    if (jsonData.replace) {
+      config.replace = {
+        string: jsonData.replace.string,
+        regex: jsonData.replace.regex,
+        replacement: jsonData.replace.replacement,
+      };
+    }
+    if (jsonData.cleanText) {
+      config.cleanText = jsonData.cleanText;
+    }
+    if (jsonData.handleChineseChars) {
+      config.handleChineseChars = jsonData.handleChineseChars;
+    }
+    if (jsonData.stripAccents) {
+      config.stripAccents = jsonData.stripAccents;
+    }
+    if (jsonData.lowercase) {
+      config.lowercase = jsonData.lowercase;
+    }
+    if (jsonData.normalizers) {
+      config.normalizers = [];
+      for (const normalizer of jsonData.normalizers) {
+        config.normalizers.push(NormalizerConfig.fromJSON(normalizer));
+      }
+    }
+    return config;
+  }
 }
 
 export interface Normalizer {
