@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as ort from "onnxruntime-web";
 import { Session } from "../session";
 import * as Comlink from "comlink";
@@ -24,17 +23,17 @@ export class T5ForConditionalGeneration {
     const endOfDecoderTokenId = 1;
     let encoderOutputs = null;
     let numOutputTokens = 1;
-    let shouldContinue = true;
+    const shouldContinue = true;
     const maxOutputTokens = numOutputTokens + maxLength;
     let sampler = (x: ort.Tensor) => this.sampleLogitsGreedily(x);
     if (topK > 0) {
       sampler = (x: ort.Tensor) => this.sampleLogitsTopK(x, topK);
     }
-    let outputTokenIds = [startOfDecoderTokenId];
+    const outputTokenIds = [startOfDecoderTokenId];
     while (shouldContinue && numOutputTokens < maxOutputTokens) {
-      let output = await this.forward(inputTokenIds, outputTokenIds, encoderOutputs);
+      const output = await this.forward(inputTokenIds, outputTokenIds, encoderOutputs);
       encoderOutputs = output.encoderOutputs;
-      let newTokenId = sampler(output.logits);
+      const newTokenId = sampler(output.logits);
       outputTokenIds.push(newTokenId);
       numOutputTokens++;
       if (newTokenId === endOfDecoderTokenId) {
@@ -45,14 +44,14 @@ export class T5ForConditionalGeneration {
   }
 
   sampleLogitsGreedily(logits: ort.Tensor): number {
-    let shape = logits.dims;
-    let [batchSize, seqLength, vocabSize] = shape;
-    let n = batchSize * seqLength * vocabSize;
-    let startIndex = n - vocabSize;
+    const shape = logits.dims;
+    const [batchSize, seqLength, vocabSize] = shape;
+    const n = batchSize * seqLength * vocabSize;
+    const startIndex = n - vocabSize;
     let argmaxi = 0;
     let argmax = logits.data[startIndex + argmaxi];
     for (let i = 1; i < vocabSize; i++) {
-      let l = logits.data[startIndex + i];
+      const l = logits.data[startIndex + i];
       if (l > argmax) {
         argmaxi = i;
         argmax = l;
@@ -62,13 +61,13 @@ export class T5ForConditionalGeneration {
   }
 
   sampleLogitsTopK(logits: ort.Tensor, k: number): number {
-    let shape = logits.dims;
-    let [batchSize, seqLength, vocabSize] = shape;
-    let n = batchSize * seqLength * vocabSize;
-    let startIndex = n - vocabSize;
-    let logs = logits.data.slice(startIndex) as Float32Array;
+    const shape = logits.dims;
+    const [batchSize, seqLength, vocabSize] = shape;
+    const n = batchSize * seqLength * vocabSize;
+    const startIndex = n - vocabSize;
+    const logs = logits.data.slice(startIndex) as Float32Array;
     k = Math.min(k, vocabSize);
-    let logitAndId = Array.from(logs)
+    const logitAndId = Array.from(logs)
       .map((x, i) => [x, i])
       .sort((a, b) => b[0] - a[0]);
     const sMin = Math.exp(-100.0);
@@ -125,7 +124,7 @@ export class T5ForConditionalGeneration {
       encoder_attention_mask: attentionMaskTensor,
       encoder_hidden_states: encoderOutputsTensor,
     };
-    let logits = null;
+    let logits: ort.Tensor | null = null;
     const initDecoderResults = await this.decoderSession.run(decoderFeeds);
     logits = initDecoderResults.logits;
     return new Seq2SeqLMOutput(logits, encoderOutputs);
