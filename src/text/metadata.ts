@@ -4,6 +4,7 @@ import { TextModelType } from "./modeType";
 export type TextMetadata = Metadata & {
   type?: TextModelType;
   modelPaths: Map<string, string>;
+  outputNames: Map<string, string>;
   tokenizerPath: string;
   prefixes?: string[];
 };

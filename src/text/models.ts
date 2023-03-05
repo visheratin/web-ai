@@ -35,6 +35,10 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/decoder.onnx.gz",
       ],
     ]),
+    outputNames: new Map<string, string>([
+      ["encoder", "hidden_states"],
+      ["decoder", "logits"],
+    ]),
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
     tags: ["grammar", "t5"],
@@ -55,6 +59,10 @@ export const models: TextMetadata[] = [
         "decoder",
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/decoder-quant.onnx.gz",
       ],
+    ]),
+    outputNames: new Map<string, string>([
+      ["encoder", "hidden_states"],
+      ["decoder", "logits"],
     ]),
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
@@ -77,6 +85,10 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/decoder.onnx.gz",
       ],
     ]),
+    outputNames: new Map<string, string>([
+      ["encoder", "hidden_states"],
+      ["decoder", "logits"],
+    ]),
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/tokenizer.json",
     tags: ["grammar", "t5"],
@@ -98,6 +110,10 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/decoder-quant.onnx.gz",
       ],
     ]),
+    outputNames: new Map<string, string>([
+      ["encoder", "hidden_states"],
+      ["decoder", "logits"],
+    ]),
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/tokenizer.json",
     tags: ["grammar", "t5"],
@@ -112,6 +128,10 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5/encoder.onnx.gz"],
       ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5/decoder.onnx.gz"],
+    ]),
+    outputNames: new Map<string, string>([
+      ["encoder", "hidden_states"],
+      ["decoder", "logits"],
     ]),
     tokenizerPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
@@ -134,8 +154,11 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/decoder.onnx.gz",
       ],
     ]),
-    tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
+    outputNames: new Map<string, string>([
+      ["encoder", "hidden_states"],
+      ["decoder", "logits"],
+    ]),
+    tokenizerPath: "https://huggingface.co/minhtoan/t5-finetune-cnndaily-news/resolve/main/tokenizer.json",
     tags: ["summarization", "t5"],
     prefixes: ["summarize"],
     referenceURL: "https://huggingface.co/minhtoan/t5-finetune-cnndaily-news",
@@ -156,8 +179,11 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/decoder-quant.onnx.gz",
       ],
     ]),
-    tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
+    outputNames: new Map<string, string>([
+      ["encoder", "hidden_states"],
+      ["decoder", "logits"],
+    ]),
+    tokenizerPath: "https://huggingface.co/minhtoan/t5-finetune-cnndaily-news/resolve/main/tokenizer.json",
     tags: ["summarization", "t5"],
     prefixes: ["summarize"],
     referenceURL: "https://huggingface.co/minhtoan/t5-finetune-cnndaily-news",
@@ -175,6 +201,7 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base-dense.onnx.gz",
       ],
     ]),
+    outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
     referenceURL: "https://huggingface.co/sentence-transformers/sentence-t5-base",
@@ -195,6 +222,7 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base-dense-quant.onnx.gz",
       ],
     ]),
+    outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
     referenceURL: "https://huggingface.co/sentence-transformers/sentence-t5-base",
@@ -215,6 +243,7 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/large-dense-quant.onnx.gz",
       ],
     ]),
+    outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-large/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
     referenceURL: "https://huggingface.co/sentence-transformers/sentence-t5-large",
@@ -229,6 +258,7 @@ export const models: TextMetadata[] = [
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base.onnx.gz"],
       ["dense", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base-dense.onnx.gz"],
     ]),
+    outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
     referenceURL: "https://huggingface.co/sentence-transformers/gtr-t5-base",
@@ -249,6 +279,7 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base-dense-quant.onnx.gz",
       ],
     ]),
+    outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-base/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
     referenceURL: "https://huggingface.co/sentence-transformers/gtr-t5-base",
@@ -269,8 +300,40 @@ export const models: TextMetadata[] = [
         "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/large-dense-quant.onnx.gz",
       ],
     ]),
+    outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
     tokenizerPath: "https://huggingface.co/sentence-transformers/sentence-t5-large/resolve/main/tokenizer.json",
     tags: ["feature-extraction", "t5"],
     referenceURL: "https://huggingface.co/sentence-transformers/gtr-t5-large",
+  },
+  {
+    id: "mini-lm-v2",
+    title: "Mini model for sentence embeddings",
+    description: "",
+    type: TextModelType.FeatureExtraction,
+    sizeMB: 80,
+    modelPaths: new Map<string, string>([
+      ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/miniLM-v2/model.onnx.gz"],
+    ]),
+    outputNames: new Map<string, string>([["encoder", "last_hidden_state"]]),
+    tokenizerPath: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer.json",
+    tags: ["feature-extraction", "t5"],
+    referenceURL: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
+  },
+  {
+    id: "mini-lm-v2-quant",
+    title: "Quantized mini model for sentence embeddings",
+    description: "",
+    type: TextModelType.FeatureExtraction,
+    sizeMB: 15,
+    modelPaths: new Map<string, string>([
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/miniLM-v2/model-quant.onnx.gz",
+      ],
+    ]),
+    outputNames: new Map<string, string>([["encoder", "last_hidden_state"]]),
+    tokenizerPath: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer.json",
+    tags: ["feature-extraction", "t5"],
+    referenceURL: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
   },
 ];

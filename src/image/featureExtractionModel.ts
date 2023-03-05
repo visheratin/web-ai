@@ -49,7 +49,7 @@ export class ImageFeatureExtractionModel implements IImageModel {
     const tensor = this.preprocessor.process(image);
     const start = new Date();
     const lastHiddenState = await this.runInference(tensor);
-    const output = this.generate_output(lastHiddenState);
+    const output = this.generateOutput(lastHiddenState);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     return {
@@ -71,8 +71,7 @@ export class ImageFeatureExtractionModel implements IImageModel {
     return output;
   };
 
-  private generate_output = (lastHiddenState: ort.Tensor): number[] => {
-    console.log(lastHiddenState);
+  private generateOutput = (lastHiddenState: ort.Tensor): number[] => {
     const tensor = new Tensor(lastHiddenState);
     let result: number[] = [];
     for (let i = 0; i < lastHiddenState.dims[2]; i++) {

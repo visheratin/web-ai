@@ -46,7 +46,7 @@ const greedySampler = (logits: ort.Tensor): number => {
   let maxIdx = 0;
   let max = logits.data[startIndex + maxIdx];
   for (let i = 1; i < vocabSize; i++) {
-    let l = logits.data[startIndex + i];
+    const l = logits.data[startIndex + i];
     if (l > max) {
       maxIdx = i;
       max = l;

@@ -59,9 +59,9 @@ export class ClassificationModel implements IImageModel {
    *
    * @returns Time taken to initialize the model, in seconds.
    */
-  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
+  init = async (cacheSizeMB: number = 500, proxy: boolean = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, cache_size_mb, proxy);
+    this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     if (!this.metadata.configPath) {
@@ -87,13 +87,13 @@ export class ClassificationModel implements IImageModel {
       throw Error("the model is not initialized");
     }
     // @ts-ignore
-    let image = await Jimp.read(input);
+    const image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
     const output = await this.runInference(tensor);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    let res: ClassificationPrediction[] = new Array(num).fill({
+    const res: ClassificationPrediction[] = new Array(num).fill({
       class: "unknown",
       confidence: 0,
     });

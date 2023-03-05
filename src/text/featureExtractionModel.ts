@@ -1,12 +1,13 @@
 import { createSession } from "../sessionController";
-import Tokenizer from "./tokenizer";
+import { WasmTokenizer } from "@visheratin/tokenizers";
 import { TextMetadata } from "./metadata";
-import { T5Encoder } from "./t5model";
+import { Encoder } from "./encoder";
 import * as ort from "onnxruntime-web";
 import { Tensor } from "../tensor";
 import { ITextModel, TextProcessingResult } from "./interfaces";
 import { Session } from "../session";
 import { Remote } from "comlink";
+import { loadTokenizer } from "./tokenizer";
 
 export type TextFeatureExtractionResult = TextProcessingResult & {
   result: number[];
@@ -15,8 +16,8 @@ export type TextFeatureExtractionResult = TextProcessingResult & {
 export class TextFeatureExtractionModel implements ITextModel {
   metadata: TextMetadata;
   initialized: boolean;
-  private tokenizer?: Tokenizer;
-  private model?: T5Encoder;
+  private tokenizer?: WasmTokenizer;
+  private model?: Encoder;
   private dense?: Session | Remote<Session>;
   private cache: Map<string, number[]>;
 
@@ -32,14 +33,17 @@ export class TextFeatureExtractionModel implements ITextModel {
     if (!modelPath) {
       throw new Error("model paths do not have the 'encoder' path");
     }
+    const outputName = this.metadata.outputNames.get("encoder");
+    if (!outputName) {
+      throw new Error("output names do not have the 'encoder' path");
+    }
     const encoderSession = await createSession(modelPath, cache_size_mb, proxy);
-    this.model = new T5Encoder(encoderSession);
+    this.model = new Encoder(encoderSession, outputName);
     const densePath = this.metadata.modelPaths.get("dense");
     if (densePath) {
       this.dense = await createSession(densePath, cache_size_mb, proxy);
     }
-    const response = await fetch(this.metadata.tokenizerPath);
-    this.tokenizer = Tokenizer.fromConfig(await response.json());
+    this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     this.initialized = true;
@@ -58,12 +62,16 @@ export class TextFeatureExtractionModel implements ITextModel {
         elapsed: 0,
       };
     }
-    const inputTokenIds = this.tokenizer.encode(input);
+    const inputTokenIds = this.tokenizer.encode(input, true);
     if (!inputTokenIds) {
       throw Error("input tokens tensor is undefined");
     }
     const start = new Date();
-    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokenIds.map((x) => BigInt(x))), [
+    const inputTokens: number[] = [];
+    for (let i = 0; i < inputTokenIds.length; i++) {
+      inputTokens.push(inputTokenIds[i]);
+    }
+    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokens.map((x) => BigInt(x))), [
       1,
       inputTokenIds.length,
     ]);

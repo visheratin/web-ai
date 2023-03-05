@@ -1,11 +1,13 @@
 import { createSession } from "../sessionController";
-import Tokenizer from "./tokenizer";
 import { TextMetadata } from "./metadata";
 import { ITextModel, TextProcessingResult } from "./interfaces";
-import { T5Decoder, T5Encoder } from "./t5model";
+import { Encoder } from "./encoder";
+import { Decoder } from "./decoder";
 import { generate } from "../utils/generator";
 import * as ort from "onnxruntime-web";
 import { GenerationConfig } from "../utils/generationConfig";
+import { WasmTokenizer } from "@visheratin/tokenizers";
+import { loadTokenizer } from "./tokenizer";
 
 export type Seq2SeqResult = TextProcessingResult & {
   text: string;
@@ -14,9 +16,9 @@ export type Seq2SeqResult = TextProcessingResult & {
 export class Seq2SeqModel implements ITextModel {
   metadata: TextMetadata;
   initialized: boolean;
-  private tokenizer?: Tokenizer;
-  private encoder?: T5Encoder;
-  private decoder?: T5Decoder;
+  private tokenizer?: WasmTokenizer;
+  private encoder?: Encoder;
+  private decoder?: Decoder;
   private cache: Map<string, string>;
 
   constructor(metadata: TextMetadata) {
@@ -31,16 +33,23 @@ export class Seq2SeqModel implements ITextModel {
     if (!encoderPath) {
       throw new Error("model paths do not have the 'encoder' path");
     }
+    const encoderOutputName = this.metadata.outputNames.get("encoder");
+    if (!encoderOutputName) {
+      throw new Error("output names do not have the 'encoder' path");
+    }
     const encoderSession = await createSession(encoderPath, cache_size_mb, proxy);
     const decoderPath = this.metadata.modelPaths.get("decoder");
     if (!decoderPath) {
       throw new Error("model paths do not have the 'decoder' path");
     }
+    const decoderOutputName = this.metadata.outputNames.get("decoder");
+    if (!decoderOutputName) {
+      throw new Error("output names do not have the 'decoder' path");
+    }
     const decoderSession = await createSession(decoderPath, cache_size_mb, proxy);
-    this.encoder = new T5Encoder(encoderSession);
-    this.decoder = new T5Decoder(decoderSession);
-    const response = await fetch(this.metadata.tokenizerPath);
-    this.tokenizer = Tokenizer.fromConfig(await response.json());
+    this.encoder = new Encoder(encoderSession, encoderOutputName);
+    this.decoder = new Decoder(decoderSession, decoderOutputName);
+    this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     this.initialized = true;
@@ -68,27 +77,35 @@ export class Seq2SeqModel implements ITextModel {
         elapsed: 0,
       };
     }
-    const generationOptions: GenerationConfig = {
+    const generationConfig: GenerationConfig = {
       maxLength: 500,
       eosTokenID: 1,
       bosTokenID: 0,
     };
-    const inputTokenIds = this.tokenizer.encode(input);
+    const inputTokenIds = this.tokenizer.encode(input, true);
     if (!inputTokenIds) {
       throw Error("unable to get tokens for the text");
     }
     const start = new Date();
-    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokenIds.map((x) => BigInt(x))), [
+    const inputTokens: number[] = [];
+    for (let i = 0; i < inputTokenIds.length; i++) {
+      inputTokens.push(inputTokenIds[i]);
+    }
+    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokens.map((x) => BigInt(x))), [
       1,
       inputTokenIds.length,
     ]);
     let outputTokenIDs: number[] = [];
-    for await (const outputTokenID of generate(tensor, this.encoder, this.decoder, generationOptions)) {
+    for await (const outputTokenID of generate(tensor, this.encoder, this.decoder, generationConfig)) {
       outputTokenIDs.push(outputTokenID);
     }
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    const output: string = this.tokenizer.decode(outputTokenIDs, true).trim();
+    const outputTokens = new Uint32Array(outputTokenIDs.length);
+    for (let i = 0; i < outputTokenIDs.length; i++) {
+      outputTokens[i] = outputTokenIDs[i];
+    }
+    const output: string = this.tokenizer.decode(outputTokens, true).trim();
     return {
       text: output,
       cached: false,
@@ -118,11 +135,15 @@ export class Seq2SeqModel implements ITextModel {
       eosTokenID: 1,
       bosTokenID: 0,
     };
-    const inputTokenIds = this.tokenizer.encode(input);
+    const inputTokenIds = this.tokenizer.encode(input, true);
     if (!inputTokenIds) {
       throw Error("unable to get tokens for the text");
     }
-    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokenIds.map((x) => BigInt(x))), [
+    const inputTokens: number[] = [];
+    for (let i = 0; i < inputTokenIds.length; i++) {
+      inputTokens.push(inputTokenIds[i]);
+    }
+    const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokens.map((x) => BigInt(x))), [
       1,
       inputTokenIds.length,
     ]);
@@ -130,7 +151,11 @@ export class Seq2SeqModel implements ITextModel {
     let oldOutput: string = "";
     for await (const outputTokenID of generate(tensor, this.encoder, this.decoder, generationOptions)) {
       outputTokenIDs.push(outputTokenID);
-      const output: string = this.tokenizer.decode(outputTokenIDs, true);
+      const outputTokens = new Uint32Array(outputTokenIDs.length);
+      for (let i = 0; i < outputTokenIDs.length; i++) {
+        outputTokens[i] = outputTokenIDs[i];
+      }
+      const output: string = this.tokenizer.decode(outputTokens, true);
       const diff = output.substring(oldOutput.length);
       yield diff;
       oldOutput = output;
