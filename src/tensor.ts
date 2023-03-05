@@ -68,9 +68,9 @@ export class Tensor {
     if (outDims.length == 0) {
       outDims = [1];
     }
-    let argmax = new Tensor(new OrtTensor(new Float32Array(size).fill(0), outDims));
-    let maxValues = new Tensor(new OrtTensor(new Float32Array(size).fill(-Infinity), outDims));
-    let indices = new Array(this.ortTensor.dims.length).fill(0);
+    const argmax = new Tensor(new OrtTensor(new Float32Array(size).fill(0), outDims));
+    const maxValues = new Tensor(new OrtTensor(new Float32Array(size).fill(-Infinity), outDims));
+    const indices = new Array(this.ortTensor.dims.length).fill(0);
     this.argmaxIter(0, dim, indices, argmax, maxValues, 0);
     return argmax;
   };
@@ -101,7 +101,7 @@ export class Tensor {
         for (let j = 0; j < this.ortTensor.dims[targetDim]; j++) {
           indices[targetDim] = j;
           const value = this.at(indices) as number;
-          const maxValue = maxValues.at(outIndices);
+          const maxValue = maxValues.at(outIndices) as number;
           if (value > maxValue) {
             argmax.setAt(outIndices, j);
             maxValues.setAt(outIndices, value);

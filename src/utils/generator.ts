@@ -11,7 +11,7 @@ export async function* generate(
   const sampler = (x: ort.Tensor) => greedySampler(x);
   const encoderOutput = await encoder.process(input);
   let len = 0;
-  let decoderInput = new ort.Tensor("int64", new BigInt64Array([BigInt(options.bosTokenID!)]), [1, 1]);
+  let decoderInput = new ort.Tensor("int64", new BigInt64Array([BigInt(options.bosTokenID)]), [1, 1]);
   while (true) {
     const decoderOutput = await decoder.process(encoderOutput, decoderInput);
     const newTokenID = sampler(decoderOutput);

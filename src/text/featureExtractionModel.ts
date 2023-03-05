@@ -27,7 +27,7 @@ export class TextFeatureExtractionModel implements ITextModel {
     this.cache = new Map<string, number[]>();
   }
 
-  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
+  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
     const start = new Date();
     const modelPath = this.metadata.modelPaths.get("encoder");
     if (!modelPath) {
@@ -37,11 +37,11 @@ export class TextFeatureExtractionModel implements ITextModel {
     if (!outputName) {
       throw new Error("output names do not have the 'encoder' path");
     }
-    const encoderSession = await createSession(modelPath, cache_size_mb, proxy);
+    const encoderSession = await createSession(modelPath, cacheSizeMB, proxy);
     this.model = new Encoder(encoderSession, outputName);
     const densePath = this.metadata.modelPaths.get("dense");
     if (densePath) {
-      this.dense = await createSession(densePath, cache_size_mb, proxy);
+      this.dense = await createSession(densePath, cacheSizeMB, proxy);
     }
     this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
     const end = new Date();
@@ -62,20 +62,20 @@ export class TextFeatureExtractionModel implements ITextModel {
         elapsed: 0,
       };
     }
-    const inputTokenIds = this.tokenizer.encode(input, true);
-    if (!inputTokenIds) {
+    const inputTokenIDs = this.tokenizer.encode(input, true);
+    if (!inputTokenIDs) {
       throw Error("input tokens tensor is undefined");
     }
     const start = new Date();
     const inputTokens: number[] = [];
-    for (let i = 0; i < inputTokenIds.length; i++) {
-      inputTokens.push(inputTokenIds[i]);
+    for (let i = 0; i < inputTokenIDs.length; i++) {
+      inputTokens.push(inputTokenIDs[i]);
     }
     const tensor = new ort.Tensor("int64", new BigInt64Array(inputTokens.map((x) => BigInt(x))), [
       1,
-      inputTokenIds.length,
+      inputTokenIDs.length,
     ]);
-    let lastHiddenState = await this.model.process(tensor);
+    const lastHiddenState = await this.model.process(tensor);
     if (!lastHiddenState) {
       throw Error("model output is undefined");
     }
@@ -85,7 +85,7 @@ export class TextFeatureExtractionModel implements ITextModel {
     return {
       result: output,
       cached: false,
-      tokensNum: inputTokenIds?.length!,
+      tokensNum: inputTokenIDs.length,
       elapsed: elapsed,
     };
   };
@@ -117,7 +117,7 @@ export class TextFeatureExtractionModel implements ITextModel {
     const tensor = new ort.Tensor("float32", new Float32Array(pooledResult), [1, pooledResult.length]);
     const output = await this.dense.run({ input: tensor });
     const result = new Tensor(output.output);
-    let outputResult: number[] = [];
+    const outputResult: number[] = [];
     for (let i = 0; i < result.ortTensor.dims[1]; i++) {
       outputResult.push(result.at([0, i]) as number);
     }
@@ -125,7 +125,7 @@ export class TextFeatureExtractionModel implements ITextModel {
   };
 
   private normalize = (input: number[]): number[] => {
-    let result: number[] = [];
+    const result: number[] = [];
     let sum = 0;
     for (let i = 0; i < input.length; i++) {
       sum += input[i] * input[i];

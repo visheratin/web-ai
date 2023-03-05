@@ -27,7 +27,7 @@ export class Seq2SeqModel implements ITextModel {
     this.cache = new Map<string, string>();
   }
 
-  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
+  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
     const start = new Date();
     const encoderPath = this.metadata.modelPaths.get("encoder");
     if (!encoderPath) {
@@ -37,7 +37,7 @@ export class Seq2SeqModel implements ITextModel {
     if (!encoderOutputName) {
       throw new Error("output names do not have the 'encoder' path");
     }
-    const encoderSession = await createSession(encoderPath, cache_size_mb, proxy);
+    const encoderSession = await createSession(encoderPath, cacheSizeMB, proxy);
     const decoderPath = this.metadata.modelPaths.get("decoder");
     if (!decoderPath) {
       throw new Error("model paths do not have the 'decoder' path");
@@ -46,7 +46,7 @@ export class Seq2SeqModel implements ITextModel {
     if (!decoderOutputName) {
       throw new Error("output names do not have the 'decoder' path");
     }
-    const decoderSession = await createSession(decoderPath, cache_size_mb, proxy);
+    const decoderSession = await createSession(decoderPath, cacheSizeMB, proxy);
     this.encoder = new Encoder(encoderSession, encoderOutputName);
     this.decoder = new Decoder(decoderSession, decoderOutputName);
     this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
@@ -95,7 +95,7 @@ export class Seq2SeqModel implements ITextModel {
       1,
       inputTokenIds.length,
     ]);
-    let outputTokenIDs: number[] = [];
+    const outputTokenIDs: number[] = [];
     for await (const outputTokenID of generate(tensor, this.encoder, this.decoder, generationConfig)) {
       outputTokenIDs.push(outputTokenID);
     }
@@ -147,8 +147,8 @@ export class Seq2SeqModel implements ITextModel {
       1,
       inputTokenIds.length,
     ]);
-    let outputTokenIDs: number[] = [];
-    let oldOutput: string = "";
+    const outputTokenIDs: number[] = [];
+    let oldOutput = "";
     for await (const outputTokenID of generate(tensor, this.encoder, this.decoder, generationOptions)) {
       outputTokenIDs.push(outputTokenID);
       const outputTokens = new Uint32Array(outputTokenIDs.length);

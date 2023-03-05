@@ -10,25 +10,21 @@ export interface InitTextModelResult {
 }
 
 export class TextModel {
-  static create = async (
-    id: string,
-    cache_size_mb: number = 500,
-    proxy: boolean = true,
-  ): Promise<InitTextModelResult> => {
-    for (let modelMetadata of models) {
+  static create = async (id: string, cacheSizeMB = 500, proxy = true): Promise<InitTextModelResult> => {
+    for (const modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
           case TextModelType.FeatureExtraction: {
-            let model = new TextFeatureExtractionModel(modelMetadata);
-            const elapsed = await model.init(cache_size_mb, proxy);
+            const model = new TextFeatureExtractionModel(modelMetadata);
+            const elapsed = await model.init(cacheSizeMB, proxy);
             return {
               model: model,
               elapsed: elapsed,
             };
           }
           case TextModelType.Seq2Seq: {
-            let model = new Seq2SeqModel(modelMetadata);
-            const elapsed = await model.init(cache_size_mb, proxy);
+            const model = new Seq2SeqModel(modelMetadata);
+            const elapsed = await model.init(cacheSizeMB, proxy);
             return {
               model: model,
               elapsed: elapsed,
