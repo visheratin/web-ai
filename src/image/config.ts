@@ -39,7 +39,7 @@ export class Config {
    * @returns configuration for the image model.
    */
   static parseConfig = (configData): Config => {
-    let res = new Config();
+    const res = new Config();
     for (const [idxString, className] of Object.entries(configData["id2label"])) {
       const idx = Number(idxString);
       res.classes.set(idx, className as string);

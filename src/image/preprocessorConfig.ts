@@ -34,7 +34,7 @@ class PreprocessorConfig {
   };
 
   static parseConfig = (configData): PreprocessorConfig => {
-    let res = new PreprocessorConfig();
+    const res = new PreprocessorConfig();
     res.normalize = {
       enabled: false,
     };

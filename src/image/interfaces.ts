@@ -4,7 +4,7 @@ export interface IImageModel {
   metadata: ImageMetadata;
   initialized: boolean;
 
-  init(cache_size_mb: number, proxy: boolean): Promise<number>;
+  init(cacheSizeMB: number, proxy: boolean): Promise<number>;
   process(input: string | Buffer): Promise<ImageProcessingResult>;
 }
 

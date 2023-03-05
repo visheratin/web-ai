@@ -41,8 +41,8 @@ class Preprocessor {
    * @returns ORT tensor
    */
   private imageDataToTensor = (image: Jimp, dims: number[]): ort.Tensor => {
-    var imageBufferData = image.bitmap.data;
-    const [redArray, greenArray, blueArray] = new Array(new Array<number>(), new Array<number>(), new Array<number>());
+    const imageBufferData = image.bitmap.data;
+    const [redArray, greenArray, blueArray] = [new Array<number>(), new Array<number>(), new Array<number>()];
     for (let i = 0; i < imageBufferData.length; i += 4) {
       let value = this.getValue(imageBufferData[i], 0);
       redArray.push(value);
@@ -51,7 +51,7 @@ class Preprocessor {
       value = this.getValue(imageBufferData[i + 2], 2);
       blueArray.push(value);
     }
-    let transposedData = new Array();
+    let transposedData: number[] = [];
     if (this.config.flipChannels) {
       transposedData = blueArray.concat(greenArray).concat(redArray);
     } else {

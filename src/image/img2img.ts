@@ -44,9 +44,9 @@ export class Img2ImgModel implements IImageModel {
    *
    * @returns Time taken to initialize the model, in seconds.
    */
-  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
+  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, cache_size_mb, proxy);
+    this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     this.initialized = true;
@@ -62,7 +62,7 @@ export class Img2ImgModel implements IImageModel {
    *
    * @returns generated image.
    */
-  process = async (input: string | ArrayBuffer, resize: number = 0): Promise<Img2ImgResult> => {
+  process = async (input: string | ArrayBuffer, resize = 0): Promise<Img2ImgResult> => {
     if (!this.initialized || !this.preprocessor) {
       throw Error("the model is not initialized");
     }
@@ -139,7 +139,7 @@ export class Img2ImgModel implements IImageModel {
         pixels[pixIdx + 3] = 255;
       }
     }
-    let imageData = new ImageData(pixels, width, height);
+    const imageData = new ImageData(pixels, width, height);
     return {
       data: imageData,
       elapsed: elapsed,

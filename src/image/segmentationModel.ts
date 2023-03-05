@@ -25,9 +25,9 @@ export class SegmentationModel implements IImageModel {
     this.initialized = false;
   }
 
-  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
+  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, cache_size_mb, proxy);
+    this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     if (!this.metadata.configPath) {
@@ -63,7 +63,7 @@ export class SegmentationModel implements IImageModel {
       pixels[i + 3] = 255;
     }
     const imageData = new ImageData(pixels, output.dims[2], output.dims[3]);
-    let resCanvas = document.createElement("canvas");
+    const resCanvas = document.createElement("canvas");
     resCanvas.width = imageData.width;
     resCanvas.height = imageData.height;
     resCanvas.getContext("2d")?.putImageData(imageData, 0, 0);
@@ -81,7 +81,7 @@ export class SegmentationModel implements IImageModel {
     let className = "";
     let minDiff = Infinity;
     let diff = 0;
-    for (let [idx, color] of this.config?.colors) {
+    for (const [idx, color] of this.config.colors) {
       diff =
         Math.abs(color[0] - inputColor[0]) + Math.abs(color[1] - inputColor[1]) + Math.abs(color[2] - inputColor[2]);
       if (diff < minDiff) {
@@ -97,14 +97,14 @@ export class SegmentationModel implements IImageModel {
       throw Error("the model is not initialized");
     }
     const modelClasses = this.config?.colors;
-    let result: number[][] = [];
+    const result: number[][] = [];
     const size = 128 * 128;
-    let classNumbers = new Set<number>();
+    const classNumbers = new Set<number>();
     for (let idx = 0; idx < size; idx++) {
       let maxIdx = 0;
       let maxValue = -1000;
       for (let i = 0; i < modelClasses.size; i++) {
-        if (tensor.data[idx + i * size] > maxValue) {
+        if ((tensor.data[idx + i * size] as number) > maxValue) {
           maxValue = tensor.data[idx + i * size] as number;
           maxIdx = i;
         }

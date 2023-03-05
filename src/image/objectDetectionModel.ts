@@ -36,9 +36,9 @@ export class ObjectDetectionModel implements IImageModel {
     this.initialized = false;
   }
 
-  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
+  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, cache_size_mb, proxy);
+    this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     if (!this.metadata.configPath) {
@@ -56,7 +56,7 @@ export class ObjectDetectionModel implements IImageModel {
       throw Error("the model is not initialized");
     }
     // @ts-ignore
-    let image = await Jimp.read(input);
+    const image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
     const feeds: Record<string, ort.Tensor> = {};
@@ -68,9 +68,9 @@ export class ObjectDetectionModel implements IImageModel {
     }
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    let classIndices: number[] = [];
-    let classConfidences: number[] = [];
-    let indices: number[] = [];
+    const classIndices: number[] = [];
+    const classConfidences: number[] = [];
+    const indices: number[] = [];
     for (let i = 0; i < output["logits"].dims[1]; i++) {
       const s = output["logits"].dims[2] * i;
       const f = output["logits"].dims[2] * (i + 1);
@@ -92,10 +92,10 @@ export class ObjectDetectionModel implements IImageModel {
         indices.push(i);
       }
     }
-    let boxes = [];
+    const boxes = [];
     for (let i = 0; i < indices.length; i++) {
       const index = indices[i];
-      let box = output["boxes"].data.slice(4 * index, 4 * (index + 1));
+      const box = output["boxes"].data.slice(4 * index, 4 * (index + 1));
       // @ts-ignore
       box[0] = box[0] - box[2] / 2;
       // @ts-ignore
@@ -103,7 +103,7 @@ export class ObjectDetectionModel implements IImageModel {
       // @ts-ignore
       boxes.push(box);
     }
-    let res: ObjectDetectionResult = {
+    const res: ObjectDetectionResult = {
       objects: [],
       elapsed: elapsed,
     };
@@ -133,6 +133,6 @@ export class ObjectDetectionModel implements IImageModel {
 }
 
 function componentToHex(c: number) {
-  var hex = c.toString(16);
+  const hex = c.toString(16);
   return hex.length == 1 ? "0" + hex : hex;
 }

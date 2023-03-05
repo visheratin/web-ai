@@ -29,9 +29,9 @@ export class ImageFeatureExtractionModel implements IImageModel {
    *
    * @returns Time taken to initialize the model, in seconds.
    */
-  init = async (cache_size_mb: number = 500, proxy: boolean = true): Promise<number> => {
+  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, cache_size_mb, proxy);
+    this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     this.initialized = true;
@@ -45,7 +45,7 @@ export class ImageFeatureExtractionModel implements IImageModel {
       throw Error("the model is not initialized");
     }
     // @ts-ignore
-    let image = await Jimp.read(input);
+    const image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
     const lastHiddenState = await this.runInference(tensor);
@@ -73,7 +73,7 @@ export class ImageFeatureExtractionModel implements IImageModel {
 
   private generateOutput = (lastHiddenState: ort.Tensor): number[] => {
     const tensor = new Tensor(lastHiddenState);
-    let result: number[] = [];
+    const result: number[] = [];
     for (let i = 0; i < lastHiddenState.dims[2]; i++) {
       result.push(0);
     }
@@ -89,7 +89,7 @@ export class ImageFeatureExtractionModel implements IImageModel {
   };
 
   private normalize = (input: number[]): number[] => {
-    let result: number[] = [];
+    const result: number[] = [];
     let sum = 0;
     for (let i = 0; i < input.length; i++) {
       sum += input[i] * input[i];

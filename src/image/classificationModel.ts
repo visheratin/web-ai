@@ -59,7 +59,7 @@ export class ClassificationModel implements IImageModel {
    *
    * @returns Time taken to initialize the model, in seconds.
    */
-  init = async (cacheSizeMB: number = 500, proxy: boolean = true): Promise<number> => {
+  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
     const start = new Date();
     this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
@@ -82,10 +82,11 @@ export class ClassificationModel implements IImageModel {
    *
    * @returns classification predictions.
    */
-  process = async (input: string | Buffer, num: number = 3): Promise<ClassificationResult> => {
+  process = async (input: string | Buffer, num = 3): Promise<ClassificationResult> => {
     if (!this.initialized || !this.preprocessor || !this.config) {
       throw Error("the model is not initialized");
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);

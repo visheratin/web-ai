@@ -13,49 +13,45 @@ export interface InitImageModelResult {
 }
 
 export class ImageModel {
-  static create = async (
-    id: string,
-    cache_size_mb: number = 500,
-    proxy: boolean = true,
-  ): Promise<InitImageModelResult> => {
-    for (let modelMetadata of models) {
+  static create = async (id: string, cacheSizeMB = 500, proxy = true): Promise<InitImageModelResult> => {
+    for (const modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
           case ImageModelType.Classification: {
-            let model = new ClassificationModel(modelMetadata);
-            const elapsed = await model.init(cache_size_mb, proxy);
+            const model = new ClassificationModel(modelMetadata);
+            const elapsed = await model.init(cacheSizeMB, proxy);
             return {
               model: model,
               elapsed: elapsed,
             };
           }
           case ImageModelType.ObjectDetection: {
-            let model = new ObjectDetectionModel(modelMetadata);
-            const elapsed = await model.init(cache_size_mb, proxy);
+            const model = new ObjectDetectionModel(modelMetadata);
+            const elapsed = await model.init(cacheSizeMB, proxy);
             return {
               model: model,
               elapsed: elapsed,
             };
           }
           case ImageModelType.Segmentation: {
-            let model = new SegmentationModel(modelMetadata);
-            const elapsed = await model.init(cache_size_mb, proxy);
+            const model = new SegmentationModel(modelMetadata);
+            const elapsed = await model.init(cacheSizeMB, proxy);
             return {
               model: model,
               elapsed: elapsed,
             };
           }
           case ImageModelType.Img2Img: {
-            let model = new Img2ImgModel(modelMetadata);
-            const elapsed = await model.init(cache_size_mb, proxy);
+            const model = new Img2ImgModel(modelMetadata);
+            const elapsed = await model.init(cacheSizeMB, proxy);
             return {
               model: model,
               elapsed: elapsed,
             };
           }
           case ImageModelType.FeatureExtraction: {
-            let model = new ImageFeatureExtractionModel(modelMetadata);
-            const elapsed = await model.init(cache_size_mb, proxy);
+            const model = new ImageFeatureExtractionModel(modelMetadata);
+            const elapsed = await model.init(cacheSizeMB, proxy);
             return {
               model: model,
               elapsed: elapsed,
