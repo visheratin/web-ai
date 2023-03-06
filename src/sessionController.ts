@@ -12,7 +12,7 @@ export const createSession = async (
   proxy: boolean,
 ): Promise<Session | Comlink.Remote<Session>> => {
   if (proxy && typeof document !== "undefined") {
-    const worker = new Worker(new URL("./session.js", import.meta.url));
+    const worker = new Worker(new URL("./session.js", import.meta.url), { type: "module" });
     const Channel = wrap<typeof Session>(worker);
     const session: Remote<Session> = await new Channel(cache_size_mb);
     await session.init(modelPath);
