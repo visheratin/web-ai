@@ -133,8 +133,7 @@ export const models: TextMetadata[] = [
       ["encoder", "hidden_states"],
       ["decoder", "logits"],
     ]),
-    tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
+    tokenizerPath: "https://huggingface.co/google/flan-t5-small/resolve/main/tokenizer.json",
     tags: ["general", "t5-flan"],
     referenceURL: "https://huggingface.co/google/flan-t5-small",
   },

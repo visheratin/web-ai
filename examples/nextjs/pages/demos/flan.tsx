@@ -1,19 +1,23 @@
 import Head from "next/head";
-import { useRef, useState } from "react";
-import { TextModel, Seq2SeqModel, TextModelType } from "@visheratin/web-ai";
-import ModelSelector from "../../components/modelSelect";
+import { useEffect, useRef, useState } from "react";
+import { TextModel, Seq2SeqModel } from "@visheratin/web-ai";
 
 export default function Summarization() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const opRef = useRef<HTMLInputElement>(null);
   const [output, setOutput] = useState({ value: "Here will be the output" });
 
   const [model, setModel] = useState({});
 
   const [status, setStatus] = useState({ message: "ready", processing: false });
 
-  const loadModel = async (id: string) => {
+  useEffect(() => {
+    loadModel();
+  }, []);
+
+  const loadModel = async () => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await TextModel.create(id);
+    const result = await TextModel.create("t5-flan-small");
     setModel({ instance: result.model as Seq2SeqModel });
     setStatus({ message: "ready", processing: false });
   };
@@ -26,10 +30,15 @@ export default function Summarization() {
     if (value === "" || value === undefined) {
       return;
     }
+    const operation = opRef.current?.value;
+    if (operation === "" || operation === undefined) {
+      return;
+    }
+    const input = operation + ": " + value;
     setStatus({ message: "processing", processing: true });
     let output = "";
     // @ts-ignore
-    for await (const piece of model.instance.processStream(value, "summarize")) {
+    for await (const piece of model.instance.processStream(input)) {
       output = output.concat(piece);
       output = output.replace(" .", ".");
       setOutput({ value: output });
@@ -40,7 +49,7 @@ export default function Summarization() {
   return (
     <>
       <Head>
-        <title>Web AI Next.js text summarization example</title>
+        <title>Web AI Next.js Flan T5 example</title>
         <meta name="description" content="Web AI Next.js classification example" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
@@ -48,7 +57,7 @@ export default function Summarization() {
         <div className="container">
           <div className="row">
             <div className="col">
-              <h1>Text summarization example</h1>
+              <h1>Flan T5 example</h1>
             </div>
           </div>
           <div className="row mb-2">
@@ -58,12 +67,14 @@ export default function Summarization() {
               </div>
             </div>
           </div>
-          <ModelSelector
-            tags={["summarization"]}
-            textType={TextModelType.Seq2Seq}
-            imageType={undefined}
-            callback={loadModel}
-          />
+          <div className="row mb-2">
+            <div className="col-md-1 col-sm-12">
+              <label className="col-form-label">Operation:</label>
+            </div>
+            <div className="col-md-11 col-sm-12">
+              <input ref={opRef} type="text" className="form-control" />
+            </div>
+          </div>
           <div className="row mb-2">
             <div className="col-sm-12">
               <textarea
@@ -80,7 +91,7 @@ export default function Summarization() {
             <div className="col-sm-6">
               <div className="d-grid gap-2">
                 <button className="btn btn-lg btn-primary" disabled={!model || status.processing} onClick={process}>
-                  Summarize
+                  Process
                 </button>
               </div>
             </div>

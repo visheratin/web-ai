@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { TextModel, TextFeatureExtractionModel, TextModelType } from "@visheratin/web-ai";
 import ModelSelector from "../../components/modelSelect";
 
