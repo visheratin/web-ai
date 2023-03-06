@@ -1,23 +1,20 @@
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { TextModel, TextFeatureExtractionModel } from "@visheratin/web-ai";
+import { TextModel, TextFeatureExtractionModel, TextModelType } from "@visheratin/web-ai";
+import ModelSelector from "../../components/modelSelect";
 
 export default function Classification() {
   const input1Ref = useRef<HTMLTextAreaElement>(null);
   const input2Ref = useRef<HTMLTextAreaElement>(null);
   const [result, setResult] = useState({ value: 0.0, className: "" });
 
-  useEffect(() => {
-    loadModel();
-  }, []);
-
   const [model, setModel] = useState({});
 
   const [status, setStatus] = useState({ message: "ready", processing: false });
 
-  const loadModel = async () => {
+  const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await TextModel.create("gtr-t5-quant");
+    const result = await TextModel.create(id);
     setModel({ instance: result.model as TextFeatureExtractionModel });
     setStatus({ message: "ready", processing: false });
   };
@@ -98,6 +95,12 @@ export default function Classification() {
               </div>
             </div>
           </div>
+          <ModelSelector
+            tags={undefined}
+            textType={TextModelType.FeatureExtraction}
+            imageType={undefined}
+            callback={loadModel}
+          />
           <div className="row mb-2">
             <div className="col-sm-12">
               <textarea

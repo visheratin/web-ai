@@ -1,7 +1,8 @@
 import Jimp from "jimp";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { ImageModel, ClassificationModel, ClassificationPrediction } from "@visheratin/web-ai";
+import { ImageModel, ClassificationModel, ClassificationPrediction, ImageModelType } from "@visheratin/web-ai";
+import ModelSelector from "../../components/modelSelect";
 
 export default function Classification() {
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -14,7 +15,7 @@ export default function Classification() {
     aspectRatio: 1,
   });
 
-  const setImageSize = (aspectRatio: number = 1) => {
+  const setImageSize = (aspectRatio = 1) => {
     if (imageContainerRef.current) {
       let canvasSize = imageContainerRef.current.offsetWidth - 11;
       canvasSize = canvasSize > 800 ? 800 : canvasSize;
@@ -28,7 +29,6 @@ export default function Classification() {
 
   useEffect(() => {
     setImageSize();
-    loadModel();
   }, []);
 
   const [predictions, setPredictions] = useState({
@@ -39,9 +39,9 @@ export default function Classification() {
 
   const [status, setStatus] = useState({ message: "ready", processing: false });
 
-  const loadModel = async () => {
+  const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await ImageModel.create("efficientformer-l1-classification-quant");
+    const result = await ImageModel.create(id);
     setModel({ instance: result.model as ClassificationModel });
     setStatus({ message: "ready", processing: false });
   };
@@ -51,7 +51,7 @@ export default function Classification() {
    */
   const selectFileImage = () => {
     if (fileSelectRef.current && fileSelectRef.current.files && fileSelectRef.current.files[0]) {
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = async () => {
         loadImage(reader.result);
       };
@@ -66,14 +66,14 @@ export default function Classification() {
    */
   const loadImage = async (src: any) => {
     setStatus({ message: "processing the image", processing: true });
-    var imageBuffer = await Jimp.read(src);
+    const imageBuffer = await Jimp.read(src);
     setImageSize(imageBuffer.bitmap.height / imageBuffer.bitmap.width);
     const imageData = new ImageData(
       new Uint8ClampedArray(imageBuffer.bitmap.data),
       imageBuffer.bitmap.width,
       imageBuffer.bitmap.height,
     );
-    let c = document.createElement("canvas");
+    const c = document.createElement("canvas");
     c.width = imageBuffer.bitmap.width;
     c.height = imageBuffer.bitmap.height;
     const ctx = c.getContext("2d");
@@ -107,6 +107,12 @@ export default function Classification() {
               </div>
             </div>
           </div>
+          <ModelSelector
+            tags={undefined}
+            textType={undefined}
+            imageType={ImageModelType.Classification}
+            callback={loadModel}
+          />
           <div className="row">
             <div className="col-md-6 col-sm-12 mb-2">
               <div ref={imageContainerRef} style={{ position: "relative", height: displayDims.height }}>

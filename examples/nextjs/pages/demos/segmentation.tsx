@@ -2,6 +2,7 @@ import Jimp from "jimp";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { ImageModel, SegmentationModel, ImageModelType } from "@visheratin/web-ai";
+import ModelSelector from "../../components/modelSelect";
 
 export default function Segmentation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -15,7 +16,7 @@ export default function Segmentation() {
     aspectRatio: 1,
   });
 
-  const setCanvasSize = (aspectRatio: number = 1) => {
+  const setCanvasSize = (aspectRatio = 1) => {
     if (canvasRef.current && canvasContainerRef.current) {
       let canvasSize = canvasContainerRef.current.offsetWidth - 11;
       canvasSize = canvasSize > 800 ? 800 : canvasSize;
@@ -31,7 +32,6 @@ export default function Segmentation() {
 
   useEffect(() => {
     setCanvasSize();
-    loadModel();
   }, []);
 
   const [model, setModel] = useState(
@@ -46,9 +46,9 @@ export default function Segmentation() {
 
   const [status, setStatus] = useState({ message: "ready", processing: false });
 
-  const loadModel = async () => {
+  const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await ImageModel.create("segformer-b0-segmentation-quant");
+    const result = await ImageModel.create(id);
     setModel(result.model as SegmentationModel);
     setStatus({ message: "ready", processing: false });
   };
@@ -58,7 +58,7 @@ export default function Segmentation() {
    */
   const selectFileImage = () => {
     if (fileSelectRef.current && fileSelectRef.current.files && fileSelectRef.current.files[0]) {
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = async () => {
         loadImage(reader.result);
       };
@@ -90,14 +90,14 @@ export default function Segmentation() {
    */
   const loadImage = async (src: any) => {
     setStatus({ processing: true, message: "processing the image" });
-    var imageBuffer = await Jimp.read(src);
+    const imageBuffer = await Jimp.read(src);
     setCanvasSize(imageBuffer.bitmap.height / imageBuffer.bitmap.width);
     const imageData = new ImageData(
       new Uint8ClampedArray(imageBuffer.bitmap.data),
       imageBuffer.bitmap.width,
       imageBuffer.bitmap.height,
     );
-    let c = document.createElement("canvas");
+    const c = document.createElement("canvas");
     c.width = imageBuffer.bitmap.width;
     c.height = imageBuffer.bitmap.height;
     const ctx = c.getContext("2d");
@@ -107,7 +107,7 @@ export default function Segmentation() {
     const result = await model.process(src);
     console.log(`Inference finished in ${result.elapsed} seconds.`);
     const canvas = canvasRef.current;
-    var destCtx = canvas!.getContext("2d");
+    const destCtx = canvas!.getContext("2d");
     destCtx!.globalAlpha = 0.4;
     destCtx!.drawImage(
       result.canvas,
@@ -144,6 +144,12 @@ export default function Segmentation() {
               </div>
             </div>
           </div>
+          <ModelSelector
+            tags={undefined}
+            textType={undefined}
+            imageType={ImageModelType.Segmentation}
+            callback={loadModel}
+          />
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div ref={canvasContainerRef} style={{ position: "relative", height: displayDims.height }}>

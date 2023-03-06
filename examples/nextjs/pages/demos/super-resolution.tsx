@@ -1,8 +1,9 @@
 import Jimp from "jimp";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { ImageModel, ClassificationModel, ClassificationPrediction } from "@visheratin/web-ai";
+import { ImageModel, ClassificationModel, ClassificationPrediction, ImageModelType } from "@visheratin/web-ai";
 import { Img2ImgModel } from "@visheratin/web-ai";
+import ModelSelector from "../../components/modelSelect";
 
 export default function SuperResolution() {
   const inImageRef = useRef<HTMLImageElement>(null);
@@ -17,7 +18,7 @@ export default function SuperResolution() {
     aspectRatio: 1,
   });
 
-  const setImageSize = (aspectRatio: number = 1) => {
+  const setImageSize = (aspectRatio = 1) => {
     if (inImageContainerRef.current) {
       let imgSize = inImageContainerRef.current.offsetWidth - 11;
       imgSize = imgSize > 800 ? 800 : imgSize;
@@ -31,16 +32,15 @@ export default function SuperResolution() {
 
   useEffect(() => {
     setImageSize();
-    loadModel();
   }, []);
 
   const [model, setModel] = useState({});
 
   const [status, setStatus] = useState({ message: "ready", processing: false });
 
-  const loadModel = async () => {
+  const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await ImageModel.create("superres-small-quant");
+    const result = await ImageModel.create(id);
     setModel({ instance: result.model as Img2ImgModel });
     setStatus({ message: "ready", processing: false });
   };
@@ -51,7 +51,7 @@ export default function SuperResolution() {
   const selectFileImage = () => {
     if (fileSelectRef.current && fileSelectRef.current.files && fileSelectRef.current.files[0]) {
       inImageRef.current!.src = URL.createObjectURL(fileSelectRef.current.files[0]);
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = async () => {
         loadImage(reader.result as ArrayBuffer);
       };
@@ -62,7 +62,7 @@ export default function SuperResolution() {
   const loadImage = async (fileData: ArrayBuffer) => {
     setStatus({ message: "processing the image", processing: true });
     // @ts-ignore
-    var imageBuffer = await Jimp.read(fileData);
+    const imageBuffer = await Jimp.read(fileData);
     setImageSize(imageBuffer.bitmap.height / imageBuffer.bitmap.width);
     // @ts-ignore
     const restored = await model.instance.process(fileData, 800);
@@ -101,6 +101,12 @@ export default function SuperResolution() {
               </div>
             </div>
           </div>
+          <ModelSelector
+            tags={["superres"]}
+            textType={undefined}
+            imageType={ImageModelType.Img2Img}
+            callback={loadModel}
+          />
           <div className="row">
             <div className="col-md-6 col-sm-12 mb-2">
               <div ref={inImageContainerRef} style={{ position: "relative", height: displayDims.height }}>

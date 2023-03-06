@@ -11,6 +11,9 @@ const nextConfig = {
     config.plugins.push(
       new NodePolyfillPlugin(),
     );
+    config.experiments = {
+      asyncWebAssembly: true,
+    };
     return config;
   },
 }

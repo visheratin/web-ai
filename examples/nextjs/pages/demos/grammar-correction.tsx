@@ -1,7 +1,8 @@
 import Head from "next/head";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { TextModel, Seq2SeqModel } from "@visheratin/web-ai";
+import { ChangeEvent, useRef, useState } from "react";
+import { TextModel, Seq2SeqModel, TextModelType } from "@visheratin/web-ai";
 import { split } from "sentence-splitter";
+import ModelSelector from "../../components/modelSelect";
 
 interface SentencePart {
   type: string;
@@ -11,21 +12,17 @@ interface SentencePart {
 const Diff = require("diff");
 
 export default function Classification() {
-  const [status, setStatus] = useState({ message: "ready", processing: false });
+  const [status, setStatus] = useState({ message: "select the model", processing: false });
   const [output, setOutput] = useState({ value: "Here will be the output" });
   const [diff, setDiff] = useState({ value: "" });
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [inputTimeout, setInputTimeout] = useState({ value: setTimeout(() => {}, 10) });
 
-  useEffect(() => {
-    loadModel();
-  }, []);
-
   const [model, setModel] = useState({});
 
-  const loadModel = async () => {
+  const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await TextModel.create("grammar-t5-efficient-mini-quant");
+    const result = await TextModel.create(id);
     setModel({ instance: result.model as Seq2SeqModel });
     setStatus({ message: "ready", processing: false });
   };
@@ -35,16 +32,16 @@ export default function Classification() {
     if (inputTimeout.value) {
       clearTimeout(inputTimeout.value);
     }
-    let timeout = setTimeout(processInput, 750);
+    const timeout = setTimeout(processInput, 750);
     setInputTimeout({ value: timeout });
   };
 
   const splitText = (text: string): Array<SentencePart> => {
-    let parts = split(text);
-    let result: Array<SentencePart> = new Array<SentencePart>();
-    for (let part of parts) {
+    const parts = split(text);
+    const result: Array<SentencePart> = new Array<SentencePart>();
+    for (const part of parts) {
       if (part.type === "Sentence") {
-        for (let childNode of part.children) {
+        for (const childNode of part.children) {
           result.push({ type: childNode.type, value: childNode.value });
         }
       } else {
@@ -60,9 +57,9 @@ export default function Classification() {
       return;
     }
     setStatus({ message: "processing", processing: true });
-    let textParts = splitText(value);
+    const textParts = splitText(value);
     let output = "";
-    for (let part of textParts) {
+    for (const part of textParts) {
       if (part.type === "Str") {
         if (part.value.length < 2) {
           output = output.concat(part.value);
@@ -119,6 +116,12 @@ export default function Classification() {
               </div>
             </div>
           </div>
+          <ModelSelector
+            tags={["grammar"]}
+            textType={TextModelType.Seq2Seq}
+            imageType={undefined}
+            callback={loadModel}
+          />
           <div className="row mb-2">
             <div className="col-sm-12">
               <textarea

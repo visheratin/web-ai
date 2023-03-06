@@ -1,22 +1,19 @@
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { TextModel, Seq2SeqModel } from "@visheratin/web-ai";
+import { TextModel, Seq2SeqModel, ImageModelType, TextModelType } from "@visheratin/web-ai";
+import ModelSelector from "../../components/modelSelect";
 
 export default function Summarization() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [output, setOutput] = useState({ value: "Here will be the output" });
 
-  useEffect(() => {
-    loadModel();
-  }, []);
-
   const [model, setModel] = useState({});
 
   const [status, setStatus] = useState({ message: "ready", processing: false });
 
-  const loadModel = async () => {
+  const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await TextModel.create("summarization-cnn-dailymail-quant");
+    const result = await TextModel.create(id);
     setModel({ instance: result.model as Seq2SeqModel });
     setStatus({ message: "ready", processing: false });
   };
@@ -61,6 +58,12 @@ export default function Summarization() {
               </div>
             </div>
           </div>
+          <ModelSelector
+            tags={["summarization"]}
+            textType={TextModelType.Seq2Seq}
+            imageType={undefined}
+            callback={loadModel}
+          />
           <div className="row mb-2">
             <div className="col-sm-12">
               <textarea

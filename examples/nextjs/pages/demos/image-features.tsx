@@ -1,7 +1,8 @@
 import Jimp from "jimp";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { ImageModel, ImageFeatureExtractionModel } from "@visheratin/web-ai";
+import { ImageModel, ImageFeatureExtractionModel, ImageModelType } from "@visheratin/web-ai";
+import ModelSelector from "../../components/modelSelect";
 
 export default function ImageFeatures() {
   const imageContainer1Ref = useRef<HTMLDivElement>(null);
@@ -27,7 +28,7 @@ export default function ImageFeatures() {
     aspectRatio: 1,
   });
 
-  const setImageSize = (first: boolean, aspectRatio: number = 1) => {
+  const setImageSize = (first: boolean, aspectRatio = 1) => {
     if (first) {
       if (imageContainer1Ref.current) {
         let canvasSize = imageContainer1Ref.current.offsetWidth - 11;
@@ -54,16 +55,15 @@ export default function ImageFeatures() {
   useEffect(() => {
     setImageSize(true);
     setImageSize(false);
-    loadModel();
   }, []);
 
   const [model, setModel] = useState({});
 
   const [status, setStatus] = useState({ message: "ready", processing: false });
 
-  const loadModel = async () => {
+  const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await ImageModel.create("efficientformer-l3-feature-quant");
+    const result = await ImageModel.create(id);
     setModel({ instance: result.model as ImageFeatureExtractionModel });
     setStatus({ message: "ready", processing: false });
   };
@@ -74,7 +74,7 @@ export default function ImageFeatures() {
   const selectFileImage = (first: boolean) => {
     if (first) {
       if (fileSelect1Ref.current && fileSelect1Ref.current.files && fileSelect1Ref.current.files[0]) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = async () => {
           const data = reader.result as ArrayBuffer;
           setImageData1(data);
@@ -84,7 +84,7 @@ export default function ImageFeatures() {
       }
     } else {
       if (fileSelect2Ref.current && fileSelect2Ref.current.files && fileSelect2Ref.current.files[0]) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = async () => {
           const data = reader.result as ArrayBuffer;
           setImageData2(data);
@@ -101,14 +101,14 @@ export default function ImageFeatures() {
    * @param src can be either URL or array buffer
    */
   const loadImage = async (first: boolean, src: any) => {
-    var imageBuffer = await Jimp.read(src);
+    const imageBuffer = await Jimp.read(src);
     setImageSize(first, imageBuffer.bitmap.height / imageBuffer.bitmap.width);
     const imageData = new ImageData(
       new Uint8ClampedArray(imageBuffer.bitmap.data),
       imageBuffer.bitmap.width,
       imageBuffer.bitmap.height,
     );
-    let c = document.createElement("canvas");
+    const c = document.createElement("canvas");
     c.width = imageBuffer.bitmap.width;
     c.height = imageBuffer.bitmap.height;
     const ctx = c.getContext("2d");
@@ -178,6 +178,12 @@ export default function ImageFeatures() {
               </div>
             </div>
           </div>
+          <ModelSelector
+            tags={undefined}
+            textType={undefined}
+            imageType={ImageModelType.FeatureExtraction}
+            callback={loadModel}
+          />
           <div className="row">
             <div className="col-md-6 col-sm-12 mb-2">
               <div className="row">

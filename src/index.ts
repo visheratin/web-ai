@@ -27,3 +27,4 @@ export {
   ImageFeatureExtractionModel,
   ImageFeatureExtractionResult,
 } from "./image";
+export { Metadata } from "./metadata";

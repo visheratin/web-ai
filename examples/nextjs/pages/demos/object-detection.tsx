@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Jimp from "jimp";
 import { useEffect, useRef, useState } from "react";
-import { ImageModel, ObjectDetectionModel, ObjectDetectionPrediction } from "@visheratin/web-ai";
+import { ImageModel, ImageModelType, ObjectDetectionModel, ObjectDetectionPrediction } from "@visheratin/web-ai";
+import ModelSelector from "../../components/modelSelect";
 
 export default function Classification() {
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -16,7 +17,7 @@ export default function Classification() {
     aspectRatio: 1,
   });
 
-  const setImageSize = (aspectRatio: number = 1): number[] => {
+  const setImageSize = (aspectRatio = 1): number[] => {
     if (imageContainerRef.current) {
       let canvasSize = imageContainerRef.current.offsetWidth - 11;
       canvasSize = canvasSize > 800 ? 800 : canvasSize;
@@ -34,7 +35,6 @@ export default function Classification() {
 
   useEffect(() => {
     setImageSize();
-    loadModel();
   }, []);
 
   const [predictions, setPredictions] = useState({
@@ -43,9 +43,9 @@ export default function Classification() {
 
   const [model, setModel] = useState({});
 
-  const loadModel = async () => {
+  const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await ImageModel.create("yolos-tiny-quant");
+    const result = await ImageModel.create(id);
     setModel({ instance: result.model as ObjectDetectionModel });
     setStatus({ message: "ready", processing: false });
   };
@@ -57,7 +57,7 @@ export default function Classification() {
    */
   const selectFileImage = () => {
     if (fileSelectRef.current && fileSelectRef.current.files && fileSelectRef.current.files[0]) {
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = async () => {
         loadImage(reader.result);
       };
@@ -75,14 +75,14 @@ export default function Classification() {
     while (svgRef.current!.firstChild) {
       svgRef.current!.removeChild(svgRef.current!.firstChild);
     }
-    var imageBuffer = await Jimp.read(src);
+    const imageBuffer = await Jimp.read(src);
     const sizes = setImageSize(imageBuffer.bitmap.height / imageBuffer.bitmap.width);
     const imageData = new ImageData(
       new Uint8ClampedArray(imageBuffer.bitmap.data),
       imageBuffer.bitmap.width,
       imageBuffer.bitmap.height,
     );
-    let c = document.createElement("canvas");
+    const c = document.createElement("canvas");
     c.width = imageBuffer.bitmap.width;
     c.height = imageBuffer.bitmap.height;
     const ctx = c.getContext("2d");
@@ -91,8 +91,8 @@ export default function Classification() {
     // @ts-ignore
     const result = await model.instance.process(src);
     console.log(`Inference finished in ${result.elapsed} seconds.`);
-    for (let object of result.objects) {
-      var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    for (const object of result.objects) {
+      const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
       rect.setAttributeNS(null, "x", (sizes[0] * object.x).toString());
       rect.setAttributeNS(null, "y", (sizes[1] * object.y).toString());
       rect.setAttributeNS(null, "width", (sizes[0] * object.width).toString());
@@ -129,6 +129,12 @@ export default function Classification() {
               </div>
             </div>
           </div>
+          <ModelSelector
+            tags={undefined}
+            textType={undefined}
+            imageType={ImageModelType.ObjectDetection}
+            callback={loadModel}
+          />
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div ref={imageContainerRef} style={{ position: "relative", height: displayDims.height }}>
