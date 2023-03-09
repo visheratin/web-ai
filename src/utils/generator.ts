@@ -16,17 +16,13 @@ export async function* generate(
     const decoderOutput = await decoder.process(encoderOutput, decoderInput);
     const newTokenID = sampler(decoderOutput);
     yield newTokenID;
-    if (!decoderInput) {
-      decoderInput = new ort.Tensor("int64", new BigInt64Array([BigInt(newTokenID)]), [1, 1]);
-    } else {
-      const newInput = new ort.Tensor("int64", new BigInt64Array(decoderInput.data.length + 1), [
-        1,
-        decoderInput.data.length + 1,
-      ]);
-      newInput.data.set(decoderInput.data);
-      newInput.data[decoderInput.data.length] = BigInt(newTokenID);
-      decoderInput = newInput;
-    }
+    const newInput = new ort.Tensor("int64", new BigInt64Array(decoderInput.data.length + 1), [
+      1,
+      decoderInput.data.length + 1,
+    ]);
+    newInput.data.set(decoderInput.data);
+    newInput.data[decoderInput.data.length] = BigInt(newTokenID);
+    decoderInput = newInput;
     len += 1;
     if (
       (options.maxTokens && len === options.maxTokens) ||

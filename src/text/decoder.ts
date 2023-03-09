@@ -13,15 +13,20 @@ export class Decoder implements DecoderModel {
   }
 
   process = async (encoderOutput: ort.Tensor, decoderInput: ort.Tensor): Promise<ort.Tensor> => {
-    const attentionTensor = new ort.Tensor("int64", new BigInt64Array(encoderOutput.dims[1]).fill(1n), [
-      1,
-      encoderOutput.dims[1],
-    ]);
     const decoderFeeds = {
       input_ids: decoderInput,
-      encoder_attention_mask: attentionTensor,
       encoder_hidden_states: encoderOutput,
     };
+    if (this.session.ortSession) {
+      const inputNames = await this.session.inputNames();
+      if (inputNames.includes("encoder_attention_mask")) {
+        const attentionTensor = new ort.Tensor("int64", new BigInt64Array(encoderOutput.dims[1]).fill(1n), [
+          1,
+          encoderOutput.dims[1],
+        ]);
+        decoderFeeds["encoder_attention_mask"] = attentionTensor;
+      }
+    }
     const output = await this.session.run(decoderFeeds);
     const result = output[this.outputName];
     return result;

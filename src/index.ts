@@ -28,3 +28,4 @@ export {
   ImageFeatureExtractionResult,
 } from "./image";
 export { Metadata } from "./metadata";
+export { SessionParameters, SessionParams } from "./session";

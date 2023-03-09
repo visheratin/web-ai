@@ -9,6 +9,16 @@ export const clearCache = async () => {
   await localforage.clear();
 };
 
+export interface SessionParameters {
+  numThreads: number;
+  executionProviders: string[];
+}
+
+export const SessionParams: SessionParameters = {
+  numThreads: 0,
+  executionProviders: ["wasm"],
+};
+
 export class Session {
   ortSession: ort.InferenceSession | undefined;
 
@@ -24,6 +34,7 @@ export class Session {
   }
 
   init = async (modelPath: string) => {
+    ort.env.wasm.numThreads = SessionParams.numThreads;
     let modelData: ArrayBuffer = new ArrayBuffer(0);
     try {
       const cachedData = await localforage.getItem(modelPath);
@@ -38,7 +49,7 @@ export class Session {
       modelData = await this.fetchData(modelPath);
     }
     const session = await ort.InferenceSession.create(modelData, {
-      executionProviders: ["wasm"],
+      executionProviders: SessionParams.executionProviders,
       graphOptimizationLevel: "all",
       executionMode: "parallel",
     });
