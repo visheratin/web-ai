@@ -41,6 +41,7 @@ export default function Segmentation() {
       modelPath: "",
       configPath: "",
       preprocessorPath: "",
+      memEstimateMB: 0,
     }),
   );
 
