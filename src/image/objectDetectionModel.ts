@@ -7,7 +7,7 @@ import Preprocessor from "./preprocessor";
 import PreprocessorConfig from "./preprocessorConfig";
 import { softmax } from "./utils";
 import { IImageModel, ImageProcessingResult } from "./interfaces";
-import { Session } from "../session";
+import { Session, SessionParams } from "../session";
 import * as Comlink from "comlink";
 
 export type ObjectDetectionPrediction = {
@@ -32,6 +32,12 @@ export class ObjectDetectionModel implements IImageModel {
   private session?: Session | Comlink.Remote<Session>;
 
   constructor(metadata: ImageMetadata) {
+    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
+      throw new Error(
+        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
+          ${SessionParams.memoryLimitMB} MB.`,
+      );
+    }
     this.metadata = metadata;
     this.initialized = false;
   }

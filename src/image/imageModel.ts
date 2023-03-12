@@ -1,6 +1,6 @@
 import { ClassificationModel } from "./classificationModel";
 import { ImageFeatureExtractionModel } from "./featureExtractionModel";
-import { Img2ImgModel } from "./img2img";
+import { Img2ImgModel } from "./img2imgModel";
 import { IImageModel } from "./interfaces";
 import { models } from "./models";
 import { ImageModelType } from "./modelType";

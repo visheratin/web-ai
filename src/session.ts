@@ -12,11 +12,13 @@ export const clearCache = async () => {
 export interface SessionParameters {
   numThreads: number;
   executionProviders: string[];
+  memoryLimitMB: number;
 }
 
 export const SessionParams: SessionParameters = {
   numThreads: 0,
   executionProviders: ["wasm"],
+  memoryLimitMB: 0,
 };
 
 export class Session {

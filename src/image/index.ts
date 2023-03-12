@@ -6,5 +6,5 @@ export * from "./modelType";
 export * from "./models";
 export * from "./interfaces";
 export * from "./imageModel";
-export * from "./img2img";
+export * from "./img2imgModel";
 export * from "./featureExtractionModel";

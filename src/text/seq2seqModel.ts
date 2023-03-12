@@ -8,6 +8,7 @@ import * as ort from "onnxruntime-web";
 import { GenerationConfig } from "../utils/generationConfig";
 import { WasmTokenizer } from "@visheratin/tokenizers";
 import { loadTokenizer } from "./tokenizer";
+import { SessionParams } from "../session";
 
 export type Seq2SeqResult = TextProcessingResult & {
   text: string;
@@ -22,6 +23,12 @@ export class Seq2SeqModel implements ITextModel {
   private cache: Map<string, string>;
 
   constructor(metadata: TextMetadata) {
+    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
+      throw new Error(
+        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
+          ${SessionParams.memoryLimitMB} MB.`,
+      );
+    }
     this.metadata = metadata;
     this.initialized = false;
     this.cache = new Map<string, string>();

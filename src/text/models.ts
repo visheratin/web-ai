@@ -23,6 +23,7 @@ export const models: TextMetadata[] = [
     id: "grammar-t5-efficient-tiny",
     title: "T5 Efficient tiny",
     description: "",
+    memEstimateMB: 450,
     type: TextModelType.Seq2Seq,
     sizeMB: 113,
     modelPaths: new Map<string, string>([
@@ -48,6 +49,7 @@ export const models: TextMetadata[] = [
     id: "grammar-t5-efficient-tiny-quant",
     title: "T5 Efficient tiny quantized",
     description: "",
+    memEstimateMB: 200,
     type: TextModelType.Seq2Seq,
     sizeMB: 32,
     modelPaths: new Map<string, string>([
@@ -73,6 +75,7 @@ export const models: TextMetadata[] = [
     id: "grammar-t5-efficient-mini",
     title: "T5 Efficient mini",
     description: "",
+    memEstimateMB: 600,
     type: TextModelType.Seq2Seq,
     sizeMB: 197,
     modelPaths: new Map<string, string>([
@@ -98,6 +101,7 @@ export const models: TextMetadata[] = [
     id: "grammar-t5-efficient-mini-quant",
     title: "T5 Efficient mini quantized",
     description: "",
+    memEstimateMB: 250,
     type: TextModelType.Seq2Seq,
     sizeMB: 38,
     modelPaths: new Map<string, string>([
@@ -123,6 +127,7 @@ export const models: TextMetadata[] = [
     id: "t5-flan-small",
     title: "T5 Flan small",
     description: "",
+    memEstimateMB: 1000,
     type: TextModelType.Seq2Seq,
     sizeMB: 330,
     modelPaths: new Map<string, string>([
@@ -141,6 +146,7 @@ export const models: TextMetadata[] = [
     id: "summarization-cnn-dailymail",
     title: "T5 for text summarization",
     description: "",
+    memEstimateMB: 1100,
     type: TextModelType.Seq2Seq,
     sizeMB: 328,
     modelPaths: new Map<string, string>([
@@ -166,6 +172,7 @@ export const models: TextMetadata[] = [
     id: "summarization-cnn-dailymail-quant",
     title: "T5 for text summarization quantized",
     description: "",
+    memEstimateMB: 400,
     type: TextModelType.Seq2Seq,
     sizeMB: 63,
     modelPaths: new Map<string, string>([
@@ -191,6 +198,7 @@ export const models: TextMetadata[] = [
     id: "sentence-t5",
     title: "Sentence T5",
     description: "",
+    memEstimateMB: 1000,
     type: TextModelType.FeatureExtraction,
     sizeMB: 190,
     modelPaths: new Map<string, string>([
@@ -209,6 +217,7 @@ export const models: TextMetadata[] = [
     id: "sentence-t5-quant",
     title: "Sentence T5 quantized",
     description: "",
+    memEstimateMB: 400,
     type: TextModelType.FeatureExtraction,
     sizeMB: 79,
     modelPaths: new Map<string, string>([
@@ -230,6 +239,7 @@ export const models: TextMetadata[] = [
     id: "sentence-t5-large-quant",
     title: "Sentence T5 large quantized",
     description: "",
+    memEstimateMB: 1000,
     type: TextModelType.FeatureExtraction,
     sizeMB: 242,
     modelPaths: new Map<string, string>([
@@ -251,6 +261,7 @@ export const models: TextMetadata[] = [
     id: "gtr-t5",
     title: "GTR T5",
     description: "",
+    memEstimateMB: 1000,
     type: TextModelType.FeatureExtraction,
     sizeMB: 185,
     modelPaths: new Map<string, string>([
@@ -266,6 +277,7 @@ export const models: TextMetadata[] = [
     id: "gtr-t5-quant",
     title: "GTR T5 quantized",
     description: "",
+    memEstimateMB: 400,
     type: TextModelType.FeatureExtraction,
     sizeMB: 78,
     modelPaths: new Map<string, string>([
@@ -287,6 +299,7 @@ export const models: TextMetadata[] = [
     id: "gtr-t5-large-quant",
     title: "GTR T5 large quantized",
     description: "",
+    memEstimateMB: 1000,
     type: TextModelType.FeatureExtraction,
     sizeMB: 242,
     modelPaths: new Map<string, string>([
@@ -308,6 +321,7 @@ export const models: TextMetadata[] = [
     id: "mini-lm-v2",
     title: "Mini model for sentence embeddings",
     description: "",
+    memEstimateMB: 300,
     type: TextModelType.FeatureExtraction,
     sizeMB: 80,
     modelPaths: new Map<string, string>([
@@ -322,6 +336,7 @@ export const models: TextMetadata[] = [
     id: "mini-lm-v2-quant",
     title: "Quantized mini model for sentence embeddings",
     description: "",
+    memEstimateMB: 100,
     type: TextModelType.FeatureExtraction,
     sizeMB: 15,
     modelPaths: new Map<string, string>([

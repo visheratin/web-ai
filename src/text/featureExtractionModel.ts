@@ -5,7 +5,7 @@ import { Encoder } from "./encoder";
 import * as ort from "onnxruntime-web";
 import { Tensor } from "../tensor";
 import { ITextModel, TextProcessingResult } from "./interfaces";
-import { Session } from "../session";
+import { Session, SessionParams } from "../session";
 import { Remote } from "comlink";
 import { loadTokenizer } from "./tokenizer";
 
@@ -22,6 +22,12 @@ export class TextFeatureExtractionModel implements ITextModel {
   private cache: Map<string, number[]>;
 
   constructor(metadata: TextMetadata) {
+    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
+      throw new Error(
+        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
+          ${SessionParams.memoryLimitMB} MB.`,
+      );
+    }
     this.metadata = metadata;
     this.initialized = false;
     this.cache = new Map<string, number[]>();
