@@ -53,6 +53,14 @@ export default function Sidebar() {
               </Link>
             </li>
           </ul>
+          <h5>Multimodal models</h5>
+          <ul className="nav flex-column">
+            <li className="nav-item">
+              <Link href="/demos/zero-shot" className="nav-link active">
+                Zero-shot classification
+              </Link>
+            </li>
+          </ul>
         </div>
       </nav>
     </>

@@ -120,6 +120,7 @@ export default function Classification() {
             tags={["grammar"]}
             textType={TextModelType.Seq2Seq}
             imageType={undefined}
+            multimodalType={undefined}
             callback={loadModel}
           />
           <div className="row mb-2">

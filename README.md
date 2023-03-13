@@ -44,6 +44,12 @@ The library is under active development. If something does not work correctly, p
 
   ![Image-to-image example](/images/img2img.jpg)
 
+### Multimodal models
+
+This type of models combines several types of data (e.g., image and text) to produce the desired output.
+
+- Zero-shot image classification (`MultimodalModelType.ZeroShotClassification`). These models classify images based on arbitrary classes without additional training.
+
 ## Installation
 
 The library can be installed via `npm`:
@@ -284,6 +290,18 @@ for (let item of output.results) {
 }
 ```
 
+### Multimodal models
+
+`ZeroShotClassification` models output an array of predicted classes along with the confidence scores in range [0,1] sorted by confidence in the descending order. When running the `process()` method, you must specify the image and the list of classes:
+
+```TypeScript
+const input = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Georgia5and120loop.jpg/640px-Georgia5and120loop.jpg"
+const output = await model.process(input, ["road", "street", "car", "forest"])
+for (let item of output.results) {
+  console.log(item.class, item.confidence)
+}
+```
+
 ## Built-in models
 
 ### Text models
@@ -354,10 +372,13 @@ for (let item of output.results) {
 - `superres-compressed-x4` - the model for 4x super-resolution of compressed images (43 MB). The model not only increases the image resolution, but also improves its quality. Be aware that the image generation with this model is quite slow - 50+ seconds, depending on hardware and image size.
 - `superres-compressed-x4-quant` - minified (quantized) version of the `superres-compressed-x4` model (10 MB).
 
+### Multimodal models
+
+- `clip-base` - high-quality model for zero-shot classification (370 MB).
+- `clip-base-quant` - minified (quantized) version of the `clip-base` model (102 MB).
+
 ## Future development
 
 - Add examples for popular web frameworks.
-- Improve grammar correction model.
-- Extend text models beyond T5.
 - Distil [Flan-T5-small](https://huggingface.co/google/flan-t5-small) model to make it more usable in the browser.
 - Add audio models ([Whisper-small](https://huggingface.co/openai/whisper-small)).

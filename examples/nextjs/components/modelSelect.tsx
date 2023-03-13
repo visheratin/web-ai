@@ -1,10 +1,19 @@
 import { useRef, useState } from "react";
-import { ImageModelType, ListImageModels, ListTextModels, Metadata, TextModelType } from "@visheratin/web-ai";
+import {
+  ImageModelType,
+  ListImageModels,
+  ListTextModels,
+  Metadata,
+  TextModelType,
+  MultimodalModelType,
+  ListMultimodalModels,
+} from "@visheratin/web-ai";
 
 interface ModelSelectorProps {
   tags: string[] | undefined;
-  imageType: ImageModelType | undefined;
-  textType: TextModelType | undefined;
+  imageType?: ImageModelType;
+  textType?: TextModelType;
+  multimodalType?: MultimodalModelType;
   callback: (id: string) => void;
 }
 
@@ -22,6 +31,11 @@ export default function ModelSelector(props: ModelSelectorProps) {
       if (props.textType !== undefined) {
         const models = ListTextModels(props.tags, props.textType);
         setMetadata({ models: models });
+      } else {
+        if (props.multimodalType !== undefined) {
+          const models = ListMultimodalModels(props.tags, props.multimodalType);
+          setMetadata({ models: models });
+        }
       }
     }
   });

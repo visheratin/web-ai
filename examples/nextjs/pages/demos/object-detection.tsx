@@ -133,6 +133,7 @@ export default function Classification() {
             tags={undefined}
             textType={undefined}
             imageType={ImageModelType.ObjectDetection}
+            multimodalType={undefined}
             callback={loadModel}
           />
           <div className="row">

@@ -1,18 +1,28 @@
 import Jimp from "jimp";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { ImageModel, ClassificationModel, ClassificationPrediction, ImageModelType } from "@visheratin/web-ai";
+import {
+  ZeroShotClassificationModel,
+  MultimodalModel,
+  ClassificationPrediction,
+  MultimodalModelType,
+} from "@visheratin/web-ai";
 import ModelSelector from "../../components/modelSelect";
 
-export default function Classification() {
+export default function ZeroShotClassification() {
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const fileSelectRef = useRef<HTMLInputElement>(null);
+  const classTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const [displayDims, setDisplayDims] = useState({
     width: 0,
     height: 0,
     aspectRatio: 1,
+  });
+
+  const [imageData, setImageData] = useState({
+    data: new ArrayBuffer(0),
   });
 
   const setImageSize = (aspectRatio = 1) => {
@@ -41,8 +51,8 @@ export default function Classification() {
 
   const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
-    const result = await ImageModel.create(id);
-    setModel({ instance: result.model as ClassificationModel });
+    const result = await MultimodalModel.create(id);
+    setModel(result.model as ZeroShotClassificationModel);
     setStatus({ message: "ready", processing: false });
   };
 
@@ -65,7 +75,6 @@ export default function Classification() {
    * @param src can be either URL or array buffer
    */
   const loadImage = async (src: any) => {
-    setStatus({ message: "processing the image", processing: true });
     const imageBuffer = await Jimp.read(src);
     setImageSize(imageBuffer.bitmap.height / imageBuffer.bitmap.width);
     const imageData = new ImageData(
@@ -79,8 +88,14 @@ export default function Classification() {
     const ctx = c.getContext("2d");
     ctx!.putImageData(imageData, 0, 0);
     imageRef.current!.src = c.toDataURL("image/png");
+    setImageData({ data: src });
+  };
+
+  const process = async () => {
+    const classes = classTextAreaRef.current!.value.split("\n");
+    setStatus({ message: "processing the image", processing: true });
     // @ts-ignore
-    const result = await model.instance.process(src);
+    const result = await model.process(imageData.data, classes);
     console.log(`Inference finished in ${result.elapsed} seconds.`);
     setPredictions({ results: result.results });
     setStatus({ message: "processing finished", processing: false });
@@ -97,7 +112,7 @@ export default function Classification() {
         <div className="container">
           <div className="row">
             <div className="col">
-              <h2>Image classification</h2>
+              <h2>Zero-shot image classification</h2>
             </div>
           </div>
           <div className="row">
@@ -110,8 +125,8 @@ export default function Classification() {
           <ModelSelector
             tags={undefined}
             textType={undefined}
-            imageType={ImageModelType.Classification}
-            multimodalType={undefined}
+            imageType={undefined}
+            multimodalType={MultimodalModelType.ZeroShotClassification}
             callback={loadModel}
           />
           <div className="row">
@@ -147,20 +162,38 @@ export default function Classification() {
               )}
             </div>
             <div className="col-md-6 col-sm-12 mb-2">
-              <form action="#" onSubmit={(e) => e.preventDefault()}>
-                <h6>Select the image</h6>
-                <div className="row">
-                  <div className="mb-3">
-                    <input
-                      className="form-control"
-                      type="file"
-                      ref={fileSelectRef}
-                      onChange={selectFileImage}
-                      disabled={status.processing}
-                    />
-                  </div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <form action="#" onSubmit={(e) => e.preventDefault()}>
+                    <h6>Select the image</h6>
+                    <div className="row">
+                      <div className="mb-3">
+                        <input
+                          className="form-control"
+                          type="file"
+                          ref={fileSelectRef}
+                          onChange={selectFileImage}
+                          disabled={status.processing}
+                        />
+                      </div>
+                    </div>
+                  </form>
                 </div>
-              </form>
+                <div className="col-sm-12 mb-2">
+                  <h6>Set the classes</h6>
+                  <textarea
+                    ref={classTextAreaRef}
+                    className="form-control"
+                    rows={6}
+                    disabled={status.processing}
+                  ></textarea>
+                </div>
+                <div className="d-grid gap-2 col-md-6 col-sm-12 mx-auto">
+                  <button className="btn btn-primary" type="button" onClick={process} disabled={status.processing}>
+                    Process
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

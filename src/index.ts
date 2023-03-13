@@ -27,5 +27,13 @@ export {
   ImageFeatureExtractionModel,
   ImageFeatureExtractionResult,
 } from "./image";
+export {
+  MultimodalModel,
+  InitMultimodalModelResult,
+  ZeroShotClassificationModel,
+  MultimodalMetadata,
+  ListMultimodalModels,
+  MultimodalModelType,
+} from "./multimodal";
 export { Metadata } from "./metadata";
 export { SessionParameters, SessionParams } from "./session";

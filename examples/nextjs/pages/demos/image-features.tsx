@@ -182,6 +182,7 @@ export default function ImageFeatures() {
             tags={undefined}
             textType={undefined}
             imageType={ImageModelType.FeatureExtraction}
+            multimodalType={undefined}
             callback={loadModel}
           />
           <div className="row">
