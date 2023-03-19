@@ -9,13 +9,13 @@ export interface InitMultimodalModelResult {
 }
 
 export class MultimodalModel {
-  static create = async (id: string, cacheSizeMB = 500, proxy = true): Promise<InitMultimodalModelResult> => {
+  static create = async (id: string, proxy = true): Promise<InitMultimodalModelResult> => {
     for (const modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
           case MultimodalModelType.ZeroShotClassification: {
             const model = new ZeroShotClassificationModel(modelMetadata);
-            const elapsed = await model.init(cacheSizeMB, proxy);
+            const elapsed = await model.init(proxy);
             return {
               model: model,
               elapsed: elapsed,

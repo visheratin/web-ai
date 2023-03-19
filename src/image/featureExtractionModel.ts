@@ -8,6 +8,7 @@ import { IImageModel, ImageProcessingResult } from "./interfaces";
 import { Session, SessionParams } from "../session";
 import * as Comlink from "comlink";
 import { Tensor } from "../tensor";
+import { normalize } from "./utils";
 
 export type ImageFeatureExtractionResult = ImageProcessingResult & {
   result: number[];
@@ -35,9 +36,9 @@ export class ImageFeatureExtractionModel implements IImageModel {
    *
    * @returns Time taken to initialize the model, in seconds.
    */
-  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
+  init = async (proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
+    this.session = await createSession(this.metadata.modelPath, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     this.initialized = true;
@@ -91,19 +92,6 @@ export class ImageFeatureExtractionModel implements IImageModel {
     for (let i = 0; i < result.length; i++) {
       result[i] /= lastHiddenState.dims[1];
     }
-    return this.normalize(result);
-  };
-
-  private normalize = (input: number[]): number[] => {
-    const result: number[] = [];
-    let sum = 0;
-    for (let i = 0; i < input.length; i++) {
-      sum += input[i] * input[i];
-    }
-    sum = Math.sqrt(sum);
-    for (let i = 0; i < input.length; i++) {
-      result.push(input[i] / sum);
-    }
-    return result;
+    return normalize(result);
   };
 }

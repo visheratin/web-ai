@@ -50,9 +50,9 @@ export class Img2ImgModel implements IImageModel {
    *
    * @returns Time taken to initialize the model, in seconds.
    */
-  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
+  init = async (proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
+    this.session = await createSession(this.metadata.modelPath, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     this.initialized = true;

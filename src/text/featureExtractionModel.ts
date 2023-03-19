@@ -33,7 +33,7 @@ export class TextFeatureExtractionModel implements ITextModel {
     this.cache = new Map<string, number[]>();
   }
 
-  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
+  init = async (proxy = true): Promise<number> => {
     const start = new Date();
     const modelPath = this.metadata.modelPaths.get("encoder");
     if (!modelPath) {
@@ -43,11 +43,11 @@ export class TextFeatureExtractionModel implements ITextModel {
     if (!outputName) {
       throw new Error("output names do not have the 'encoder' path");
     }
-    const encoderSession = await createSession(modelPath, cacheSizeMB, proxy);
+    const encoderSession = await createSession(modelPath, proxy);
     this.model = new Encoder(encoderSession, outputName);
     const densePath = this.metadata.modelPaths.get("dense");
     if (densePath) {
-      this.dense = await createSession(densePath, cacheSizeMB, proxy);
+      this.dense = await createSession(densePath, proxy);
     }
     this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
     const end = new Date();

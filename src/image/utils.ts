@@ -12,3 +12,16 @@ export const softmax = (arr: number[]) => {
     );
   });
 };
+
+export const normalize = (input: number[]): number[] => {
+  const result: number[] = [];
+  let sum = 0;
+  for (let i = 0; i < input.length; i++) {
+    sum += input[i] * input[i];
+  }
+  sum = Math.sqrt(sum);
+  for (let i = 0; i < input.length; i++) {
+    result.push(input[i] / sum);
+  }
+  return result;
+};

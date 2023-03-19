@@ -4,12 +4,19 @@ import { createSession } from "../sessionController";
 import Jimp from "jimp";
 import Preprocessor from "../image/preprocessor";
 import PreprocessorConfig from "../image/preprocessorConfig";
-import { softmax } from "../image/utils";
+import { normalize, softmax } from "../image/utils";
 import { Session, SessionParams } from "../session";
 import * as Comlink from "comlink";
 import { WasmTokenizer } from "@visheratin/tokenizers";
 import { loadTokenizer } from "../text/tokenizer";
-import { ClassificationPrediction, ClassificationResult } from "../image/classificationModel";
+import { ClassificationPrediction } from "../image/classificationModel";
+import { ImageProcessingResult } from "../image";
+
+export type ZeroShotResult = ImageProcessingResult & {
+  results: ClassificationPrediction[][];
+  textFeatures: number[][];
+  imageFeatures: number[][];
+};
 
 export class ZeroShotClassificationModel {
   metadata: MultimodalMetadata;
@@ -29,9 +36,9 @@ export class ZeroShotClassificationModel {
     this.initialized = false;
   }
 
-  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
+  init = async (proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, cacheSizeMB, proxy);
+    this.session = await createSession(this.metadata.modelPath, proxy);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
@@ -41,35 +48,43 @@ export class ZeroShotClassificationModel {
     return elapsed;
   };
 
-  process = async (input: string | Buffer, classes: string[]): Promise<ClassificationResult> => {
+  process = async (inputs: string[] | Buffer[], classes: string[]): Promise<ZeroShotResult> => {
     if (!this.initialized || !this.preprocessor) {
       throw Error("the model is not initialized");
     }
     const start = new Date();
-    // @ts-ignore
-    const image = await Jimp.read(input);
-    const imageTensor = this.preprocessor.process(image);
+    const imageTensor = await this.prepareImagesTensor(inputs);
     const textTensors = await this.prepareClassTensors(classes);
-    const output = await this.runInference(imageTensor, textTensors[0], textTensors[1]);
+    const result = await this.runInference(imageTensor, textTensors[0], textTensors[1], classes);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    const res: ClassificationPrediction[] = new Array(classes.length).fill({
-      class: "unknown",
-      confidence: 0,
-    });
-    // @ts-ignore
-    const result = softmax(output.data);
-    for (let i = 0; i < output.data.length; i++) {
-      res[i] = {
-        class: classes[i],
-        confidence: result[i],
-      };
+    result.elapsed = elapsed;
+    return result;
+  };
+
+  prepareImagesTensor = async (inputs: string[] | Buffer[]): Promise<ort.Tensor> => {
+    if (!this.initialized || !this.preprocessor) {
+      throw Error("the model is not initialized");
     }
-    res.sort((a, b) => b.confidence - a.confidence);
-    return {
-      results: res,
-      elapsed: elapsed,
-    };
+    const tensors: ort.Tensor[] = new Array(inputs.length);
+    for (let i = 0; i < inputs.length; i++) {
+      // @ts-ignore
+      const image = await Jimp.read(inputs[i]);
+      tensors[i] = this.preprocessor.process(image);
+    }
+    const resultData = new Float32Array(tensors.length * tensors[0].data.length);
+    for (let i = 0; i < tensors.length; i++) {
+      for (let j = 0; j < tensors[0].data.length; j++) {
+        // @ts-ignore
+        resultData[i * tensors[0].data.length + j] = tensors[i].data[j];
+      }
+    }
+    return new ort.Tensor("float32", resultData, [
+      tensors.length,
+      tensors[0].dims[1],
+      tensors[0].dims[2],
+      tensors[0].dims[3],
+    ]);
   };
 
   prepareClassTensors = async (classes: string[]): Promise<ort.Tensor[]> => {
@@ -117,7 +132,8 @@ export class ZeroShotClassificationModel {
     imageInput: ort.Tensor,
     inputIDs: ort.Tensor,
     attentionMask: ort.Tensor,
-  ): Promise<ort.Tensor> => {
+    classes: string[],
+  ): Promise<ZeroShotResult> => {
     if (!this.initialized || !this.session) {
       throw Error("the model is not initialized");
     }
@@ -127,7 +143,62 @@ export class ZeroShotClassificationModel {
     feeds["attention_mask"] = attentionMask;
     const outputData = await this.session.run(feeds);
     const outputNames = await this.session.outputNames();
-    const output = outputData[outputNames[0]];
-    return output;
+
+    if (!outputNames.includes("logits_per_image")) {
+      throw Error("the model does not contain logits_per_image output");
+    }
+    const logits = outputData["logits_per_image"];
+    const result: ClassificationPrediction[][] = [];
+    for (let i = 0; i < logits.dims[0]; i++) {
+      const res: ClassificationPrediction[] = new Array(classes.length).fill({
+        class: "unknown",
+        confidence: 0,
+      });
+      // @ts-ignore
+      const sm = softmax(logits.data.slice(i * logits.dims[1], (i + 1) * logits.dims[1]));
+      for (let i = 0; i < sm.length; i++) {
+        res[i] = {
+          class: classes[i],
+          confidence: sm[i],
+        };
+      }
+      res.sort((a, b) => b.confidence - a.confidence);
+      result.push(res);
+    }
+
+    let imageEmbeds: number[][] = [];
+    if (outputNames.includes("image_embeds")) {
+      imageEmbeds = new Array(outputData["image_embeds"].dims[0]);
+      for (let i = 0; i < outputData["image_embeds"].dims[0]; i++) {
+        imageEmbeds[i] = new Array(outputData["image_embeds"].dims[1]);
+        for (let j = 0; j < outputData["image_embeds"].dims[1]; j++) {
+          imageEmbeds[i][j] = Number(outputData["image_embeds"].data[i * outputData["image_embeds"].dims[1] + j]);
+        }
+      }
+      for (let i = 0; i < imageEmbeds.length; i++) {
+        imageEmbeds[i] = normalize(imageEmbeds[i]);
+      }
+    }
+
+    let textEmbeds: number[][] = [];
+    if (outputNames.includes("text_embeds")) {
+      textEmbeds = new Array(outputData["text_embeds"].dims[0]);
+      for (let i = 0; i < outputData["text_embeds"].dims[0]; i++) {
+        textEmbeds[i] = new Array(outputData["text_embeds"].dims[1]);
+        for (let j = 0; j < outputData["text_embeds"].dims[1]; j++) {
+          textEmbeds[i][j] = Number(outputData["text_embeds"].data[i * outputData["text_embeds"].dims[1] + j]);
+        }
+      }
+      for (let i = 0; i < textEmbeds.length; i++) {
+        textEmbeds[i] = normalize(textEmbeds[i]);
+      }
+    }
+
+    return {
+      results: result,
+      imageFeatures: imageEmbeds,
+      textFeatures: textEmbeds,
+      elapsed: 0,
+    };
   };
 }

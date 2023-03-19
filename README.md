@@ -292,7 +292,7 @@ for (let item of output.results) {
 
 ### Multimodal models
 
-`ZeroShotClassification` models output an array of predicted classes along with the confidence scores in range [0,1] sorted by confidence in the descending order. When running the `process()` method, you must specify the image and the list of classes:
+`ZeroShotClassification` models output an array of predicted classes along with the confidence scores in range [0,1] sorted by confidence in the descending order. The output also includes feature vectors for input image and texts. These vectors are useful for analyzing similarity between images and classes. When running the `process()` method, you must specify the image and the list of classes:
 
 ```TypeScript
 const input = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Georgia5and120loop.jpg/640px-Georgia5and120loop.jpg"

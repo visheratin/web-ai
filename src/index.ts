@@ -31,6 +31,7 @@ export {
   MultimodalModel,
   InitMultimodalModelResult,
   ZeroShotClassificationModel,
+  ZeroShotResult,
   MultimodalMetadata,
   ListMultimodalModels,
   MultimodalModelType,

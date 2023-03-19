@@ -13,13 +13,13 @@ export interface InitImageModelResult {
 }
 
 export class ImageModel {
-  static create = async (id: string, cacheSizeMB = 500, proxy = true): Promise<InitImageModelResult> => {
+  static create = async (id: string, proxy = true): Promise<InitImageModelResult> => {
     for (const modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
           case ImageModelType.Classification: {
             const model = new ClassificationModel(modelMetadata);
-            const elapsed = await model.init(cacheSizeMB, proxy);
+            const elapsed = await model.init(proxy);
             return {
               model: model,
               elapsed: elapsed,
@@ -27,7 +27,7 @@ export class ImageModel {
           }
           case ImageModelType.ObjectDetection: {
             const model = new ObjectDetectionModel(modelMetadata);
-            const elapsed = await model.init(cacheSizeMB, proxy);
+            const elapsed = await model.init(proxy);
             return {
               model: model,
               elapsed: elapsed,
@@ -35,7 +35,7 @@ export class ImageModel {
           }
           case ImageModelType.Segmentation: {
             const model = new SegmentationModel(modelMetadata);
-            const elapsed = await model.init(cacheSizeMB, proxy);
+            const elapsed = await model.init(proxy);
             return {
               model: model,
               elapsed: elapsed,
@@ -43,7 +43,7 @@ export class ImageModel {
           }
           case ImageModelType.Img2Img: {
             const model = new Img2ImgModel(modelMetadata);
-            const elapsed = await model.init(cacheSizeMB, proxy);
+            const elapsed = await model.init(proxy);
             return {
               model: model,
               elapsed: elapsed,
@@ -51,7 +51,7 @@ export class ImageModel {
           }
           case ImageModelType.FeatureExtraction: {
             const model = new ImageFeatureExtractionModel(modelMetadata);
-            const elapsed = await model.init(cacheSizeMB, proxy);
+            const elapsed = await model.init(proxy);
             return {
               model: model,
               elapsed: elapsed,

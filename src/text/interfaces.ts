@@ -4,7 +4,7 @@ export interface ITextModel {
   metadata: TextMetadata;
   initialized: boolean;
 
-  init(cache_size_mb: number, proxy: boolean): Promise<number>;
+  init(proxy: boolean): Promise<number>;
   process(input: string): Promise<TextProcessingResult>;
 }
 

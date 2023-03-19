@@ -34,7 +34,7 @@ export class Seq2SeqModel implements ITextModel {
     this.cache = new Map<string, string>();
   }
 
-  init = async (cacheSizeMB = 500, proxy = true): Promise<number> => {
+  init = async (proxy = true): Promise<number> => {
     const start = new Date();
     const encoderPath = this.metadata.modelPaths.get("encoder");
     if (!encoderPath) {
@@ -44,7 +44,7 @@ export class Seq2SeqModel implements ITextModel {
     if (!encoderOutputName) {
       throw new Error("output names do not have the 'encoder' path");
     }
-    const encoderSession = await createSession(encoderPath, cacheSizeMB, proxy);
+    const encoderSession = await createSession(encoderPath, proxy);
     const decoderPath = this.metadata.modelPaths.get("decoder");
     if (!decoderPath) {
       throw new Error("model paths do not have the 'decoder' path");
@@ -53,7 +53,7 @@ export class Seq2SeqModel implements ITextModel {
     if (!decoderOutputName) {
       throw new Error("output names do not have the 'decoder' path");
     }
-    const decoderSession = await createSession(decoderPath, cacheSizeMB, proxy);
+    const decoderSession = await createSession(decoderPath, proxy);
     this.encoder = new Encoder(encoderSession, encoderOutputName);
     this.decoder = new Decoder(decoderSession, decoderOutputName);
     this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
