@@ -9,7 +9,7 @@ export default function Summarization() {
 
   const [model, setModel] = useState({});
 
-  const [status, setStatus] = useState({ message: "ready", processing: false });
+  const [status, setStatus] = useState({ message: "select and load the model", processing: false });
 
   useEffect(() => {
     loadModel();

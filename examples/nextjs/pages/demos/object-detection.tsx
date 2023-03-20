@@ -50,7 +50,7 @@ export default function Classification() {
     setStatus({ message: "ready", processing: false });
   };
 
-  const [status, setStatus] = useState({ message: "ready", processing: false });
+  const [status, setStatus] = useState({ message: "select and load the model", processing: false });
 
   /**
    * selectFileImage sets the image data from the file select field

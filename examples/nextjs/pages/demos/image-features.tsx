@@ -59,7 +59,7 @@ export default function ImageFeatures() {
 
   const [model, setModel] = useState({});
 
-  const [status, setStatus] = useState({ message: "ready", processing: false });
+  const [status, setStatus] = useState({ message: "select and load the model", processing: false });
 
   const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
