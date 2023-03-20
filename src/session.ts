@@ -21,7 +21,7 @@ export const SessionParams: SessionParameters = {
   executionProviders: ["wasm"],
   memoryLimitMB: 0,
   cacheSizeMB: 500,
-  wasmRoot: "https://edge-ai-models.s3.us-east-2.amazonaws.com/onnx-13/",
+  wasmRoot: "https://edge-ai-models.s3.us-east-2.amazonaws.com/onnx-14/",
   tokenizersPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/tokenizers.wasm",
 };
 
@@ -35,7 +35,6 @@ export class Session {
       name: "Web-AI",
       version: 1.0,
       driver: localforage.INDEXEDDB,
-      size: cacheSize,
       storeName: "model_storage",
     });
     this.cacheSize = cacheSize;

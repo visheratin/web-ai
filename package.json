@@ -1,6 +1,6 @@
 {
   "name": "@visheratin/web-ai",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Run modern deep learning models in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,7 +38,7 @@
     "@visheratin/tokenizers": "0.1.5",
     "comlink": "4.3.1",
     "localforage": "1.10.0",
-    "onnxruntime-web": "1.13.1",
+    "onnxruntime-web": "1.14.0",
     "pako": "2.1.0"
   },
   "peerDependencies": {
