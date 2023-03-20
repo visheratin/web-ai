@@ -126,10 +126,8 @@ export default function ImageFeatures() {
     }
     setStatus({ message: "processing", processing: true });
     // @ts-ignore
-    const result1 = await model.instance.process(imageData1);
-    // @ts-ignore
-    const result2 = await model.instance.process(imageData2);
-    const sim = cosineSim(result1.result, result2.result);
+    const output = await model.instance.process([imageData1, imageData2]);
+    const sim = cosineSim(output.result[0], output.result[1]);
     const result = Math.round((sim + Number.EPSILON) * 100) / 100;
     let className = "bg-info";
     if (result > 0.75) {

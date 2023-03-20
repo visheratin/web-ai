@@ -1,5 +1,4 @@
 export {
-  ITextModel,
   TextModel,
   TextProcessingResult,
   TextMetadata,
@@ -11,7 +10,6 @@ export {
   TextModelType,
 } from "./text";
 export {
-  IImageModel,
   ImageModel,
   ImageProcessingResult,
   Metadata as ImageMetadata,

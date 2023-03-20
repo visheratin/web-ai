@@ -1,14 +1,13 @@
 import { ClassificationModel } from "./classificationModel";
 import { ImageFeatureExtractionModel } from "./featureExtractionModel";
 import { Img2ImgModel } from "./img2imgModel";
-import { IImageModel } from "./interfaces";
 import { models } from "./models";
 import { ImageModelType } from "./modelType";
 import { ObjectDetectionModel } from "./objectDetectionModel";
 import { SegmentationModel } from "./segmentationModel";
 
 export interface InitImageModelResult {
-  model: IImageModel;
+  model: ImageModel;
   elapsed: number;
 }
 

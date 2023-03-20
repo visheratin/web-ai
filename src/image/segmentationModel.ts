@@ -1,51 +1,13 @@
-import Config from "./config";
-import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
-import { createSession } from "../sessionController";
 import Jimp from "jimp";
-import Preprocessor from "./preprocessor";
-import PreprocessorConfig from "./preprocessorConfig";
-import { IImageModel, ImageProcessingResult } from "./interfaces";
-import { Session, SessionParams } from "../session";
-import * as Comlink from "comlink";
+import { ImageProcessingResult } from "./interfaces";
+import { BaseImageModel } from "./base";
 
 type SegmentationResult = ImageProcessingResult & {
   canvas: HTMLCanvasElement;
 };
 
-export class SegmentationModel implements IImageModel {
-  metadata: ImageMetadata;
-  initialized: boolean;
-  private config?: Config;
-  private preprocessor?: Preprocessor;
-  private session?: Session | Comlink.Remote<Session>;
-
-  constructor(metadata: ImageMetadata) {
-    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
-      throw new Error(
-        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
-          ${SessionParams.memoryLimitMB} MB.`,
-      );
-    }
-    this.metadata = metadata;
-    this.initialized = false;
-  }
-
-  init = async (proxy = true): Promise<number> => {
-    const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, proxy);
-    const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
-    this.preprocessor = new Preprocessor(preprocessorConfig);
-    if (!this.metadata.configPath) {
-      throw Error("configPath is not defined");
-    }
-    this.config = await Config.fromFile(this.metadata.configPath);
-    this.initialized = true;
-    const end = new Date();
-    const elapsed = (end.getTime() - start.getTime()) / 1000;
-    return elapsed;
-  };
-
+export class SegmentationModel extends BaseImageModel {
   process = async (input: string | Buffer): Promise<SegmentationResult> => {
     if (!this.initialized || !this.preprocessor) {
       throw Error("the model is not initialized");

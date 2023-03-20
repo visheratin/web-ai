@@ -1,71 +1,41 @@
-import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
-import { createSession } from "../sessionController";
-import Jimp from "jimp";
-import Preprocessor from "./preprocessor";
-import PreprocessorConfig from "./preprocessorConfig";
-import { IImageModel, ImageProcessingResult } from "./interfaces";
-import { Session, SessionParams } from "../session";
-import * as Comlink from "comlink";
+import { ImageProcessingResult } from "./interfaces";
 import { Tensor } from "../tensor";
 import { normalize } from "./utils";
+import { BaseImageModel } from "./base";
+import { prepareImagesTensor } from "../utils/prepare";
 
 export type ImageFeatureExtractionResult = ImageProcessingResult & {
-  result: number[];
+  result: number[] | number[][];
 };
 
-export class ImageFeatureExtractionModel implements IImageModel {
-  metadata: ImageMetadata;
-  initialized: boolean;
-  private preprocessor?: Preprocessor;
-  private session?: Session | Comlink.Remote<Session>;
-
-  constructor(metadata: ImageMetadata) {
-    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
-      throw new Error(
-        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
-          ${SessionParams.memoryLimitMB} MB.`,
-      );
-    }
-    this.metadata = metadata;
-    this.initialized = false;
-  }
-
-  /**
-   * Initializes the model for running.
-   *
-   * @returns Time taken to initialize the model, in seconds.
-   */
-  init = async (proxy = true): Promise<number> => {
-    const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, proxy);
-    const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
-    this.preprocessor = new Preprocessor(preprocessorConfig);
-    this.initialized = true;
-    const end = new Date();
-    const elapsed = (end.getTime() - start.getTime()) / 1000;
-    return elapsed;
-  };
-
-  process = async (input: string | Buffer): Promise<ImageFeatureExtractionResult> => {
+export class ImageFeatureExtractionModel extends BaseImageModel {
+  process = async (inputs: string | ArrayBuffer | string[] | ArrayBuffer[]): Promise<ImageFeatureExtractionResult> => {
     if (!this.initialized || !this.preprocessor) {
       throw Error("the model is not initialized");
     }
-    // @ts-ignore
-    const image = await Jimp.read(input);
-    const tensor = this.preprocessor.process(image);
+    if (typeof inputs === "string") {
+      inputs = [inputs];
+    }
+    if (inputs instanceof ArrayBuffer) {
+      inputs = [inputs];
+    }
+    const tensor = await prepareImagesTensor(inputs, this);
     const start = new Date();
-    const lastHiddenState = await this.runInference(tensor);
-    const output = this.generateOutput(lastHiddenState);
+    const output = await this.runInference(tensor);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    return {
+    const result: ImageFeatureExtractionResult = {
       result: output,
       elapsed: elapsed,
     };
+    if (output.length === 1) {
+      result.result = output[0];
+    }
+    return result;
   };
 
-  private runInference = async (input: ort.Tensor): Promise<ort.Tensor> => {
+  private runInference = async (input: ort.Tensor): Promise<number[][]> => {
     if (!this.initialized || !this.session) {
       throw Error("the model is not initialized");
     }
@@ -75,7 +45,21 @@ export class ImageFeatureExtractionModel implements IImageModel {
     const outputData = await this.session.run(feeds);
     const outputNames = await this.session.outputNames();
     const output = outputData[outputNames[0]];
-    return output;
+    const result: number[][] = [];
+    let size = 1;
+    for (let i = 1; i < output.dims.length; i++) {
+      size *= output.dims[i];
+    }
+    for (let i = 0; i < output.dims[0]; i++) {
+      const partDims = output.dims.map((d) => d);
+      partDims[0] = 1;
+      const partData = output.data.slice(i * size, (i + 1) * size);
+      const part = new ort.Tensor("float32", partData, partDims);
+      // @ts-ignore
+      const res = this.generateOutput(part);
+      result.push(res);
+    }
+    return result;
   };
 
   private generateOutput = (lastHiddenState: ort.Tensor): number[] => {

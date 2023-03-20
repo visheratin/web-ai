@@ -1,12 +1,7 @@
-import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
-import { createSession } from "../sessionController";
 import Jimp from "jimp";
-import Preprocessor from "./preprocessor";
-import PreprocessorConfig from "./preprocessorConfig";
-import { IImageModel, ImageProcessingResult } from "./interfaces";
-import { Session, SessionParams } from "../session";
-import * as Comlink from "comlink";
+import { ImageProcessingResult } from "./interfaces";
+import { BaseImageModel } from "./base";
 
 /**
  * Output of the image-to-image model.
@@ -28,39 +23,7 @@ export type Img2ImgResult = ImageProcessingResult & {
  * @param metadata - information about the model.
  * @param initialized - flag indicating if the model was initialized.
  */
-export class Img2ImgModel implements IImageModel {
-  metadata: ImageMetadata;
-  initialized: boolean;
-  private preprocessor?: Preprocessor;
-  private session?: Session | Comlink.Remote<Session>;
-
-  constructor(metadata: ImageMetadata) {
-    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
-      throw new Error(
-        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
-          ${SessionParams.memoryLimitMB} MB.`,
-      );
-    }
-    this.metadata = metadata;
-    this.initialized = false;
-  }
-
-  /**
-   * Initializes the model for running.
-   *
-   * @returns Time taken to initialize the model, in seconds.
-   */
-  init = async (proxy = true): Promise<number> => {
-    const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, proxy);
-    const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
-    this.preprocessor = new Preprocessor(preprocessorConfig);
-    this.initialized = true;
-    const end = new Date();
-    const elapsed = (end.getTime() - start.getTime()) / 1000;
-    return elapsed;
-  };
-
+export class Img2ImgModel extends BaseImageModel {
   /**
    * Processes the image and generates the image from the input.
    *

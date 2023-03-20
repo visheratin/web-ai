@@ -1,36 +1,25 @@
 import { createSession } from "../sessionController";
 import { TextMetadata } from "./metadata";
-import { ITextModel, TextProcessingResult } from "./interfaces";
+import { TextProcessingResult } from "./interfaces";
 import { Encoder } from "./encoder";
 import { Decoder } from "./decoder";
 import { generate } from "../utils/generator";
 import * as ort from "onnxruntime-web";
 import { GenerationConfig } from "../utils/generationConfig";
-import { WasmTokenizer } from "@visheratin/tokenizers";
 import { loadTokenizer } from "./tokenizer";
-import { SessionParams } from "../session";
+import { BaseTextModel } from "./base";
 
 export type Seq2SeqResult = TextProcessingResult & {
   text: string;
 };
 
-export class Seq2SeqModel implements ITextModel {
-  metadata: TextMetadata;
-  initialized: boolean;
-  private tokenizer?: WasmTokenizer;
+export class Seq2SeqModel extends BaseTextModel {
   private encoder?: Encoder;
   private decoder?: Decoder;
   private cache: Map<string, string>;
 
   constructor(metadata: TextMetadata) {
-    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
-      throw new Error(
-        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
-          ${SessionParams.memoryLimitMB} MB.`,
-      );
-    }
-    this.metadata = metadata;
-    this.initialized = false;
+    super(metadata);
     this.cache = new Map<string, string>();
   }
 

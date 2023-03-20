@@ -1,35 +1,25 @@
 import { createSession } from "../sessionController";
-import { WasmTokenizer } from "@visheratin/tokenizers";
 import { TextMetadata } from "./metadata";
 import { Encoder } from "./encoder";
 import * as ort from "onnxruntime-web";
 import { Tensor } from "../tensor";
-import { ITextModel, TextProcessingResult } from "./interfaces";
-import { Session, SessionParams } from "../session";
+import { TextProcessingResult } from "./interfaces";
+import { Session } from "../session";
 import { Remote } from "comlink";
 import { loadTokenizer } from "./tokenizer";
+import { BaseTextModel } from "./base";
 
 export type TextFeatureExtractionResult = TextProcessingResult & {
   result: number[];
 };
 
-export class TextFeatureExtractionModel implements ITextModel {
-  metadata: TextMetadata;
-  initialized: boolean;
-  private tokenizer?: WasmTokenizer;
+export class TextFeatureExtractionModel extends BaseTextModel {
   private model?: Encoder;
   private dense?: Session | Remote<Session>;
   private cache: Map<string, number[]>;
 
   constructor(metadata: TextMetadata) {
-    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
-      throw new Error(
-        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
-          ${SessionParams.memoryLimitMB} MB.`,
-      );
-    }
-    this.metadata = metadata;
-    this.initialized = false;
+    super(metadata);
     this.cache = new Map<string, number[]>();
   }
 

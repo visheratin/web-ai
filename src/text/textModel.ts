@@ -1,11 +1,10 @@
 import { TextFeatureExtractionModel } from "./featureExtractionModel";
-import { ITextModel } from "./interfaces";
 import { models } from "./models";
 import { TextModelType } from "./modeType";
 import { Seq2SeqModel } from "./seq2seqModel";
 
 export interface InitTextModelResult {
-  model: ITextModel;
+  model: TextModel;
   elapsed: number;
 }
 

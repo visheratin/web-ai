@@ -1,10 +1,9 @@
-import { IMultimodalModel } from "./interfaces";
 import { MultimodalModelType } from "./modelType";
 import { models } from "./models";
 import { ZeroShotClassificationModel } from "./zeroShot";
 
 export interface InitMultimodalModelResult {
-  model: IMultimodalModel;
+  model: MultimodalModel;
   elapsed: number;
 }
 

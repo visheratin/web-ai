@@ -1,14 +1,8 @@
-import Config from "./config";
-import { ImageMetadata } from "./metadata";
 import * as ort from "onnxruntime-web";
-import { createSession } from "../sessionController";
-import Jimp from "jimp";
-import Preprocessor from "./preprocessor";
-import PreprocessorConfig from "./preprocessorConfig";
 import { softmax } from "./utils";
-import { IImageModel, ImageProcessingResult } from "./interfaces";
-import { Session, SessionParams } from "../session";
-import * as Comlink from "comlink";
+import { ImageProcessingResult } from "./interfaces";
+import { prepareImagesTensor } from "../utils/prepare";
+import { BaseImageModel } from "./base";
 
 /**
  * Class predicted by the model.
@@ -28,7 +22,7 @@ export type ClassificationPrediction = {
  * @param elapsed - time taken to process the input, in seconds.
  */
 export type ClassificationResult = ImageProcessingResult & {
-  results: ClassificationPrediction[];
+  results: ClassificationPrediction[] | ClassificationPrediction[][];
 };
 
 /**
@@ -42,44 +36,7 @@ export type ClassificationResult = ImageProcessingResult & {
  * @param metadata - information about the model.
  * @param initialized - flag indicating if the model was initialized.
  */
-export class ClassificationModel implements IImageModel {
-  metadata: ImageMetadata;
-  initialized: boolean;
-  private config?: Config;
-  private preprocessor?: Preprocessor;
-  private session?: Session | Comlink.Remote<Session>;
-
-  constructor(metadata: ImageMetadata) {
-    if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
-      throw new Error(
-        `The model requires ${metadata.memEstimateMB} MB of memory, but the current memory limit is 
-          ${SessionParams.memoryLimitMB} MB.`,
-      );
-    }
-    this.metadata = metadata;
-    this.initialized = false;
-  }
-
-  /**
-   * Initializes the model for running.
-   *
-   * @returns Time taken to initialize the model, in seconds.
-   */
-  init = async (proxy = true): Promise<number> => {
-    const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, proxy);
-    const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
-    this.preprocessor = new Preprocessor(preprocessorConfig);
-    if (!this.metadata.configPath) {
-      throw Error("configPath is not defined");
-    }
-    this.config = await Config.fromFile(this.metadata.configPath);
-    this.initialized = true;
-    const end = new Date();
-    const elapsed = (end.getTime() - start.getTime()) / 1000;
-    return elapsed;
-  };
-
+export class ClassificationModel extends BaseImageModel {
   /**
    * Processes the image and generates the classification predictions.
    *
@@ -88,47 +45,33 @@ export class ClassificationModel implements IImageModel {
    *
    * @returns classification predictions.
    */
-  process = async (input: string | Buffer, num = 3): Promise<ClassificationResult> => {
+  process = async (inputs: string | ArrayBuffer | string[] | ArrayBuffer[], num = 3): Promise<ClassificationResult> => {
     if (!this.initialized || !this.preprocessor || !this.config) {
       throw Error("the model is not initialized");
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const image = await Jimp.read(input);
-    const tensor = this.preprocessor.process(image);
+    if (typeof inputs === "string") {
+      inputs = [inputs];
+    }
+    if (inputs instanceof ArrayBuffer) {
+      inputs = [inputs];
+    }
+    const tensor = await prepareImagesTensor(inputs, this);
     const start = new Date();
-    const output = await this.runInference(tensor);
+    const output = await this.runInference(tensor, num);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    const res: ClassificationPrediction[] = new Array(num).fill({
-      class: "unknown",
-      confidence: 0,
-    });
-    // @ts-ignore
-    const result = softmax(output.data);
-    for (let i = 0; i < output.data.length; i++) {
-      for (let j = 0; j < res.length; j++) {
-        if (res[j].confidence < result[i]) {
-          const cls = this.config.classes.get(i);
-          if (!cls) {
-            continue;
-          }
-          res[j] = {
-            class: cls,
-            confidence: result[i],
-          };
-          break;
-        }
-      }
-    }
-    return {
-      results: res,
+    const result: ClassificationResult = {
+      results: output,
       elapsed: elapsed,
     };
+    if (output.length === 1) {
+      result.results = output[0];
+    }
+    return result;
   };
 
-  private runInference = async (input: ort.Tensor): Promise<ort.Tensor> => {
-    if (!this.initialized || !this.session) {
+  private runInference = async (input: ort.Tensor, clsNum: number): Promise<ClassificationPrediction[][]> => {
+    if (!this.initialized || !this.session || !this.config) {
       throw Error("the model is not initialized");
     }
     const feeds: Record<string, ort.Tensor> = {};
@@ -136,7 +79,33 @@ export class ClassificationModel implements IImageModel {
     feeds[inputNames[0]] = input;
     const outputData = await this.session.run(feeds);
     const outputNames = await this.session.outputNames();
-    const output = outputData[outputNames[0]];
-    return output;
+    const logits = outputData[outputNames[0]];
+    const result: ClassificationPrediction[][] = [];
+    for (let i = 0; i < logits.dims[0]; i++) {
+      const res: ClassificationPrediction[] = new Array(clsNum).fill({
+        class: "unknown",
+        confidence: 0,
+      });
+      // @ts-ignore
+      const sm = softmax(logits.data.slice(i * logits.dims[1], (i + 1) * logits.dims[1]));
+      for (let k = 0; k < sm.length; k++) {
+        for (let j = 0; j < res.length; j++) {
+          if (res[j].confidence < sm[k]) {
+            const cls = this.config.classes.get(k);
+            if (!cls) {
+              continue;
+            }
+            res[j] = {
+              class: cls,
+              confidence: sm[k],
+            };
+            break;
+          }
+        }
+      }
+      res.sort((a, b) => b.confidence - a.confidence);
+      result.push(res);
+    }
+    return result;
   };
 }

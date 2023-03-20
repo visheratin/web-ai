@@ -13,7 +13,8 @@
     "esModuleInterop": true,
     "noImplicitAny": false,
     "outDir": "./dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "strictPropertyInitialization": true,
   },
   "include": [
     "src/**/*.ts"
