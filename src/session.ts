@@ -28,9 +28,11 @@ export const SessionParams: SessionParameters = {
 export class Session {
   ortSession: ort.InferenceSession | undefined;
   cacheSize: number;
+  params: SessionParameters;
 
-  constructor() {
-    const cacheSize = SessionParams.cacheSizeMB * 1e6;
+  constructor(params: SessionParameters) {
+    this.params = params;
+    const cacheSize = params.cacheSizeMB * 1e6;
     localforage.config({
       name: "Web-AI",
       version: 1.0,
@@ -41,8 +43,8 @@ export class Session {
   }
 
   init = async (modelPath: string) => {
-    ort.env.wasm.numThreads = SessionParams.numThreads;
-    ort.env.wasm.wasmPaths = SessionParams.wasmRoot;
+    ort.env.wasm.numThreads = this.params.numThreads;
+    ort.env.wasm.wasmPaths = this.params.wasmRoot;
     let modelData: ArrayBuffer = new ArrayBuffer(0);
     try {
       const cachedData = await localforage.getItem(modelPath);
@@ -57,7 +59,7 @@ export class Session {
       modelData = await this.fetchData(modelPath);
     }
     const session = await ort.InferenceSession.create(modelData, {
-      executionProviders: SessionParams.executionProviders,
+      executionProviders: this.params.executionProviders,
       graphOptimizationLevel: "all",
       executionMode: "parallel",
     });
