@@ -12,7 +12,7 @@ export {
 export {
   ImageModel,
   ImageProcessingResult,
-  Metadata as ImageMetadata,
+  ImageMetadata,
   ClassificationModel,
   ClassificationPrediction,
   ObjectDetectionModel,

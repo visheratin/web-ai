@@ -13,12 +13,12 @@ class Preprocessor {
     if (this.config.resize) {
       if (!this.config.squareImage) {
         if (image.bitmap.width > image.bitmap.height) {
-          image = image.resize(-1, this.config.size, "bilinearInterpolation");
+          image = image.resize(-1, this.config.size, "bicubicInterpolation");
         } else {
-          image = image.resize(this.config.size, -1, "bilinearInterpolation");
+          image = image.resize(this.config.size, -1, "bicubicInterpolation");
         }
       } else {
-        image = image.resize(this.config.size, this.config.size, "bilinearInterpolation");
+        image = image.resize(this.config.size, this.config.size, "bicubicInterpolation");
       }
     }
     if (this.config.centerCrop) {
