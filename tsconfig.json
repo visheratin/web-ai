@@ -5,7 +5,6 @@
     "module": "ES2020",
     "lib": ["dom", "esnext"],
     "moduleResolution": "node",
-    "watch": false,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": false,
