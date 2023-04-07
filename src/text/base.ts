@@ -1,6 +1,6 @@
 import { WasmTokenizer } from "@visheratin/tokenizers";
 import { TextMetadata } from "./metadata";
-import { SessionParams } from "../session";
+import { SessionParams } from "../sessionParams";
 
 export class BaseTextModel {
   metadata: TextMetadata;

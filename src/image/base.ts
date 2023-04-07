@@ -1,4 +1,5 @@
-import { Session, SessionParams } from "../session";
+import { Session } from "../session";
+import { SessionParams } from "../sessionParams";
 import { ImageMetadata } from "./metadata";
 import Preprocessor from "./preprocessor";
 import * as Comlink from "comlink";

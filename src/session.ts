@@ -1,28 +1,10 @@
 import localforage from "localforage";
 import * as ort from "onnxruntime-web";
 import * as pako from "pako";
-import * as Comlink from "comlink";
+import { SessionParameters } from "./sessionParams";
 
 export const clearCache = async () => {
   await localforage.clear();
-};
-
-export interface SessionParameters {
-  numThreads: number;
-  executionProviders: string[];
-  memoryLimitMB: number;
-  cacheSizeMB: number;
-  wasmRoot: string;
-  tokenizersPath: string;
-}
-
-export const SessionParams: SessionParameters = {
-  numThreads: 0,
-  executionProviders: ["wasm"],
-  memoryLimitMB: 0,
-  cacheSizeMB: 500,
-  wasmRoot: "https://edge-ai-models.s3.us-east-2.amazonaws.com/onnx-14/",
-  tokenizersPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/tokenizers.wasm",
 };
 
 export class Session {
@@ -124,8 +106,4 @@ export class Session {
     }
     return this.ortSession.outputNames;
   };
-}
-
-if (typeof self !== "undefined") {
-  Comlink.expose(Session);
 }

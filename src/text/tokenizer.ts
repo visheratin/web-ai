@@ -1,5 +1,5 @@
 import init, { WasmTokenizer } from "@visheratin/tokenizers";
-import { SessionParams } from "../session";
+import { SessionParams } from "../sessionParams";
 
 export const loadTokenizer = async (tokenizerPath: string): Promise<WasmTokenizer> => {
   await init(SessionParams.tokenizersPath);

@@ -1,5 +1,6 @@
 import Preprocessor from "../image/preprocessor";
-import { Session, SessionParams } from "../session";
+import { Session } from "../session";
+import { SessionParams } from "../sessionParams";
 import { MultimodalMetadata } from "./metadata";
 import * as Comlink from "comlink";
 import { WasmTokenizer } from "@visheratin/tokenizers";

@@ -4,7 +4,7 @@ import { ImageProcessingResult } from "./interfaces";
 import { BaseImageModel } from "./base";
 
 type SegmentationResult = ImageProcessingResult & {
-  canvas: HTMLCanvasElement;
+  canvas: HTMLCanvasElement | OffscreenCanvas;
 };
 
 export class SegmentationModel extends BaseImageModel {
@@ -31,15 +31,31 @@ export class SegmentationModel extends BaseImageModel {
       pixels[i + 3] = 255;
     }
     const imageData = new ImageData(pixels, output.dims[2], output.dims[3]);
-    const resCanvas = document.createElement("canvas");
-    resCanvas.width = imageData.width;
-    resCanvas.height = imageData.height;
-    resCanvas.getContext("2d")?.putImageData(imageData, 0, 0);
+    const resCanvas = this.createCanvas(imageData.width, imageData.height);
+    const ctx = resCanvas.getContext("2d");
+    if (ctx instanceof OffscreenCanvasRenderingContext2D || ctx instanceof CanvasRenderingContext2D) {
+      ctx.putImageData(imageData, 0, 0);
+    } else {
+      throw new Error("Invalid rendering context");
+    }
     const result: SegmentationResult = {
       canvas: resCanvas,
       elapsed: elapsed,
     };
     return result;
+  };
+
+  createCanvas = (width: number, height: number) => {
+    if (typeof OffscreenCanvas !== "undefined") {
+      return new OffscreenCanvas(width, height);
+    } else if (typeof document !== "undefined") {
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      return canvas;
+    } else {
+      throw new Error("Canvas creation is not supported in this environment");
+    }
   };
 
   getClass = (inputColor: Uint8ClampedArray | number[]): string => {

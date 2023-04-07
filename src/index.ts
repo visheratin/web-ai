@@ -35,4 +35,4 @@ export {
   MultimodalModelType,
 } from "./multimodal";
 export { Metadata } from "./metadata";
-export { SessionParameters, SessionParams } from "./session";
+export { SessionParameters, SessionParams } from "./sessionParams";
