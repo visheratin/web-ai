@@ -50,7 +50,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 100,
     type: ImageModelType.Classification,
     sizeMB: 19,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/model.onnx.gz",
+    modelPaths: new Map([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/model.onnx.gz"],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/preprocessor_config.json",
@@ -65,8 +67,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 100,
     type: ImageModelType.Classification,
     sizeMB: 4,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/preprocessor_config.json",
@@ -81,7 +87,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 50,
     type: ImageModelType.Classification,
     sizeMB: 8,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/model.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/model.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/preprocessor_config.json",
@@ -96,8 +107,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 50,
     type: ImageModelType.Classification,
     sizeMB: 2,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/preprocessor_config.json",
@@ -112,8 +127,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 40,
     type: ImageModelType.Classification,
     sizeMB: 5,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/model.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/model.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/preprocessor_config.json",
@@ -128,8 +147,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 40,
     type: ImageModelType.Classification,
     sizeMB: 1,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/preprocessor_config.json",
@@ -144,7 +167,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 330,
     type: ImageModelType.Classification,
     sizeMB: 90,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/model.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/model.onnx.gz"],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/preprocessor_config.json",
@@ -159,8 +184,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 100,
     type: ImageModelType.Classification,
     sizeMB: 18,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/preprocessor_config.json",
@@ -175,7 +204,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 170,
     type: ImageModelType.Classification,
     sizeMB: 50,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/model.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/model.onnx.gz"],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/preprocessor_config.json",
@@ -190,8 +221,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 50,
     type: ImageModelType.Classification,
     sizeMB: 10,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/preprocessor_config.json",
@@ -206,7 +241,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 80,
     type: ImageModelType.Classification,
     sizeMB: 13,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/model.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/model.onnx.gz"],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/preprocessor_config.json",
@@ -221,8 +258,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 40,
     type: ImageModelType.Classification,
     sizeMB: 3,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/preprocessor_config.json",
@@ -237,7 +278,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 120,
     type: ImageModelType.ObjectDetection,
     sizeMB: 24,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/model.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/model.onnx.gz"],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/preprocessor_config.json",
@@ -252,7 +295,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 80,
     type: ImageModelType.ObjectDetection,
     sizeMB: 8,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/model-quant.onnx.gz"],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/preprocessor_config.json",
@@ -267,7 +312,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 50,
     type: ImageModelType.Segmentation,
     sizeMB: 3,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/preprocessor_config.json",
@@ -282,7 +332,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 70,
     type: ImageModelType.Segmentation,
     sizeMB: 9,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b1/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b1/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b1/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b1/preprocessor_config.json",
@@ -297,7 +352,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 100,
     type: ImageModelType.Segmentation,
     sizeMB: 42,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b4/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b4/model-quant.onnx.gz",
+      ],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b4/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b4/preprocessor_config.json",
@@ -312,7 +372,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 1900,
     type: ImageModelType.Img2Img,
     sizeMB: 4,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/model.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/model.onnx.gz"],
+    ]),
     preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
@@ -325,7 +387,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 1900,
     type: ImageModelType.Img2Img,
     sizeMB: 1.5,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/model-quant.onnx.gz"],
+    ]),
     preprocessorPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
@@ -338,7 +402,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 3400,
     type: ImageModelType.Img2Img,
     sizeMB: 45,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/model.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/model.onnx.gz"],
+    ]),
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/preprocessor_config.json",
     examples: superresExamples,
@@ -352,7 +418,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 2300,
     type: ImageModelType.Img2Img,
     sizeMB: 10,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/model-quant.onnx.gz",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/model-quant.onnx.gz"],
+    ]),
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/preprocessor_config.json",
     examples: superresExamples,
@@ -366,7 +434,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 200,
     type: ImageModelType.Classification,
     sizeMB: 43,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/l1.onnx",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/l1.onnx"],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/preprocessor_config.json",
@@ -381,7 +451,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 100,
     type: ImageModelType.Classification,
     sizeMB: 11,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/l1-quant.onnx",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/l1-quant.onnx"],
+    ]),
     configPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/config.json",
     preprocessorPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/preprocessor_config.json",
@@ -396,7 +468,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 180,
     type: ImageModelType.FeatureExtraction,
     sizeMB: 43,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l1.onnx",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l1.onnx"],
+    ]),
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
@@ -412,8 +486,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 60,
     type: ImageModelType.FeatureExtraction,
     sizeMB: 11,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l1-quant.onnx",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l1-quant.onnx",
+      ],
+    ]),
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
@@ -429,7 +507,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 380,
     type: ImageModelType.FeatureExtraction,
     sizeMB: 116,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l3.onnx",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l3.onnx"],
+    ]),
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
@@ -445,8 +525,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 120,
     type: ImageModelType.FeatureExtraction,
     sizeMB: 30,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l3-quant.onnx",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l3-quant.onnx",
+      ],
+    ]),
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
@@ -462,7 +546,9 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 620,
     type: ImageModelType.FeatureExtraction,
     sizeMB: 308,
-    modelPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l7.onnx",
+    modelPaths: new Map<string, string>([
+      ["model", "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l7.onnx"],
+    ]),
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
@@ -478,8 +564,12 @@ export const models: ImageMetadata[] = [
     memEstimateMB: 260,
     type: ImageModelType.FeatureExtraction,
     sizeMB: 78,
-    modelPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l7-quant.onnx",
+    modelPaths: new Map<string, string>([
+      [
+        "model",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l7-quant.onnx",
+      ],
+    ]),
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:

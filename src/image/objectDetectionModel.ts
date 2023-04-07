@@ -20,17 +20,21 @@ export type ObjectDetectionResult = ImageProcessingResult & {
 
 export class ObjectDetectionModel extends BaseImageModel {
   process = async (input: string | Buffer): Promise<ObjectDetectionResult> => {
-    if (!this.initialized || !this.session || !this.preprocessor || !this.config) {
+    if (!this.initialized || !this.sessions || !this.preprocessor || !this.config) {
       throw Error("the model is not initialized");
     }
     // @ts-ignore
     const image = await Jimp.read(input);
     const tensor = this.preprocessor.process(image);
     const start = new Date();
+    const session = this.sessions.get("model");
+    if (!session) {
+      throw Error("the model is absent in the sessions map");
+    }
     const feeds: Record<string, ort.Tensor> = {};
-    const inputNames = await this.session.inputNames();
+    const inputNames = await session.inputNames();
     feeds[inputNames[0]] = tensor;
-    const output = await this.session.run(feeds);
+    const output = await session.run(feeds);
     if (!output) {
       throw Error("model output is undefined");
     }

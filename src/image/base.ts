@@ -12,7 +12,7 @@ export class BaseImageModel {
   initialized: boolean;
   config?: Config;
   preprocessor?: Preprocessor;
-  session?: Session | Comlink.Remote<Session>;
+  sessions?: Map<string, Session | Comlink.Remote<Session>>;
 
   constructor(metadata: ImageMetadata) {
     if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
@@ -27,7 +27,12 @@ export class BaseImageModel {
 
   init = async (proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, proxy);
+    for (const [name, path] of this.metadata.modelPaths) {
+      if (!this.sessions) {
+        this.sessions = new Map<string, Session | Comlink.Remote<Session>>();
+      }
+      this.sessions.set(name, await createSession(path, proxy));
+    }
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     if (!this.metadata.configPath) {

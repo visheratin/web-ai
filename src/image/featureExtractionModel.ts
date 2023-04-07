@@ -36,14 +36,18 @@ export class ImageFeatureExtractionModel extends BaseImageModel {
   };
 
   private runInference = async (input: ort.Tensor): Promise<number[][]> => {
-    if (!this.initialized || !this.session) {
+    if (!this.initialized || !this.sessions) {
       throw Error("the model is not initialized");
     }
+    const session = this.sessions.get("model");
+    if (!session) {
+      throw Error("the model is absent in the sessions map");
+    }
     const feeds: Record<string, ort.Tensor> = {};
-    const inputNames = await this.session.inputNames();
+    const inputNames = await session.inputNames();
     feeds[inputNames[0]] = input;
-    const outputData = await this.session.run(feeds);
-    const outputNames = await this.session.outputNames();
+    const outputData = await session.run(feeds);
+    const outputNames = await session.outputNames();
     const output = outputData[outputNames[0]];
     const result: number[][] = [];
     let size = 1;
