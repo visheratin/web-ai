@@ -8,3 +8,4 @@ export * from "./interfaces";
 export * from "./imageModel";
 export * from "./img2imgModel";
 export * from "./featureExtractionModel";
+export * from "./samModel";

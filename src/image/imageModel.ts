@@ -4,6 +4,7 @@ import { Img2ImgModel } from "./img2imgModel";
 import { models } from "./models";
 import { ImageModelType } from "./modelType";
 import { ObjectDetectionModel } from "./objectDetectionModel";
+import { SegmentAnythingModel } from "./samModel";
 import { SegmentationModel } from "./segmentationModel";
 
 export interface InitImageModelResult {
@@ -50,6 +51,14 @@ export class ImageModel {
           }
           case ImageModelType.FeatureExtraction: {
             const model = new ImageFeatureExtractionModel(modelMetadata);
+            const elapsed = await model.init(proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+          case ImageModelType.SegmentAnything: {
+            const model = new SegmentAnythingModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {
               model: model,

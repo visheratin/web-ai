@@ -14,7 +14,7 @@ export class SegmentationModel extends BaseImageModel {
     }
     // @ts-ignore
     const image = await Jimp.read(input);
-    const tensor = this.preprocessor.process(image);
+    const tensor = this.preprocessor.process(image).tensor;
     const start = new Date();
     const output = await this.runInference(tensor);
     const end = new Date();

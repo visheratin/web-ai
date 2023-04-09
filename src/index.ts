@@ -24,6 +24,8 @@ export {
   Img2ImgResult,
   ImageFeatureExtractionModel,
   ImageFeatureExtractionResult,
+  SegmentAnythingModel,
+  Point,
 } from "./image";
 export {
   MultimodalModel,

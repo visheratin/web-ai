@@ -38,7 +38,7 @@ export default function Segmentation() {
     new SegmentationModel({
       id: "segformer-b0-segmentation-quant",
       type: ImageModelType.Segmentation,
-      modelPath: "",
+      modelPaths: new Map<string, string>(),
       configPath: "",
       preprocessorPath: "",
       memEstimateMB: 0,

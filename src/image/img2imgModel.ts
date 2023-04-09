@@ -40,7 +40,7 @@ export class Img2ImgModel extends BaseImageModel {
     if (resize > 0) {
       image = this.prepareImage(image, resize);
     }
-    const tensor = this.preprocessor.process(image);
+    const tensor = this.preprocessor.process(image).tensor;
     const start = new Date();
     const output = await this.runInference(tensor);
     const end = new Date();

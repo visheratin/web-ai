@@ -25,7 +25,7 @@ export class ObjectDetectionModel extends BaseImageModel {
     }
     // @ts-ignore
     const image = await Jimp.read(input);
-    const tensor = this.preprocessor.process(image);
+    const tensor = this.preprocessor.process(image).tensor;
     const start = new Date();
     const session = this.sessions.get("model");
     if (!session) {

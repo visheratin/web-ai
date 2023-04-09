@@ -578,4 +578,38 @@ export const models: ImageMetadata[] = [
     tags: ["feature-extraction", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l7-300",
   },
+  {
+    id: "segment-anything-quant",
+    title: "Segment Anything quantized",
+    description: "",
+    memEstimateMB: 108,
+    type: ImageModelType.SegmentAnything,
+    sizeMB: 108,
+    configPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+    modelPaths: new Map<string, string>([
+      ["encoder", "https://huggingface.co/visheratin/segment-anything-vit-b/resolve/main/encoder-quant.onnx"],
+      ["decoder", "https://huggingface.co/visheratin/segment-anything-vit-b/resolve/main/decoder-quant.onnx"],
+    ]),
+    preprocessorPath: "https://huggingface.co/visheratin/segment-anything-vit-b/resolve/main/preprocessor_config.json",
+    tags: ["segment-anything"],
+    referenceURL: "https://huggingface.co/visheratin/segment-anything-vit-b",
+  },
+  {
+    id: "segment-anything",
+    title: "Segment Anything",
+    description: "",
+    memEstimateMB: 108,
+    type: ImageModelType.SegmentAnything,
+    sizeMB: 108,
+    configPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+    modelPaths: new Map<string, string>([
+      ["encoder", "https://huggingface.co/visheratin/segment-anything-vit-b/resolve/main/encoder.onnx"],
+      ["decoder", "https://huggingface.co/visheratin/segment-anything-vit-b/resolve/main/decoder.onnx"],
+    ]),
+    preprocessorPath: "https://huggingface.co/visheratin/segment-anything-vit-b/resolve/main/preprocessor_config.json",
+    tags: ["segment-anything"],
+    referenceURL: "https://huggingface.co/visheratin/segment-anything-vit-b",
+  },
 ];

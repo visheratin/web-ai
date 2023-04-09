@@ -15,7 +15,7 @@ export const prepareImagesTensor = async (
   for (let i = 0; i < inputs.length; i++) {
     // @ts-ignore
     const image = await Jimp.read(inputs[i]);
-    tensors[i] = model.preprocessor.process(image);
+    tensors[i] = model.preprocessor.process(image).tensor;
   }
   const resultData = new Float32Array(tensors.length * tensors[0].data.length);
   for (let i = 0; i < tensors.length; i++) {
