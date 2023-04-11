@@ -55,6 +55,7 @@ export default function SegmentAnything() {
     }
     setStatus({ processing: true, message: "processing the image" });
     const prompt = currentPrompt as SegmentAnythingPrompt;
+    // @ts-ignore
     prompt.image = image;
     if (imageProcessed) {
       prompt.image = undefined;
@@ -66,7 +67,7 @@ export default function SegmentAnything() {
     }
     setImageProcessed(true);
     console.log(`Inference finished in ${result.elapsed} seconds.`);
-    setSegmentCanvas(result.canvas);
+    setSegmentCanvas(result.canvas as HTMLCanvasElement);
     setStatus({ processing: false, message: "ready" });
   };
 
