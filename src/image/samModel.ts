@@ -9,6 +9,11 @@ export interface Point {
   positive: boolean;
 }
 
+export type SAMResult = SegmentationResult & {
+  topLeft: Point;
+  bottomRight: Point;
+};
+
 export type SegmentAnythingPrompt = {
   image: string | ArrayBuffer | undefined;
   points: Point[] | undefined;
@@ -22,7 +27,7 @@ export class SegmentAnythingModel extends BaseImageModel {
   newWidth: number | undefined;
   newHeight: number | undefined;
 
-  process = async (input: SegmentAnythingPrompt): Promise<SegmentationResult | undefined> => {
+  process = async (input: SegmentAnythingPrompt): Promise<SAMResult | undefined> => {
     const start = new Date();
     if (!this.initialized || !this.preprocessor || !this.sessions) {
       throw Error("the model is not initialized");
@@ -41,18 +46,43 @@ export class SegmentAnythingModel extends BaseImageModel {
     const arrayBuffer = new ArrayBuffer(size);
     const pixels = new Uint8ClampedArray(arrayBuffer);
     const color = [237, 61, 26];
-    for (let i = 0; i < size; i += 4) {
-      const value = decoderOutput.data[i / 4];
-      if ((value as number) > 0) {
-        pixels[i] = color[0];
-        pixels[i + 1] = color[1];
-        pixels[i + 2] = color[2];
-        pixels[i + 3] = 255;
-      } else {
-        pixels[i] = 0;
-        pixels[i + 1] = 0;
-        pixels[i + 2] = 0;
-        pixels[i + 3] = 0;
+    const topLeft: Point = {
+      x: Infinity,
+      y: Infinity,
+      positive: false,
+    };
+    const bottomRight: Point = {
+      x: 0,
+      y: 0,
+      positive: false,
+    };
+    for (let y = 0; y < decoderOutput.dims[2]; y++) {
+      for (let x = 0; x < decoderOutput.dims[3]; x++) {
+        const value = decoderOutput.data[y * decoderOutput.dims[3] + x];
+        if ((value as number) > 0) {
+          const idx = (y * decoderOutput.dims[3] + x) * 4;
+          pixels[idx] = color[0];
+          pixels[idx + 1] = color[1];
+          pixels[idx + 2] = color[2];
+          pixels[idx + 3] = 255;
+          if (x < topLeft.x) {
+            topLeft.x = x;
+          }
+          if (y < topLeft.y) {
+            topLeft.y = y;
+          }
+          if (x > bottomRight.x) {
+            bottomRight.x = x;
+          }
+          if (y > bottomRight.y) {
+            bottomRight.y = y;
+          }
+        } else {
+          pixels[y] = 0;
+          pixels[y + 1] = 0;
+          pixels[y + 2] = 0;
+          pixels[y + 3] = 0;
+        }
       }
     }
     const imageData = new ImageData(pixels, decoderOutput.dims[3], decoderOutput.dims[2]);
@@ -65,9 +95,11 @@ export class SegmentAnythingModel extends BaseImageModel {
     }
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    const result: SegmentationResult = {
+    const result: SAMResult = {
       canvas: resCanvas,
       elapsed: elapsed,
+      topLeft: topLeft,
+      bottomRight: bottomRight,
     };
     return result;
   };

@@ -25,16 +25,29 @@ export default function Canvas(props: CanvasProps) {
     width: 0,
     height: 0,
     aspectRatio: 1,
+    left: 0,
   });
 
-  const setCanvasSize = (aspectRatio = 1) => {
+  const setCanvasSize = (height: number, width: number) => {
+    const aspectRatio = height / width;
     if (canvasRef.current && canvasContainerRef.current) {
-      let canvasSize = canvasContainerRef.current.offsetWidth;
-      canvasSize = canvasSize > 800 ? 800 : canvasSize;
+      let maxWidth = canvasContainerRef.current.offsetWidth;
+      maxWidth = maxWidth > 800 ? 800 : maxWidth;
+      const widthRatio = maxWidth / width;
+      let maxHeight = maxWidth * aspectRatio;
+      maxHeight = maxHeight > 500 ? 500 : maxHeight;
+      const heightRatio = maxHeight / height;
+      if (widthRatio > heightRatio) {
+        maxWidth = heightRatio * width;
+      } else {
+        maxHeight = widthRatio * height;
+      }
+      const left = (canvasContainerRef.current.offsetWidth - maxWidth) / 2;
       setDisplayDims({
-        width: canvasSize,
-        height: canvasSize * aspectRatio,
+        width: maxWidth,
+        height: maxHeight,
         aspectRatio: aspectRatio,
+        left: left,
       });
     }
   };
@@ -42,7 +55,7 @@ export default function Canvas(props: CanvasProps) {
   useEffect(() => {
     if (!props.image) return;
     clearPrompt();
-    setCanvasSize(props.image.bitmap.height / props.image.bitmap.width);
+    setCanvasSize(props.image.bitmap.height, props.image.bitmap.width);
     const imageData = new ImageData(
       new Uint8ClampedArray(props.image.bitmap.data),
       props.image.bitmap.width,
@@ -93,6 +106,7 @@ export default function Canvas(props: CanvasProps) {
   };
 
   const handleClick = (e: any) => {
+    if (props.processing) return;
     const canvas = canvasRef.current;
     const rect = canvas!.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -114,9 +128,9 @@ export default function Canvas(props: CanvasProps) {
       const ctx = canvas!.getContext("2d");
       ctx!.beginPath();
       ctx!.arc(currentPoint.x, currentPoint.y, 2, 0, 2 * Math.PI);
-      ctx!.fillStyle = "blue";
+      ctx!.fillStyle = "#f5ed0a";
       ctx!.fill();
-      ctx!.strokeStyle = "blue";
+      ctx!.strokeStyle = "#f5ed0a";
       ctx!.stroke();
     }
   }, [currentPoint]);
@@ -203,15 +217,16 @@ export default function Canvas(props: CanvasProps) {
     }
     const canvas = canvasRef.current;
     const ctx = canvas!.getContext("2d");
+    ctx!.lineWidth = 4;
     if (prompt.points !== undefined) {
       for (const point of prompt.points) {
         const x = Math.round((point.x / props.image!.bitmap.width) * canvas!.width);
         const y = Math.round((point.y / props.image!.bitmap.height) * canvas!.height);
         ctx!.beginPath();
         ctx!.arc(x, y, 3, 0, 2 * Math.PI);
-        ctx!.fillStyle = point.positive ? "green" : "red";
+        ctx!.fillStyle = point.positive ? "#41f50a" : "#f5190a";
         ctx!.fill();
-        ctx!.strokeStyle = point.positive ? "green" : "red";
+        ctx!.strokeStyle = point.positive ? "#41f50a" : "#f5190a";
         ctx!.stroke();
       }
     }
@@ -228,7 +243,7 @@ export default function Canvas(props: CanvasProps) {
           Math.round((bottomRight.y / props.image!.bitmap.height) * canvas!.height) -
             Math.round((topLeft.y / props.image!.bitmap.height) * canvas!.height),
         );
-        ctx!.strokeStyle = "green";
+        ctx!.strokeStyle = "#0a50f5";
         ctx!.stroke();
       }
     }
@@ -243,13 +258,13 @@ export default function Canvas(props: CanvasProps) {
               ref={imageRef}
               width={displayDims.width}
               height={displayDims.height}
-              style={{ position: "absolute", top: 0, left: 0 }}
+              style={{ position: "absolute", top: 0, left: displayDims.left }}
             />
             <canvas
               ref={canvasRef}
               width={displayDims.width}
               height={displayDims.height}
-              style={{ position: "absolute", top: 0, left: 0 }}
+              style={{ position: "absolute", top: 0, left: displayDims.left }}
               onClick={handleClick}
             />
           </div>

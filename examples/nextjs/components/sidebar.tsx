@@ -34,6 +34,11 @@ export default function Sidebar() {
                 Super-resolution
               </Link>
             </li>
+            <li className="nav-item">
+              <Link href="/demos/segment-anything" className="nav-link active">
+                Segment Anything
+              </Link>
+            </li>
           </ul>
           <h5>Text models</h5>
           <ul className="nav flex-column">

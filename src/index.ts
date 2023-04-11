@@ -15,6 +15,7 @@ export {
   ImageMetadata,
   ClassificationModel,
   ClassificationPrediction,
+  ClassificationResult,
   ObjectDetectionModel,
   ObjectDetectionPrediction,
   SegmentationModel,
@@ -25,6 +26,7 @@ export {
   ImageFeatureExtractionModel,
   ImageFeatureExtractionResult,
   SegmentAnythingModel,
+  SegmentAnythingPrompt,
   Point,
 } from "./image";
 export {

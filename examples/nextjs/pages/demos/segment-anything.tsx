@@ -1,10 +1,8 @@
 import Jimp from "jimp";
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
-import { ImageModel, ImageModelType, Point } from "@visheratin/web-ai";
+import { useRef, useState } from "react";
+import { ImageModel, ImageModelType, SegmentAnythingPrompt, SegmentAnythingModel } from "@visheratin/web-ai";
 import ModelSelector from "../../components/modelSelect";
-import { SegmentAnythingModel, SessionParams } from "../../../../dist";
-import { SegmentAnythingPrompt } from "../../../../dist/image";
 import Canvas from "../../components/canvas";
 
 export default function SegmentAnything() {
@@ -18,9 +16,9 @@ export default function SegmentAnything() {
   });
   const [segmentCanvas, setSegmentCanvas] = useState<HTMLCanvasElement>();
 
-  const [model, setModel] = useState(
+  const [samModel, setSamModel] = useState(
     new SegmentAnythingModel({
-      id: "segformer-b0-segmentation-quant",
+      id: "",
       type: ImageModelType.Segmentation,
       modelPaths: new Map<string, string>(),
       configPath: "",
@@ -31,11 +29,10 @@ export default function SegmentAnything() {
 
   const [status, setStatus] = useState({ message: "select and load the model", processing: false });
 
-  const loadModel = async (id: string) => {
-    SessionParams.numThreads = 4;
+  const loadSamModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
     const result = await ImageModel.create(id);
-    setModel(result.model as SegmentAnythingModel);
+    setSamModel(result.model as SegmentAnythingModel);
     setStatus({ message: "ready", processing: false });
   };
 
@@ -62,7 +59,7 @@ export default function SegmentAnything() {
     if (imageProcessed) {
       prompt.image = undefined;
     }
-    const result = await model.process(prompt);
+    const result = await samModel.process(prompt);
     if (result === undefined) {
       setStatus({ processing: false, message: "ready" });
       return;
@@ -81,6 +78,7 @@ export default function SegmentAnything() {
   const loadImage = async (src: any) => {
     const imageBuffer = await Jimp.read(src);
     setImage(imageBuffer);
+    setImageProcessed(false);
   };
 
   return (
@@ -94,7 +92,28 @@ export default function SegmentAnything() {
         <div className="container">
           <div className="row">
             <div className="col">
-              <h2>Image segmentation</h2>
+              <h2>Segment Anything demo</h2>
+              <p>
+                This demo shows how to use the{" "}
+                <a href="https://segment-anything.com/" target="_blank" rel="noreferrer">
+                  Segment Anything Model
+                </a>{" "}
+                from MetaAI to find objects on any image.
+              </p>
+              <p>Steps to use the demo:</p>
+              <ol>
+                <li>Select the model.</li>
+                <li>Load the image.</li>
+                <li>
+                  Mark the object in the image. Mark with foreground points what you want to detect, with background
+                  points - what you want to exclude from the mask. You can also mark the target object with a bounding
+                  box.
+                </li>
+                <li>
+                  Click the &quot;Segment&quot; button. The first time, the model will run for about 15-20 seconds.
+                </li>
+                <li>Repeat the process. After the first run, the model will run instantaneously.</li>
+              </ol>
             </div>
           </div>
           <div className="row">
@@ -108,17 +127,11 @@ export default function SegmentAnything() {
             tags={undefined}
             textType={undefined}
             imageType={ImageModelType.SegmentAnything}
-            callback={loadModel}
+            callback={loadSamModel}
           />
+          <hr />
           <div className="row">
-            <div className="col-md-6 col-sm-12">
-              <Canvas
-                image={image}
-                setPrompt={setCurrentPrompt}
-                processing={status.processing}
-                segmentCanvas={segmentCanvas}
-              />
-            </div>
+            <div className="col-md-3 col-sm-12"></div>
             <div className="col-md-6 col-sm-12">
               <form action="#" onSubmit={(e) => e.preventDefault()}>
                 <h6>Select the image</h6>
@@ -134,8 +147,28 @@ export default function SegmentAnything() {
                   </div>
                 </div>
               </form>
-              <hr />
-              <button className="btn btn-primary" onClick={segment} disabled={status.processing || image === null}>
+            </div>
+          </div>
+          <div className="row mt-2">
+            <div className="col-md-2 col-sm-12"></div>
+            <div className="col-md-8 col-sm-12">
+              <Canvas
+                image={image}
+                setPrompt={setCurrentPrompt}
+                processing={status.processing}
+                segmentCanvas={segmentCanvas}
+              />
+            </div>
+          </div>
+          <div className="row mt-2">
+            <div className="col-sm-12 d-flex justify-content-center">
+              <button
+                className="btn btn-primary btn-lg btn-block"
+                onClick={segment}
+                hidden={image === null}
+                disabled={status.processing || image === null}
+                style={{ width: "300px" }}
+              >
                 Segment
               </button>
             </div>

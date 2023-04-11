@@ -9,6 +9,8 @@ import grammarImg from "../public/index/grammar.png";
 import summaryImg from "../public/index/lorem.jpg";
 import textVectorImg from "../public/index/vector.jpg";
 import imageVectorImg from "../public/index/image-vector.png";
+import zeroShotImg from "../public/index/zero-shot.jpg";
+import samImg from "../public/index/sam.jpg";
 
 export default function Home() {
   return (
@@ -123,6 +125,16 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            <div className="col-md-4 col-sm-12 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Segment Anything</h5>
+                  <Image alt="" src={samImg} height={200} />
+                  <p className="card-text">Find anything on any image from any domain!</p>
+                  <Link href="/demos/segment-anything">Open demo</Link>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="row mb-2">
             <h2>Text models</h2>
@@ -155,6 +167,21 @@ export default function Home() {
                   <Image alt="" src={textVectorImg} height={200} />
                   <p className="card-text">Turn the text into vectors for sematic search.</p>
                   <Link href="/demos/text-features">Open demo</Link>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <h2>Multi-modal models</h2>
+          </div>
+          <div className="row">
+            <div className="col-md-4 col-sm-12 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Zero-shot image classification</h5>
+                  <Image alt="" src={zeroShotImg} height={200} />
+                  <p className="card-text">What is the image class? You decide!</p>
+                  <Link href="/demos/zero-shot">Open demo</Link>
                 </div>
               </div>
             </div>
