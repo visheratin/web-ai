@@ -582,7 +582,7 @@ export const models: ImageMetadata[] = [
     id: "segment-anything-quant",
     title: "Segment Anything quantized",
     description: "",
-    memEstimateMB: 108,
+    memEstimateMB: 2600,
     type: ImageModelType.SegmentAnything,
     sizeMB: 108,
     configPath:
@@ -599,9 +599,9 @@ export const models: ImageMetadata[] = [
     id: "segment-anything",
     title: "Segment Anything",
     description: "",
-    memEstimateMB: 108,
+    memEstimateMB: 2600,
     type: ImageModelType.SegmentAnything,
-    sizeMB: 108,
+    sizeMB: 377,
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
     modelPaths: new Map<string, string>([
