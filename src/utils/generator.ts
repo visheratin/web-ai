@@ -21,8 +21,11 @@ export async function* generate(
   const sampler = (x: ort.Tensor) => greedySampler(x);
   const encoderOutput = await encoder.process(input, inputAttentionMask);
   let len = 0;
-  let decoderInput = new ort.Tensor("int64", new BigInt64Array([BigInt(options.bosTokenID)]), [1, 1]);
-  let decoderAttention = new ort.Tensor("int64", new BigInt64Array([BigInt(1)]), [1, 1]);
+  let decoderInput = new ort.Tensor("int64", new BigInt64Array(input.dims[0]).fill(BigInt(options.bosTokenID)), [
+    input.dims[0],
+    1,
+  ]);
+  let decoderAttention = new ort.Tensor("int64", new BigInt64Array(input.dims[0]).fill(1n), [input.dims[0], 1]);
   if (initDecoderInput) {
     decoderInput = initDecoderInput;
   }
@@ -37,35 +40,28 @@ export async function* generate(
     for (let i = 0; i < newTokenIDs.length; i++) {
       if (newTokenIDs[i] === options.eosTokenID) {
         genFinished[i] = true;
-        newTokenIDs[i] = options.padTokenID;
       }
     }
-    const newDecoderTokens = new BigInt64Array(decoderInput.data.length + newTokenIDs.length);
-    const newDecoderAttention = new BigInt64Array(decoderInput.data.length + newTokenIDs.length);
+    const newDecoderTokens: bigint[] = [];
+    const newDecoderAttention: bigint[] = [];
     for (let i = 0; i < decoderInput.dims[0]; i++) {
-      let attentionSet = false;
       for (let j = 0; j < decoderInput.dims[1]; j++) {
-        newDecoderTokens[i * decoderInput.dims[1] + j] = BigInt(decoderInput.data[i * decoderInput.dims[1] + j]);
-        if (decoderAttention.data[i * decoderInput.dims[1] + j] === 1n) {
-          newDecoderAttention[i * decoderInput.dims[1] + j] = 1n;
-        } else {
-          if (!attentionSet) {
-            newDecoderAttention[i * decoderInput.dims[1] + j] = 1n;
-            attentionSet = true;
-          } else {
-            newDecoderAttention[i * decoderInput.dims[1] + j] = 0n;
-          }
-        }
+        const idx = i * decoderInput.dims[1] + j;
+        newDecoderTokens.push(BigInt(decoderInput.data[idx]));
+        newDecoderAttention.push(decoderAttention.data[idx]);
       }
-      if (!attentionSet) {
-        newDecoderAttention[i * decoderInput.dims[1] + decoderInput.dims[1]] = 1n;
+      newDecoderTokens.push(BigInt(newTokenIDs[i]));
+      if (newTokenIDs[i] === options.eosTokenID || newTokenIDs[i] === options.padTokenID) {
+        newDecoderAttention.push(0n);
       } else {
-        newDecoderAttention[i * decoderInput.dims[1] + decoderInput.dims[1]] = 0n;
+        newDecoderAttention.push(1n);
       }
-      newDecoderTokens[i * decoderInput.dims[1] + decoderInput.dims[1]] = BigInt(newTokenIDs[i]);
     }
-    decoderInput = new ort.Tensor("int64", newDecoderTokens, [decoderInput.dims[0], decoderInput.dims[1] + 1]);
-    decoderAttention = new ort.Tensor("int64", newDecoderAttention, [
+    decoderInput = new ort.Tensor("int64", new BigInt64Array(newDecoderTokens), [
+      decoderInput.dims[0],
+      decoderInput.dims[1] + 1,
+    ]);
+    decoderAttention = new ort.Tensor("int64", new BigInt64Array(newDecoderAttention), [
       decoderAttention.dims[0],
       decoderAttention.dims[1] + 1,
     ]);
@@ -82,8 +78,7 @@ export async function* generate(
 }
 
 const greedySampler = (logits: ort.Tensor): number[] => {
-  const shape = logits.dims;
-  const [batchSize, seqLength, vocabSize] = shape;
+  const [batchSize, seqLength, vocabSize] = logits.dims;
   const size = seqLength * vocabSize;
   const result: number[] = new Array(batchSize);
   for (let idx = 0; idx < batchSize; idx++) {

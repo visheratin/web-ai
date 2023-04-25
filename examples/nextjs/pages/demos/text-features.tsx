@@ -33,29 +33,24 @@ export default function Classification() {
     }
     setStatus({ message: "processing", processing: true });
     // @ts-ignore
-    const result1 = await model.instance.process(value1);
-    if (!result1.cached) {
+    const result = await model.instance.process([value1, value2]);
+    if (!result.cached) {
       console.log(
-        `Sentence of length ${value1.length} (${result1.tokensNum} tokens) was processed in ${result1.elapsed} seconds`,
+        `Sentences of length ${value1.length + value2.length} (${result.tokensNum} tokens) were processed in ${
+          result.elapsed
+        } seconds`,
       );
     }
-    // @ts-ignore
-    const result2 = await model.instance.process(value2);
-    if (!result2.cached) {
-      console.log(
-        `Sentence of length ${value2.length} (${result2.tokensNum} tokens) was processed in ${result2.elapsed} seconds`,
-      );
-    }
-    const sim = cosineSim(result1.result, result2.result);
-    const result = Math.round((sim + Number.EPSILON) * 100) / 100;
+    let sim = cosineSim(result.result[0], result.result[1]);
+    sim = Math.round((sim + Number.EPSILON) * 100) / 100;
     let className = "bg-info";
-    if (result > 0.75) {
+    if (sim > 0.75) {
       className = "bg-success";
     }
-    if (result < 0.25) {
+    if (sim < 0.25) {
       className = "bg-danger";
     }
-    setResult({ value: result, className: className });
+    setResult({ value: sim, className: className });
     setStatus({ processing: false, message: "finished processing" });
   };
 

@@ -69,7 +69,7 @@ export default function Classification() {
           output = output.concat(partOutput.text);
           if (!partOutput.cached) {
             console.log(
-              `Sentence of length ${part.value.length}(${partOutput.tokensNum} tokens) was processed in ${partOutput.elapsed} seconds`,
+              `Sentence of length ${part.value.length} (${partOutput.tokensNum} tokens) was processed in ${partOutput.elapsed} seconds`,
             );
           }
         }
