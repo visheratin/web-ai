@@ -35,7 +35,8 @@ export const prepareImagesTensor = async (
 export const prepareTextTensors = async (
   inputs: string[],
   model: BaseTextModel | BaseMultimodalModel,
-): Promise<ort.Tensor[]> => {
+  padTokenID: number,
+): Promise<ort.TypedTensor<"int64">[]> => {
   if (!model.initialized || !model.tokenizer) {
     throw Error("the model is not initialized");
   }
@@ -55,7 +56,7 @@ export const prepareTextTensors = async (
   }
   for (let i = 0; i < inputs.length; i++) {
     while (inputIDs[i].length < maxLen) {
-      inputIDs[i].push(0);
+      inputIDs[i].push(padTokenID);
       attentionMasks[i].push(0);
     }
   }
