@@ -1,6 +1,7 @@
 class PreprocessorConfig {
   normalize: NormalizeConfig;
   resize: boolean;
+  resizeLonger: boolean;
   size: number;
   centerCrop: boolean;
   cropSize: number;
@@ -16,6 +17,7 @@ class PreprocessorConfig {
       enabled: false,
     };
     this.resize = false;
+    this.resizeLonger = false;
     this.size = 0;
     this.centerCrop = false;
     this.cropSize = 0;
@@ -76,6 +78,9 @@ class PreprocessorConfig {
     }
     if ("rescale_factor" in configData) {
       res.rescaleFactor = configData["rescale_factor"];
+    }
+    if ("resize_longer" in configData) {
+      res.resizeLonger = configData["resize_longer"];
     }
     return res;
   };

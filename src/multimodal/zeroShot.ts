@@ -27,7 +27,7 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
     }
     const start = new Date();
     const imageTensor = await prepareImagesTensor(inputs, this);
-    const textTensors = await prepareTextTensors(classes, this, false, this.metadata.tokenizerParams.padTokenID);
+    const textTensors = await prepareTextTensors(classes, this, true, this.metadata.tokenizerParams.padTokenID);
     const result = await this.runInference(imageTensor, textTensors[0], textTensors[1], classes);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
