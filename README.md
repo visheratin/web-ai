@@ -302,6 +302,14 @@ for (let item of output.results) {
 }
 ```
 
+`Img2Text` models extract the image features and then use them to generate the text. One useful example of such processing is image captioning. You can also specify the prefix to set the beginning of the output text. The output for this type of models is a string:
+
+```TypeScript
+const input = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Georgia5and120loop.jpg/640px-Georgia5and120loop.jpg"
+const output = await model.process(input, "The image shows")
+console.log(output.text)
+```
+
 ## Built-in models
 
 ### Text models
@@ -376,9 +384,12 @@ for (let item of output.results) {
 
 - `clip-base` - high-quality model for zero-shot classification (370 MB).
 - `clip-base-quant` - minified (quantized) version of the `clip-base` model (102 MB).
+- `blip-base` - high-quality model for image captioning (876 MB).
+- `blip-base-quant` - minified (quantized) version of the `blip-base` model (161 MB).
+- `vit-gpt2` - less resource-intensive model for image captioning (980 MB).
+- `vit-gpt2-quant` - minified (quantized) version of the `vit-gpt2` model (183 MB).
 
 ## Future development
 
 - Add examples for popular web frameworks.
-- Distil [Flan-T5-small](https://huggingface.co/google/flan-t5-small) model to make it more usable in the browser.
 - Add audio models ([Whisper-small](https://huggingface.co/openai/whisper-small)).

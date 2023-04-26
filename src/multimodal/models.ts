@@ -115,7 +115,7 @@ export const models: MultimodalMetadata[] = [
     description: "",
     memEstimateMB: 1800,
     type: MultimodalModelType.Img2Text,
-    sizeMB: 1005,
+    sizeMB: 980,
     modelPaths: new Map([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/encoder.onnx.gz"],
       ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/decoder.onnx.gz"],
@@ -140,7 +140,7 @@ export const models: MultimodalMetadata[] = [
     description: "",
     memEstimateMB: 1800,
     type: MultimodalModelType.Img2Text,
-    sizeMB: 188,
+    sizeMB: 183,
     modelPaths: new Map([
       ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/encoder-quant.onnx.gz"],
       ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/decoder-quant.onnx.gz"],
