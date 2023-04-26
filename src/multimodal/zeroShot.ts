@@ -27,7 +27,7 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
     }
     const start = new Date();
     const imageTensor = await prepareImagesTensor(inputs, this);
-    const textTensors = await prepareTextTensors(classes, this);
+    const textTensors = await prepareTextTensors(classes, this, false, this.metadata.tokenizerParams.padTokenID);
     const result = await this.runInference(imageTensor, textTensors[0], textTensors[1], classes);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
@@ -41,15 +41,19 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
     attentionMask: ort.Tensor,
     classes: string[],
   ): Promise<ZeroShotResult> => {
-    if (!this.initialized || !this.session) {
+    if (!this.initialized || !this.sessions) {
       throw Error("the model is not initialized");
     }
     const feeds: Record<string, ort.Tensor> = {};
     feeds["pixel_values"] = imageInput;
     feeds["input_ids"] = inputIDs;
     feeds["attention_mask"] = attentionMask;
-    const outputData = await this.session.run(feeds);
-    const outputNames = await this.session.outputNames();
+    const session = this.sessions.get("model");
+    if (!session) {
+      throw Error("the model is absent in the sessions map");
+    }
+    const outputData = await session.run(feeds);
+    const outputNames = await session.outputNames();
 
     if (!outputNames.includes("logits_per_image")) {
       throw Error("the model does not contain logits_per_image output");

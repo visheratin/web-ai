@@ -37,6 +37,8 @@ export {
   MultimodalMetadata,
   ListMultimodalModels,
   MultimodalModelType,
+  Img2TextModel,
+  Img2TextResult,
 } from "./multimodal";
 export { Metadata } from "./metadata";
 export { SessionParameters, SessionParams } from "./sessionParams";

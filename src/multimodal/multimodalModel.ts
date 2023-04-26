@@ -1,3 +1,4 @@
+import { Img2TextModel } from "./img2text";
 import { MultimodalModelType } from "./modelType";
 import { models } from "./models";
 import { ZeroShotClassificationModel } from "./zeroShot";
@@ -14,6 +15,14 @@ export class MultimodalModel {
         switch (modelMetadata.type) {
           case MultimodalModelType.ZeroShotClassification: {
             const model = new ZeroShotClassificationModel(modelMetadata);
+            const elapsed = await model.init(proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+          case MultimodalModelType.Img2Text: {
+            const model = new Img2TextModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {
               model: model,

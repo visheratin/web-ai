@@ -59,7 +59,6 @@ export class ImageFeatureExtractionModel extends BaseImageModel {
       partDims[0] = 1;
       const partData = output.data.slice(i * size, (i + 1) * size);
       const part = new ort.Tensor("float32", partData, partDims);
-      // @ts-ignore
       const res = this.generateOutput(part);
       result.push(res);
     }
@@ -69,17 +68,27 @@ export class ImageFeatureExtractionModel extends BaseImageModel {
   private generateOutput = (lastHiddenState: ort.Tensor): number[] => {
     const tensor = new Tensor(lastHiddenState);
     const result: number[] = [];
-    for (let i = 0; i < lastHiddenState.dims[2]; i++) {
-      result.push(0);
+    if (lastHiddenState.dims.length < 2) {
+      throw Error("the model output is not valid");
     }
-    for (let i = 0; i < lastHiddenState.dims[1]; i++) {
-      for (let j = 0; j < lastHiddenState.dims[2]; j++) {
-        result[j] += tensor.at([0, i, j]) as number;
+    if (lastHiddenState.dims.length === 3) {
+      for (let i = 0; i < lastHiddenState.dims[2]; i++) {
+        result.push(0);
       }
+      for (let i = 0; i < lastHiddenState.dims[1]; i++) {
+        for (let j = 0; j < lastHiddenState.dims[2]; j++) {
+          result[j] += tensor.at([0, i, j]) as number;
+        }
+      }
+      for (let i = 0; i < result.length; i++) {
+        result[i] /= lastHiddenState.dims[1];
+      }
+      return normalize(result);
+    } else {
+      for (let i = 0; i < lastHiddenState.dims[1]; i++) {
+        result.push(tensor.at([0, i]) as number);
+      }
+      return result;
     }
-    for (let i = 0; i < result.length; i++) {
-      result[i] /= lastHiddenState.dims[1];
-    }
-    return normalize(result);
   };
 }

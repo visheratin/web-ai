@@ -11,6 +11,7 @@ import textVectorImg from "../public/index/vector.jpg";
 import imageVectorImg from "../public/index/image-vector.png";
 import zeroShotImg from "../public/index/zero-shot.jpg";
 import samImg from "../public/index/sam.jpg";
+import captionImg from "../public/index/blip.jpg";
 
 export default function Home() {
   return (
@@ -182,6 +183,16 @@ export default function Home() {
                   <Image alt="" src={zeroShotImg} height={200} />
                   <p className="card-text">What is the image class? You decide!</p>
                   <Link href="/demos/zero-shot">Open demo</Link>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4 col-sm-12 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Image captioning</h5>
+                  <Image alt="" src={captionImg} height={200} />
+                  <p className="card-text">Let the model describe your pictures.</p>
+                  <Link href="/demos/image-caption">Open demo</Link>
                 </div>
               </div>
             </div>

@@ -55,7 +55,7 @@ export class TextFeatureExtractionModel extends BaseTextModel {
     if (typeof inputs === "string") {
       inputs = [inputs];
     }
-    const textTensors = await prepareTextTensors(inputs, this, this.metadata.tokenizerParams.padTokenID);
+    const textTensors = await prepareTextTensors(inputs, this, true, this.metadata.tokenizerParams.padTokenID);
     if (inputs.length == 1 && this.cache.has(inputs[0])) {
       return {
         result: this.cache.get(inputs[0]) as number[],

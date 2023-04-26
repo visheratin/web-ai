@@ -65,6 +65,11 @@ export default function Sidebar() {
                 Zero-shot classification
               </Link>
             </li>
+            <li className="nav-item">
+              <Link href="/demos/image-caption" className="nav-link active">
+                Image captioning
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>

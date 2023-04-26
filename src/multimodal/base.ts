@@ -13,7 +13,7 @@ export class BaseMultimodalModel {
   initialized: boolean;
   preprocessor?: Preprocessor;
   tokenizer?: WasmTokenizer;
-  session?: Session | Comlink.Remote<Session>;
+  sessions?: Map<string, Session | Comlink.Remote<Session>>;
 
   constructor(metadata: MultimodalMetadata) {
     if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
@@ -28,7 +28,12 @@ export class BaseMultimodalModel {
 
   init = async (proxy = true): Promise<number> => {
     const start = new Date();
-    this.session = await createSession(this.metadata.modelPath, proxy);
+    for (const [name, path] of this.metadata.modelPaths) {
+      if (!this.sessions) {
+        this.sessions = new Map<string, Session | Comlink.Remote<Session>>();
+      }
+      this.sessions.set(name, await createSession(path, proxy));
+    }
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);

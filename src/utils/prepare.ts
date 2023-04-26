@@ -35,7 +35,9 @@ export const prepareImagesTensor = async (
 export const prepareTextTensors = async (
   inputs: string[],
   model: BaseTextModel | BaseMultimodalModel,
+  addSpecialTokens: boolean,
   padTokenID: number,
+  bosTokenID?: number,
 ): Promise<ort.TypedTensor<"int64">[]> => {
   if (!model.initialized || !model.tokenizer) {
     throw Error("the model is not initialized");
@@ -44,14 +46,27 @@ export const prepareTextTensors = async (
   const inputIDs: number[][] = new Array(inputs.length);
   const attentionMasks: number[][] = new Array(inputs.length);
   for (let i = 0; i < inputs.length; i++) {
-    const tokens = await model.tokenizer.encode(inputs[i], true);
-    inputIDs[i] = new Array(tokens.length);
-    for (let j = 0; j < tokens.length; j++) {
-      inputIDs[i][j] = tokens[j];
+    const tokens = await model.tokenizer.encode(inputs[i], addSpecialTokens);
+    let len = tokens.length;
+    if (bosTokenID) {
+      len++;
     }
-    attentionMasks[i] = new Array(tokens.length).fill(1);
-    if (tokens.length > maxLen) {
-      maxLen = tokens.length;
+    inputIDs[i] = new Array(len);
+    let offset = 0;
+    if (bosTokenID) {
+      inputIDs[i][0] = bosTokenID;
+      offset = 1;
+    }
+    for (let j = offset; j < len; j++) {
+      if (bosTokenID) {
+        inputIDs[i][j] = tokens[j - 1];
+      } else {
+        inputIDs[i][j] = tokens[j];
+      }
+    }
+    attentionMasks[i] = new Array(len).fill(1);
+    if (len > maxLen) {
+      maxLen = len;
     }
   }
   for (let i = 0; i < inputs.length; i++) {

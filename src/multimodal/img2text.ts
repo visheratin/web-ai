@@ -1,26 +1,26 @@
 import { createSession } from "../sessionController";
-import { TextMetadata } from "./metadata";
-import { TextProcessingResult } from "./interfaces";
+import { MultimodalMetadata } from "./metadata";
 import { Encoder } from "../utils/encoder";
 import { Decoder } from "../utils/decoder";
 import { GeneratorType, generate } from "../utils/generator";
 import { GenerationConfig } from "../utils/generationConfig";
-import { loadTokenizer } from "./tokenizer";
-import { BaseTextModel } from "./base";
-import { prepareTextTensors } from "../utils/prepare";
+import { loadTokenizer } from "../text/tokenizer";
+import { BaseMultimodalModel } from "./base";
+import { ImageProcessingResult } from "../image/interfaces";
+import { prepareImagesTensor, prepareTextTensors } from "../utils/prepare";
+import PreprocessorConfig from "../image/preprocessorConfig";
+import Preprocessor from "../image/preprocessor";
 
-export type Seq2SeqResult = TextProcessingResult & {
+export type Img2TextResult = ImageProcessingResult & {
   text: string[];
 };
 
-export class Seq2SeqModel extends BaseTextModel {
+export class Img2TextModel extends BaseMultimodalModel {
   private encoder?: Encoder;
   private decoder?: Decoder;
-  private cache: Map<string, string>;
 
-  constructor(metadata: TextMetadata) {
+  constructor(metadata: MultimodalMetadata) {
     super(metadata);
-    this.cache = new Map<string, string>();
   }
 
   init = async (proxy = true): Promise<number> => {
@@ -29,7 +29,7 @@ export class Seq2SeqModel extends BaseTextModel {
     if (!encoderPath) {
       throw new Error("model paths do not have the 'encoder' path");
     }
-    const encoderOutputName = this.metadata.outputNames.get("encoder");
+    const encoderOutputName = this.metadata.outputNames?.get("encoder");
     if (!encoderOutputName) {
       throw new Error("output names do not have the 'encoder' path");
     }
@@ -38,13 +38,15 @@ export class Seq2SeqModel extends BaseTextModel {
     if (!decoderPath) {
       throw new Error("model paths do not have the 'decoder' path");
     }
-    const decoderOutputName = this.metadata.outputNames.get("decoder");
+    const decoderOutputName = this.metadata.outputNames?.get("decoder");
     if (!decoderOutputName) {
       throw new Error("output names do not have the 'decoder' path");
     }
     const decoderSession = await createSession(decoderPath, proxy);
-    this.encoder = new Encoder(encoderSession, encoderOutputName, GeneratorType.Seq2Seq);
-    this.decoder = new Decoder(decoderSession, decoderOutputName, GeneratorType.Seq2Seq);
+    this.encoder = new Encoder(encoderSession, encoderOutputName, GeneratorType.Img2Seq);
+    this.decoder = new Decoder(decoderSession, decoderOutputName, GeneratorType.Img2Seq);
+    const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
+    this.preprocessor = new Preprocessor(preprocessorConfig);
     this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
@@ -52,39 +54,36 @@ export class Seq2SeqModel extends BaseTextModel {
     return elapsed;
   };
 
-  process = async (inputs: string | string[], prefix?: string): Promise<Seq2SeqResult> => {
+  process = async (
+    imageInputs: string | ArrayBuffer | string[] | ArrayBuffer[],
+    textInputs: string | string[],
+  ): Promise<Img2TextResult> => {
     if (!this.initialized || !this.encoder || !this.decoder || !this.tokenizer) {
       throw Error("the model is not initialized");
     }
-    if (typeof inputs === "string") {
-      inputs = [inputs];
+    if (typeof imageInputs === "string") {
+      imageInputs = [imageInputs];
     }
-    if (prefix && prefix.length > 0) {
-      if (!this.metadata.prefixes) {
-        throw Error("the model does not support prefixes");
-      }
-      if (!this.metadata.prefixes.includes(prefix)) {
-        throw Error("the prefix is not allowed");
-      }
-      for (let i = 0; i < inputs.length; i++) {
-        inputs[i] = prefix + ": " + inputs[i];
-      }
+    if (imageInputs instanceof ArrayBuffer) {
+      imageInputs = [imageInputs];
     }
-    if (inputs.length == 1 && this.cache.has(inputs[0])) {
-      return {
-        text: [this.cache.get(inputs[0]) as string],
-        cached: true,
-        tokensNum: 0,
-        elapsed: 0,
-      };
+    if (typeof textInputs === "string") {
+      textInputs = [textInputs];
     }
-    const textTensors = await prepareTextTensors(inputs, this, true, this.metadata.tokenizerParams.padTokenID);
+    const imageTensor = await prepareImagesTensor(imageInputs, this);
     if (
       this.metadata.tokenizerParams.bosTokenID === undefined ||
       this.metadata.tokenizerParams.eosTokenID === undefined
     ) {
       throw Error("the model does not have the bosTokenID or eosTokenID");
     }
+    const textTensors = await prepareTextTensors(
+      textInputs,
+      this,
+      false,
+      this.metadata.tokenizerParams.padTokenID,
+      this.metadata.tokenizerParams.bosTokenID,
+    );
     const generationConfig: GenerationConfig = {
       maxLength: 500,
       eosTokenID: this.metadata.tokenizerParams.eosTokenID,
@@ -94,11 +93,18 @@ export class Seq2SeqModel extends BaseTextModel {
     const start = new Date();
     const outputTokenIDs: number[][] = [];
     const result: string[] = [];
+    // const imageAttention = new ort.Tensor(
+    //   "int64",
+    //   new BigInt64Array(imageTensor.data.length).fill(1n),
+    //   imageTensor.dims,
+    // );
     for await (const tokenIDs of generate(
-      textTensors[0],
+      imageTensor,
       this.encoder,
       this.decoder,
       generationConfig,
+      undefined,
+      textTensors[0],
       textTensors[1],
     )) {
       for (let i = 0; i < tokenIDs.length; i++) {
@@ -115,34 +121,34 @@ export class Seq2SeqModel extends BaseTextModel {
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     return {
       text: result,
-      cached: false,
-      tokensNum: textTensors[0].data.length,
       elapsed: elapsed,
     };
   };
 
-  async *processStream(inputs: string | string[], prefix?: string): AsyncIterable<string[]> {
+  async *processStream(
+    imageInputs: string | ArrayBuffer | string[] | ArrayBuffer[],
+    textInputs: string | string[],
+  ): AsyncIterable<string[]> {
     if (!this.initialized || !this.encoder || !this.decoder || !this.tokenizer) {
       throw Error("the model is not initialized");
     }
-    if (typeof inputs === "string") {
-      inputs = [inputs];
+    if (typeof imageInputs === "string") {
+      imageInputs = [imageInputs];
     }
-    if (prefix && prefix.length > 0) {
-      if (!this.metadata.prefixes) {
-        throw Error("the model does not support prefixes");
-      }
-      if (!this.metadata.prefixes.includes(prefix)) {
-        throw Error("the prefix is not allowed");
-      }
-      for (let i = 0; i < inputs.length; i++) {
-        inputs[i] = prefix + ": " + inputs[i];
-      }
+    if (imageInputs instanceof ArrayBuffer) {
+      imageInputs = [imageInputs];
     }
-    if (inputs.length == 1 && this.cache.has(inputs[0])) {
-      return this.cache.get(inputs[0]) as string;
+    if (typeof textInputs === "string") {
+      textInputs = [textInputs];
     }
-    const textTensors = await prepareTextTensors(inputs, this, true, this.metadata.tokenizerParams.padTokenID);
+    const imageTensor = await prepareImagesTensor(imageInputs, this);
+    const textTensors = await prepareTextTensors(
+      textInputs,
+      this,
+      false,
+      this.metadata.tokenizerParams.padTokenID,
+      this.metadata.tokenizerParams.bosTokenID,
+    );
     if (
       this.metadata.tokenizerParams.bosTokenID === undefined ||
       this.metadata.tokenizerParams.eosTokenID === undefined
@@ -156,13 +162,15 @@ export class Seq2SeqModel extends BaseTextModel {
       padTokenID: this.metadata.tokenizerParams.padTokenID,
     };
     const outputTokenIDs: number[][] = [];
-    let oldOutput: string[] = new Array(inputs.length).fill("");
-    const diffs: string[] = new Array(inputs.length).fill("");
+    let oldOutput: string[] = new Array(textInputs.length).fill("");
+    const diffs: string[] = new Array(textInputs.length).fill("");
     for await (const tokenIDs of generate(
-      textTensors[0],
+      imageTensor,
       this.encoder,
       this.decoder,
       generationConfig,
+      undefined,
+      textTensors[0],
       textTensors[1],
     )) {
       const newOutput: string[] = [];

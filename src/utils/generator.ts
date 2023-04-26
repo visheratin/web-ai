@@ -19,7 +19,11 @@ export async function* generate(
   initDecoderAttentionMask?: ort.TypedTensor<"int64">,
 ): AsyncIterable<number[]> {
   const sampler = (x: ort.Tensor) => greedySampler(x);
+  const start = new Date();
   const encoderOutput = await encoder.process(input, inputAttentionMask);
+  const end = new Date();
+  const elapsed = (end.getTime() - start.getTime()) / 1000;
+  console.log(`encoder elapsed: ${elapsed} seconds`);
   let len = 0;
   let decoderInput = new ort.Tensor("int64", new BigInt64Array(input.dims[0]).fill(BigInt(options.bosTokenID)), [
     input.dims[0],
@@ -34,7 +38,11 @@ export async function* generate(
   }
   const genFinished: boolean[] = new Array(input.dims[0]).fill(false);
   while (true) {
+    const start = new Date();
     const decoderOutput = await decoder.process(encoderOutput, decoderInput, decoderAttention, inputAttentionMask);
+    const end = new Date();
+    const elapsed = (end.getTime() - start.getTime()) / 1000;
+    console.log(`decoder elapsed: ${elapsed} seconds`);
     const newTokenIDs = sampler(decoderOutput);
     yield newTokenIDs;
     for (let i = 0; i < newTokenIDs.length; i++) {

@@ -35,10 +35,9 @@ export class BaseImageModel {
     }
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
-    if (!this.metadata.configPath) {
-      throw Error("configPath is not defined");
+    if (this.metadata.configPath) {
+      this.config = await Config.fromFile(this.metadata.configPath);
     }
-    this.config = await Config.fromFile(this.metadata.configPath);
     this.initialized = true;
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
