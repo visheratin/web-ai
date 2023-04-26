@@ -11,7 +11,7 @@ export default function ImageCaption() {
 
   const [caption, setCaption] = useState("");
 
-  const [model, setModel] = useState(null);
+  const [model, setModel] = useState<Img2TextModel | null>(null);
 
   const [status, setStatus] = useState({ message: "select and load the model", processing: false });
 
@@ -36,12 +36,14 @@ export default function ImageCaption() {
   };
 
   const process = async () => {
+    if (!model) {
+      return;
+    }
     const prefix = prefixRef.current!.value;
     setStatus({ message: "processing the image", processing: true });
     let caption = prefix.trim() + " ";
-    // @ts-ignore
     for await (const piece of model.processStream(imageURL, prefix)) {
-      caption = caption.concat(piece);
+      caption = caption.concat(piece[0]);
       setCaption(caption);
     }
     setStatus({ message: "processing finished", processing: false });
