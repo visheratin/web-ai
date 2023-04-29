@@ -14,7 +14,7 @@ export class Encoder {
     this.type = type;
   }
 
-  process = async (inputs: ort.Tensor, attentionMask?: ort.Tensor): Promise<ort.Tensor> => {
+  process = async (inputs: ort.Tensor, attentionMask?: ort.Tensor, encoderOutput?: ort.Tensor): Promise<ort.Tensor> => {
     if (attentionMask && (inputs.dims[0] !== attentionMask.dims[0] || inputs.dims[1] !== attentionMask.dims[1])) {
       throw new Error("The dimensions of inputs and attention masks are not equal");
     }
@@ -35,6 +35,9 @@ export class Encoder {
             inputs.dims[1],
           ]);
           encoderFeeds["token_type_ids"] = typeIdsTensor;
+        }
+        if (encoderOutput) {
+          encoderFeeds["encoder_hidden_states"] = encoderOutput;
         }
         break;
       }

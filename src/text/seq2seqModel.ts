@@ -3,7 +3,7 @@ import { TextMetadata } from "./metadata";
 import { TextProcessingResult } from "./interfaces";
 import { Encoder } from "../utils/encoder";
 import { Decoder } from "../utils/decoder";
-import { GeneratorType, generate } from "../utils/generator";
+import { GeneratorType, encodeData, generate } from "../utils/generator";
 import { GenerationConfig } from "../utils/generationConfig";
 import { loadTokenizer } from "./tokenizer";
 import { BaseTextModel } from "./base";
@@ -94,13 +94,15 @@ export class Seq2SeqModel extends BaseTextModel {
     const start = new Date();
     const outputTokenIDs: number[][] = [];
     const result: string[] = [];
-    for await (const tokenIDs of generate(
-      textTensors[0],
+    const encoderOutput = await encodeData(
+      undefined,
+      undefined,
+      undefined,
       this.encoder,
-      this.decoder,
-      generationConfig,
+      textTensors[0],
       textTensors[1],
-    )) {
+    );
+    for await (const tokenIDs of generate(encoderOutput, this.decoder, generationConfig, textTensors[1])) {
       for (let i = 0; i < tokenIDs.length; i++) {
         if (tokenIDs[i] !== this.metadata.tokenizerParams.padTokenID) {
           if (!outputTokenIDs[i]) outputTokenIDs[i] = [];
@@ -158,13 +160,15 @@ export class Seq2SeqModel extends BaseTextModel {
     const outputTokenIDs: number[][] = [];
     let oldOutput: string[] = new Array(inputs.length).fill("");
     const diffs: string[] = new Array(inputs.length).fill("");
-    for await (const tokenIDs of generate(
-      textTensors[0],
+    const encoderOutput = await encodeData(
+      undefined,
+      undefined,
+      undefined,
       this.encoder,
-      this.decoder,
-      generationConfig,
+      textTensors[0],
       textTensors[1],
-    )) {
+    );
+    for await (const tokenIDs of generate(encoderOutput, this.decoder, generationConfig, textTensors[1])) {
       const newOutput: string[] = [];
       for (let i = 0; i < tokenIDs.length; i++) {
         if (tokenIDs[i] !== this.metadata.tokenizerParams.padTokenID) {

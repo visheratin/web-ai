@@ -144,27 +144,34 @@ export const models: TextMetadata[] = [
     referenceURL: "https://huggingface.co/visheratin/t5-efficient-mini-grammar-correction",
   },
   {
-    id: "t5-flan-small",
+    id: "flan-t5-small",
     title: "T5 Flan small",
     description: "",
     memEstimateMB: 1000,
     type: TextModelType.Seq2Seq,
     sizeMB: 330,
     modelPaths: new Map<string, string>([
-      ["encoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5/encoder.onnx.gz"],
-      ["decoder", "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5/decoder.onnx.gz"],
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-small/encoder.onnx.gz",
+      ],
+      [
+        "decoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-small/decoder.onnx.gz",
+      ],
     ]),
     outputNames: new Map<string, string>([
       ["encoder", "hidden_states"],
       ["decoder", "logits"],
     ]),
-    tokenizerPath: "https://huggingface.co/google/flan-t5-small/resolve/main/tokenizer.json",
+    tokenizerPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-small/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
       padTokenID: 0,
     },
-    tags: ["general", "t5-flan"],
+    tags: ["general", "flan-t5"],
     referenceURL: "https://huggingface.co/google/flan-t5-small",
   },
   {
@@ -188,7 +195,8 @@ export const models: TextMetadata[] = [
       ["encoder", "hidden_states"],
       ["decoder", "logits"],
     ]),
-    tokenizerPath: "https://huggingface.co/minhtoan/t5-finetune-cnndaily-news/resolve/main/tokenizer.json",
+    tokenizerPath:
+      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
@@ -424,5 +432,67 @@ export const models: TextMetadata[] = [
     },
     tags: ["feature-extraction", "t5"],
     referenceURL: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
+  },
+  {
+    id: "flan-t5-samsum-quant",
+    title: "Flan T5 for text summarization quantized",
+    description: "",
+    memEstimateMB: 400,
+    type: TextModelType.Seq2Seq,
+    sizeMB: 185,
+    modelPaths: new Map<string, string>([
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/samsum/encoder-quant.onnx.gz",
+      ],
+      [
+        "decoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/samsum/decoder-quant.onnx.gz",
+      ],
+    ]),
+    outputNames: new Map<string, string>([
+      ["encoder", "last_hidden_state"],
+      ["decoder", "logits"],
+    ]),
+    tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/samsum/tokenizer.json",
+    tokenizerParams: {
+      bosTokenID: 0,
+      eosTokenID: 1,
+      padTokenID: 0,
+    },
+    tags: ["summarization", "flan-t5"],
+    prefixes: ["summarize"],
+    referenceURL: "https://huggingface.co/philschmid/flan-t5-base-samsum",
+  },
+  {
+    id: "flan-t5-base-quant",
+    title: "Flan T5 quantized",
+    description: "",
+    memEstimateMB: 400,
+    type: TextModelType.Seq2Seq,
+    sizeMB: 185,
+    modelPaths: new Map<string, string>([
+      [
+        "encoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-base/encoder-quant.onnx.gz",
+      ],
+      [
+        "decoder",
+        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-base/decoder-quant.onnx.gz",
+      ],
+    ]),
+    outputNames: new Map<string, string>([
+      ["encoder", "last_hidden_state"],
+      ["decoder", "logits"],
+    ]),
+    tokenizerPath: "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-base/tokenizer.json",
+    tokenizerParams: {
+      bosTokenID: 0,
+      eosTokenID: 1,
+      padTokenID: 0,
+    },
+    tags: ["summarization", "flan-t5"],
+    prefixes: ["summarize"],
+    referenceURL: "https://huggingface.co/philschmid/flan-t5-base-samsum",
   },
 ];

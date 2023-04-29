@@ -2,7 +2,7 @@ import { createSession } from "../sessionController";
 import { MultimodalMetadata } from "./metadata";
 import { Encoder } from "../utils/encoder";
 import { Decoder } from "../utils/decoder";
-import { GeneratorType, generate } from "../utils/generator";
+import { GeneratorType, encodeData, generate } from "../utils/generator";
 import { GenerationConfig } from "../utils/generationConfig";
 import { loadTokenizer } from "../text/tokenizer";
 import { BaseMultimodalModel } from "./base";
@@ -10,14 +10,16 @@ import { ImageProcessingResult } from "../image/interfaces";
 import { prepareImagesTensor, prepareTextTensors } from "../utils/prepare";
 import PreprocessorConfig from "../image/preprocessorConfig";
 import Preprocessor from "../image/preprocessor";
+import * as ort from "onnxruntime-web";
 
 export type Img2TextResult = ImageProcessingResult & {
   text: string[];
 };
 
 export class Img2TextModel extends BaseMultimodalModel {
-  private encoder?: Encoder;
-  private decoder?: Decoder;
+  private imageEncoder?: Encoder;
+  private textEncoder?: Encoder;
+  private textDecoder?: Decoder;
 
   constructor(metadata: MultimodalMetadata) {
     super(metadata);
@@ -25,26 +27,38 @@ export class Img2TextModel extends BaseMultimodalModel {
 
   init = async (proxy = true): Promise<number> => {
     const start = new Date();
-    const encoderPath = this.metadata.modelPaths.get("encoder");
-    if (!encoderPath) {
-      throw new Error("model paths do not have the 'encoder' path");
+    const imageEncoderPath = this.metadata.modelPaths.get("image-encoder");
+    if (!imageEncoderPath) {
+      throw new Error("model paths do not have the 'image-encoder' path");
     }
-    const encoderOutputName = this.metadata.outputNames?.get("encoder");
-    if (!encoderOutputName) {
+    const imageEncoderOutputName = this.metadata.outputNames?.get("image-encoder");
+    if (!imageEncoderOutputName) {
       throw new Error("output names do not have the 'encoder' path");
     }
-    const encoderSession = await createSession(encoderPath, proxy);
-    const decoderPath = this.metadata.modelPaths.get("decoder");
-    if (!decoderPath) {
-      throw new Error("model paths do not have the 'decoder' path");
+    const imageEncoderSession = await createSession(imageEncoderPath, proxy);
+    this.imageEncoder = new Encoder(imageEncoderSession, imageEncoderOutputName, GeneratorType.Img2Seq);
+    if (this.metadata.modelPaths.has("text-encoder")) {
+      const textEncoderPath = this.metadata.modelPaths.get("text-encoder");
+      if (!textEncoderPath) {
+        throw new Error("model paths do not have the 'text-encoder' path");
+      }
+      const textEncoderOutputName = this.metadata.outputNames?.get("text-encoder");
+      if (!textEncoderOutputName) {
+        throw new Error("output names do not have the 'encoder' path");
+      }
+      const textEncoderSession = await createSession(textEncoderPath, proxy);
+      this.textEncoder = new Encoder(textEncoderSession, textEncoderOutputName, GeneratorType.Seq2Seq);
     }
-    const decoderOutputName = this.metadata.outputNames?.get("decoder");
+    const decoderPath = this.metadata.modelPaths.get("text-decoder");
+    if (!decoderPath) {
+      throw new Error("model paths do not have the 'text-decoder' path");
+    }
+    const decoderOutputName = this.metadata.outputNames?.get("text-decoder");
     if (!decoderOutputName) {
-      throw new Error("output names do not have the 'decoder' path");
+      throw new Error("output names do not have the 'text-decoder' path");
     }
     const decoderSession = await createSession(decoderPath, proxy);
-    this.encoder = new Encoder(encoderSession, encoderOutputName, GeneratorType.Img2Seq);
-    this.decoder = new Decoder(decoderSession, decoderOutputName, GeneratorType.Img2Seq);
+    this.textDecoder = new Decoder(decoderSession, decoderOutputName, GeneratorType.Img2Seq);
     const preprocessorConfig = await PreprocessorConfig.fromFile(this.metadata.preprocessorPath);
     this.preprocessor = new Preprocessor(preprocessorConfig);
     this.tokenizer = await loadTokenizer(this.metadata.tokenizerPath);
@@ -58,9 +72,10 @@ export class Img2TextModel extends BaseMultimodalModel {
     imageInputs: string | ArrayBuffer | string[] | ArrayBuffer[],
     textInputs: string | string[],
   ): Promise<Img2TextResult> => {
-    if (!this.initialized || !this.encoder || !this.decoder || !this.tokenizer) {
+    if (!this.initialized || !this.imageEncoder || !this.textDecoder || !this.tokenizer) {
       throw Error("the model is not initialized");
     }
+    const start = new Date();
     if (typeof imageInputs === "string") {
       imageInputs = [imageInputs];
     }
@@ -90,23 +105,32 @@ export class Img2TextModel extends BaseMultimodalModel {
       bosTokenID: this.metadata.tokenizerParams.bosTokenID,
       padTokenID: this.metadata.tokenizerParams.padTokenID,
     };
-    const start = new Date();
     const outputTokenIDs: number[][] = [];
     const result: string[] = [];
-    // const imageAttention = new ort.Tensor(
-    //   "int64",
-    //   new BigInt64Array(imageTensor.data.length).fill(1n),
-    //   imageTensor.dims,
-    // );
-    for await (const tokenIDs of generate(
-      imageTensor,
-      this.encoder,
-      this.decoder,
-      generationConfig,
-      undefined,
-      textTensors[0],
-      textTensors[1],
-    )) {
+    let encoderOutput: ort.Tensor;
+    let generateFunc: AsyncIterable<number[]>;
+    if (this.textEncoder) {
+      encoderOutput = await encodeData(
+        this.imageEncoder,
+        imageTensor,
+        undefined,
+        this.textEncoder,
+        textTensors[0],
+        textTensors[1],
+      );
+      generateFunc = generate(encoderOutput, this.textDecoder, generationConfig);
+    } else {
+      encoderOutput = await encodeData(this.imageEncoder, imageTensor);
+      generateFunc = generate(
+        encoderOutput,
+        this.textDecoder,
+        generationConfig,
+        undefined,
+        textTensors[0],
+        textTensors[1],
+      );
+    }
+    for await (const tokenIDs of generateFunc) {
       for (let i = 0; i < tokenIDs.length; i++) {
         if (tokenIDs[i] !== this.metadata.tokenizerParams.padTokenID) {
           if (!outputTokenIDs[i]) outputTokenIDs[i] = [];
@@ -129,7 +153,7 @@ export class Img2TextModel extends BaseMultimodalModel {
     imageInputs: string | ArrayBuffer | string[] | ArrayBuffer[],
     textInputs: string | string[],
   ): AsyncIterable<string[]> {
-    if (!this.initialized || !this.encoder || !this.decoder || !this.tokenizer) {
+    if (!this.initialized || !this.imageEncoder || !this.textDecoder || !this.tokenizer) {
       throw Error("the model is not initialized");
     }
     if (typeof imageInputs === "string") {
@@ -164,15 +188,30 @@ export class Img2TextModel extends BaseMultimodalModel {
     const outputTokenIDs: number[][] = [];
     let oldOutput: string[] = new Array(textInputs.length).fill("");
     const diffs: string[] = new Array(textInputs.length).fill("");
-    for await (const tokenIDs of generate(
-      imageTensor,
-      this.encoder,
-      this.decoder,
-      generationConfig,
-      undefined,
-      textTensors[0],
-      textTensors[1],
-    )) {
+    let encoderOutput: ort.Tensor;
+    let generateFunc: AsyncIterable<number[]>;
+    if (this.textEncoder) {
+      encoderOutput = await encodeData(
+        this.imageEncoder,
+        imageTensor,
+        undefined,
+        this.textEncoder,
+        textTensors[0],
+        textTensors[1],
+      );
+      generateFunc = generate(encoderOutput, this.textDecoder, generationConfig);
+    } else {
+      encoderOutput = await encodeData(this.imageEncoder, imageTensor);
+      generateFunc = generate(
+        encoderOutput,
+        this.textDecoder,
+        generationConfig,
+        undefined,
+        textTensors[0],
+        textTensors[1],
+      );
+    }
+    for await (const tokenIDs of generateFunc) {
       const newOutput: string[] = [];
       for (let i = 0; i < tokenIDs.length; i++) {
         if (tokenIDs[i] !== this.metadata.tokenizerParams.padTokenID) {

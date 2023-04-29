@@ -9,9 +9,38 @@ export enum GeneratorType {
   Seq2Seq,
 }
 
+export const encodeData = async (
+  imageEncoder?: Encoder,
+  imageInput?: ort.Tensor,
+  imageAttention?: ort.Tensor,
+  textEncoder?: Encoder,
+  textInput?: ort.Tensor,
+  textAttention?: ort.Tensor,
+): Promise<ort.Tensor> => {
+  if (!imageEncoder && !textEncoder) {
+    throw new Error("At least one encoder should be provided");
+  }
+  let imageOutput: ort.Tensor | undefined = undefined;
+  if (imageEncoder) {
+    if (!imageInput) {
+      throw new Error("Image input is not provided");
+    }
+    imageOutput = await imageEncoder.process(imageInput, imageAttention);
+    console.log(imageOutput);
+  }
+  if (textEncoder) {
+    if (!textInput) {
+      throw new Error("Text input is not provided");
+    }
+    const textOutput = await textEncoder.process(textInput, textAttention, imageOutput);
+    console.log(textOutput);
+    return textOutput;
+  }
+  return imageOutput as ort.Tensor;
+};
+
 export async function* generate(
-  input: ort.Tensor,
-  encoder: Encoder,
+  encoderOutput: ort.Tensor,
   decoder: Decoder,
   options: GenerationConfig,
   inputAttentionMask?: ort.Tensor,
@@ -19,30 +48,25 @@ export async function* generate(
   initDecoderAttentionMask?: ort.TypedTensor<"int64">,
 ): AsyncIterable<number[]> {
   const sampler = (x: ort.Tensor) => greedySampler(x);
-  const start = new Date();
-  const encoderOutput = await encoder.process(input, inputAttentionMask);
-  const end = new Date();
-  const elapsed = (end.getTime() - start.getTime()) / 1000;
-  console.log(`encoder elapsed: ${elapsed} seconds`);
   let len = 0;
-  let decoderInput = new ort.Tensor("int64", new BigInt64Array(input.dims[0]).fill(BigInt(options.bosTokenID)), [
-    input.dims[0],
+  let decoderInput = new ort.Tensor(
+    "int64",
+    new BigInt64Array(encoderOutput.dims[0]).fill(BigInt(options.bosTokenID)),
+    [encoderOutput.dims[0], 1],
+  );
+  let decoderAttention = new ort.Tensor("int64", new BigInt64Array(encoderOutput.dims[0]).fill(1n), [
+    encoderOutput.dims[0],
     1,
   ]);
-  let decoderAttention = new ort.Tensor("int64", new BigInt64Array(input.dims[0]).fill(1n), [input.dims[0], 1]);
   if (initDecoderInput) {
     decoderInput = initDecoderInput;
   }
   if (initDecoderAttentionMask) {
     decoderAttention = initDecoderAttentionMask;
   }
-  const genFinished: boolean[] = new Array(input.dims[0]).fill(false);
+  const genFinished: boolean[] = new Array(encoderOutput.dims[0]).fill(false);
   while (true) {
-    const start = new Date();
     const decoderOutput = await decoder.process(encoderOutput, decoderInput, decoderAttention, inputAttentionMask);
-    const end = new Date();
-    const elapsed = (end.getTime() - start.getTime()) / 1000;
-    console.log(`decoder elapsed: ${elapsed} seconds`);
     const newTokenIDs = sampler(decoderOutput);
     yield newTokenIDs;
     for (let i = 0; i < newTokenIDs.length; i++) {
