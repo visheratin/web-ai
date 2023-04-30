@@ -40,6 +40,7 @@ export default function ImageCaption() {
     if (!model) {
       return;
     }
+    const start = Date.now();
     const prefix = prefixRef.current!.value;
     setStatus({ message: "processing the image", processing: true });
     setPrefix(prefix.trim());
@@ -49,6 +50,8 @@ export default function ImageCaption() {
       caption = caption.concat(piece[0]);
       setCaption(caption);
     }
+    const end = Date.now();
+    console.log(`processing took ${end - start} ms`);
     setStatus({ message: "processing finished", processing: false });
   };
 

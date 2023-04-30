@@ -26,14 +26,12 @@ export const encodeData = async (
       throw new Error("Image input is not provided");
     }
     imageOutput = await imageEncoder.process(imageInput, imageAttention);
-    console.log(imageOutput);
   }
   if (textEncoder) {
     if (!textInput) {
       throw new Error("Text input is not provided");
     }
     const textOutput = await textEncoder.process(textInput, textAttention, imageOutput);
-    console.log(textOutput);
     return textOutput;
   }
   return imageOutput as ort.Tensor;
