@@ -435,7 +435,7 @@ export const models: TextMetadata[] = [
   },
   {
     id: "flan-t5-samsum-quant",
-    title: "Flan T5 for text summarization quantized",
+    title: "Flan T5 for chat summarization quantized",
     description: "",
     memEstimateMB: 400,
     type: TextModelType.Seq2Seq,

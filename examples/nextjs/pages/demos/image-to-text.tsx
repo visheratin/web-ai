@@ -10,6 +10,7 @@ export default function ImageCaption() {
   const [imageURL, setImageURL] = useState("");
 
   const [caption, setCaption] = useState("");
+  const [prefix, setPrefix] = useState("");
 
   const [model, setModel] = useState<Img2TextModel | null>(null);
 
@@ -41,7 +42,9 @@ export default function ImageCaption() {
     }
     const prefix = prefixRef.current!.value;
     setStatus({ message: "processing the image", processing: true });
-    let caption = prefix.trim() + " ";
+    setPrefix(prefix.trim());
+    setCaption("");
+    let caption = "";
     for await (const piece of model.processStream(imageURL, prefix)) {
       caption = caption.concat(piece[0]);
       setCaption(caption);
@@ -52,21 +55,31 @@ export default function ImageCaption() {
   return (
     <>
       <Head>
-        <title>Web AI Next.js image captioning example</title>
-        <meta name="description" content="Web AI Next.js image captioning example" />
+        <title>Web AI Next.js image to text demo</title>
+        <meta name="description" content="Web AI Next.js image to text demo" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
         <div className="container">
           <div className="row">
             <div className="col">
-              <h2>Image captioning</h2>
+              <h2>Image to text</h2>
+              <p>
+                Image to text models generate text from the images. Depending on the model, the generated text may be a
+                caption for the image or an answer to the question about the image. This demo provides two types of
+                models - image captioning and visual question answering. The image captioning models generate a caption
+                for the image. The visual question answering models generate an answer to the question about the image.
+                I recommend using quantized versions of the models as they are much smaller in size but provide almost
+                the same quality as the full-precision models.
+              </p>
               <p>How to use the demo:</p>
               <ol>
                 <li>Select the model.</li>
                 <li>Load the image.</li>
                 <li>
-                  (Optionally) Enter the prefix. The prefix is a text that will be prepended to the generated caption.
+                  Enter the prefix. If the selected model is an image captioning model, the prefix is used as a starting
+                  point for the caption. If the selected model is a visual question answering model, the prefix is used
+                  as a question about the image. For image captioning models, the prefix is optional.
                 </li>
                 <li>Click the &quot;Process&quot; button.</li>
               </ol>
@@ -119,12 +132,14 @@ export default function ImageCaption() {
                 <div className="card">
                   <img src={imageURL} className="card-img-top" alt="" />
                   <div className="card-body">
-                    <strong>Prefix:</strong>
+                    <strong>Prefix/question:</strong>
                     <input ref={prefixRef} className="form-control" type="text" disabled={status.processing} />
                     {caption !== "" && (
                       <div className="mt-1">
-                        <strong>Caption:</strong>
-                        <p className="card-text">{caption}</p>
+                        <strong>Result:</strong>
+                        <p className="card-text bg-green-300">
+                          {prefix} <mark>{caption}</mark>
+                        </p>
                       </div>
                     )}
                   </div>

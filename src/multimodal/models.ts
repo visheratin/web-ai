@@ -21,7 +21,7 @@ export const ListMultimodalModels = (tags?: string[], type?: MultimodalModelType
 export const models: MultimodalMetadata[] = [
   {
     id: "clip-base",
-    title: "CLIP base",
+    title: "CLIP for zero-shot classification",
     description: "",
     memEstimateMB: 850,
     type: MultimodalModelType.ZeroShotClassification,
@@ -41,7 +41,7 @@ export const models: MultimodalMetadata[] = [
   },
   {
     id: "clip-base-quant",
-    title: "CLIP base quantized",
+    title: "CLIP for zero-shot classification quantized",
     description: "",
     memEstimateMB: 500,
     type: MultimodalModelType.ZeroShotClassification,
@@ -61,7 +61,7 @@ export const models: MultimodalMetadata[] = [
   },
   {
     id: "blip-base",
-    title: "BLIP base",
+    title: "BLIP for image captioning",
     description: "",
     memEstimateMB: 2100,
     type: MultimodalModelType.Img2Text,
@@ -86,7 +86,7 @@ export const models: MultimodalMetadata[] = [
   },
   {
     id: "blip-base-quant",
-    title: "BLIP base quantized",
+    title: "BLIP for image captioning quantized",
     description: "",
     memEstimateMB: 2100,
     type: MultimodalModelType.Img2Text,
@@ -147,7 +147,7 @@ export const models: MultimodalMetadata[] = [
   },
   {
     id: "vit-gpt2",
-    title: "ViT-GPT2",
+    title: "ViT-GPT2 for image captioning",
     description: "",
     memEstimateMB: 1800,
     type: MultimodalModelType.Img2Text,
@@ -172,7 +172,7 @@ export const models: MultimodalMetadata[] = [
   },
   {
     id: "vit-gpt2-quant",
-    title: "ViT-GPT2 quantized",
+    title: "ViT-GPT2 for image captioning quantized",
     description: "",
     memEstimateMB: 1800,
     type: MultimodalModelType.Img2Text,

@@ -189,10 +189,10 @@ export default function Home() {
             <div className="col-md-4 col-sm-12 mb-4">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Image captioning</h5>
+                  <h5 className="card-title">Image to text</h5>
                   <Image alt="" src={captionImg} height={200} />
                   <p className="card-text">Let the model describe your pictures.</p>
-                  <Link href="/demos/image-caption">Open demo</Link>
+                  <Link href="/demos/image-to-text">Open demo</Link>
                 </div>
               </div>
             </div>

@@ -66,8 +66,8 @@ export default function Sidebar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/demos/image-caption" className="nav-link active">
-                Image captioning
+              <Link href="/demos/image-to-text" className="nav-link active">
+                Image to text
               </Link>
             </li>
           </ul>
