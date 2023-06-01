@@ -1,7 +1,7 @@
 import * as ort from "onnxruntime-web";
 import { softmax } from "./utils";
 import { ImageProcessingResult } from "./interfaces";
-import { prepareImagesTensor } from "../utils/prepare";
+import { prepareImagesTensor } from "../utils/prepare-image";
 import { BaseImageModel } from "./base";
 
 /**

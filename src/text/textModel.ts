@@ -1,7 +1,7 @@
-import { TextFeatureExtractionModel } from "./featureExtractionModel";
 import { models } from "./models";
 import { TextModelType } from "./modeType";
 import { Seq2SeqModel } from "./seq2seqModel";
+import { TextFeatureExtractionModel } from "./featureExtractionModel";
 
 export interface InitTextModelResult {
   model: TextModel;

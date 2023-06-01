@@ -7,7 +7,7 @@ import { GeneratorType, encodeData, generate } from "../utils/generator";
 import { GenerationConfig } from "../utils/generationConfig";
 import { loadTokenizer } from "./tokenizer";
 import { BaseTextModel } from "./base";
-import { prepareTextTensors } from "../utils/prepare";
+import { prepareTextTensors } from "../utils/prepare-text";
 
 export type Seq2SeqResult = TextProcessingResult & {
   text: string[];
