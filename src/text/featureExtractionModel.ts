@@ -9,7 +9,7 @@ import { Remote } from "comlink";
 import { loadTokenizer } from "./tokenizer";
 import { BaseTextModel } from "./base";
 import { GeneratorType } from "../utils/generator";
-import { prepareTextTensors } from "../utils/prepare";
+import { prepareTextTensors } from "../utils/prepare-text";
 
 export type TextFeatureExtractionResult = TextProcessingResult & {
   result: number[] | number[][];

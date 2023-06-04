@@ -2,7 +2,8 @@ import * as ort from "onnxruntime-web";
 import { normalize, softmax } from "../image/utils";
 import { ClassificationPrediction } from "../image/classificationModel";
 import { ImageProcessingResult } from "../image";
-import { prepareImagesTensor, prepareTextTensors } from "../utils/prepare";
+import { prepareTextTensors } from "../utils/prepare-text";
+import { prepareImagesTensor } from "../utils/prepare-image";
 import { BaseMultimodalModel } from "./base";
 
 export type ZeroShotResult = ImageProcessingResult & {

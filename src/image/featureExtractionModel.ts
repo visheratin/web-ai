@@ -3,7 +3,7 @@ import { ImageProcessingResult } from "./interfaces";
 import { Tensor } from "../tensor";
 import { normalize } from "./utils";
 import { BaseImageModel } from "./base";
-import { prepareImagesTensor } from "../utils/prepare";
+import { prepareImagesTensor } from "../utils/prepare-image";
 
 export type ImageFeatureExtractionResult = ImageProcessingResult & {
   result: number[] | number[][];
