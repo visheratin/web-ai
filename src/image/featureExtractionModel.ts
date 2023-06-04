@@ -88,7 +88,7 @@ export class ImageFeatureExtractionModel extends BaseImageModel {
       for (let i = 0; i < lastHiddenState.dims[1]; i++) {
         result.push(tensor.at([0, i]) as number);
       }
-      return result;
+      return normalize(result);
     }
   };
 }
