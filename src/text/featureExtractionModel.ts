@@ -1,11 +1,10 @@
 import { createSession } from "../sessionController";
 import { TextMetadata } from "./metadata";
 import { Encoder } from "../utils/encoder";
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import { Tensor } from "../tensor";
 import { TextProcessingResult } from "./interfaces";
 import { Session } from "../session";
-import { Remote } from "comlink";
 import { loadTokenizer } from "./tokenizer";
 import { BaseTextModel } from "./base";
 import { GeneratorType } from "../utils/generator";
@@ -17,7 +16,7 @@ export type TextFeatureExtractionResult = TextProcessingResult & {
 
 export class TextFeatureExtractionModel extends BaseTextModel {
   private model?: Encoder;
-  private dense?: Session | Remote<Session>;
+  private dense?: Session;
   private cache: Map<string, number[]>;
 
   constructor(metadata: TextMetadata) {

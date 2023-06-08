@@ -1,5 +1,5 @@
 import { Tensor } from "../src/tensor";
-import { Tensor as OrtTensor } from "onnxruntime-web";
+import { Tensor as OrtTensor } from "onnxruntime-node";
 
 test("2D array", () => {
   const tensor = new Tensor(new OrtTensor(new Float32Array([1, 2, 3, 4, 5, 6, 7, 8, 9]), [3, 3]));

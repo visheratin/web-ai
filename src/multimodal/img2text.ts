@@ -11,7 +11,7 @@ import { prepareTextTensors } from "../utils/prepare-text";
 import { prepareImagesTensor } from "../utils/prepare-image";
 import PreprocessorConfig from "../image/preprocessorConfig";
 import Preprocessor from "../image/preprocessor";
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 
 export type Img2TextResult = ImageProcessingResult & {
   text: string[];

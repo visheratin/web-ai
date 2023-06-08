@@ -1,4 +1,4 @@
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import Jimp from "jimp";
 import { softmax } from "./utils";
 import { ImageProcessingResult } from "./interfaces";

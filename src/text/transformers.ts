@@ -1,6 +1,5 @@
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import { Session } from "../session";
-import * as Comlink from "comlink";
 
 interface GenerateOptions {
   maxLength: number;
@@ -8,10 +7,10 @@ interface GenerateOptions {
 }
 
 export class T5ForConditionalGeneration {
-  encoderSession: Session | Comlink.Remote<Session>;
-  decoderSession: Session | Comlink.Remote<Session>;
+  encoderSession: Session;
+  decoderSession: Session;
 
-  constructor(encoderSession: Session | Comlink.Remote<Session>, decoderSession: Session | Comlink.Remote<Session>) {
+  constructor(encoderSession: Session, decoderSession: Session) {
     this.encoderSession = encoderSession;
     this.decoderSession = decoderSession;
   }
@@ -141,9 +140,9 @@ class Seq2SeqLMOutput {
 }
 
 export class T5Encoder {
-  encoderSession: Session | Comlink.Remote<Session>;
+  encoderSession: Session;
 
-  constructor(encoderSession: Session | Comlink.Remote<Session>) {
+  constructor(encoderSession: Session) {
     this.encoderSession = encoderSession;
   }
 

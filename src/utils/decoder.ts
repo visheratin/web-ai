@@ -1,14 +1,13 @@
 import { Session } from "../session";
-import * as Comlink from "comlink";
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import { GeneratorType } from "./generator";
 
 export class Decoder {
-  session: Session | Comlink.Remote<Session>;
+  session: Session;
   outputName: string;
   type: GeneratorType;
 
-  constructor(session: Session | Comlink.Remote<Session>, outputName: string, type: GeneratorType) {
+  constructor(session: Session, outputName: string, type: GeneratorType) {
     this.session = session;
     this.outputName = outputName;
     this.type = type;

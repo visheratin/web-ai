@@ -1,4 +1,4 @@
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import Jimp from "jimp";
 import { BaseImageModel } from "./base";
 import { SegmentationResult } from "./segmentationModel";

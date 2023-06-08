@@ -1,6 +1,6 @@
 import Jimp from "jimp";
 import PreprocessorConfig from "./preprocessorConfig";
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 
 export interface PreprocessorResult {
   tensor: ort.Tensor;

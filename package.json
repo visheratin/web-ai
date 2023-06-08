@@ -1,7 +1,7 @@
 {
-  "name": "@visheratin/web-ai",
+  "name": "@visheratin/web-ai-node",
   "version": "0.10.2",
-  "description": "Run modern deep learning models in the browser.",
+  "description": "Run modern deep learning models in Node.js.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -36,8 +36,6 @@
   "homepage": "https://github.com/visheratin/web-ai#readme",
   "dependencies": {
     "@visheratin/tokenizers": "0.1.5",
-    "comlink": "4.3.1",
-    "localforage": "1.10.0",
     "onnxruntime-web": "1.14.0",
     "pako": "2.1.0"
   },

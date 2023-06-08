@@ -1,4 +1,4 @@
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import { softmax } from "./utils";
 import { ImageProcessingResult } from "./interfaces";
 import { prepareImagesTensor } from "../utils/prepare-image";

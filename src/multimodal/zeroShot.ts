@@ -1,4 +1,4 @@
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import { normalize, softmax } from "../image/utils";
 import { ClassificationPrediction } from "../image/classificationModel";
 import { ImageProcessingResult } from "../image";

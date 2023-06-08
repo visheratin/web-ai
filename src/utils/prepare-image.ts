@@ -1,4 +1,4 @@
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import { BaseMultimodalModel } from "../multimodal/base";
 import { BaseImageModel } from "../image/base";
 import Jimp from "jimp";

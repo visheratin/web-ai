@@ -2,7 +2,6 @@ import { Session } from "../session";
 import { SessionParams } from "../sessionParams";
 import { ImageMetadata } from "./metadata";
 import Preprocessor from "./preprocessor";
-import * as Comlink from "comlink";
 import { createSession } from "../sessionController";
 import PreprocessorConfig from "./preprocessorConfig";
 import Config from "./config";
@@ -12,7 +11,7 @@ export class BaseImageModel {
   initialized: boolean;
   config?: Config;
   preprocessor?: Preprocessor;
-  sessions?: Map<string, Session | Comlink.Remote<Session>>;
+  sessions?: Map<string, Session>;
 
   constructor(metadata: ImageMetadata) {
     if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
@@ -29,7 +28,7 @@ export class BaseImageModel {
     const start = new Date();
     for (const [name, path] of this.metadata.modelPaths) {
       if (!this.sessions) {
-        this.sessions = new Map<string, Session | Comlink.Remote<Session>>();
+        this.sessions = new Map<string, Session>();
       }
       this.sessions.set(name, await createSession(path, proxy));
     }

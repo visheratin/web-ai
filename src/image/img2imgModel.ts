@@ -1,4 +1,4 @@
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import Jimp from "jimp";
 import { ImageProcessingResult } from "./interfaces";
 import { BaseImageModel } from "./base";

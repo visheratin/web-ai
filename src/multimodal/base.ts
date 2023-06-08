@@ -2,7 +2,6 @@ import Preprocessor from "../image/preprocessor";
 import { Session } from "../session";
 import { SessionParams } from "../sessionParams";
 import { MultimodalMetadata } from "./metadata";
-import * as Comlink from "comlink";
 import { WasmTokenizer } from "@visheratin/tokenizers";
 import { createSession } from "../sessionController";
 import PreprocessorConfig from "../image/preprocessorConfig";
@@ -13,7 +12,7 @@ export class BaseMultimodalModel {
   initialized: boolean;
   preprocessor?: Preprocessor;
   tokenizer?: WasmTokenizer;
-  sessions?: Map<string, Session | Comlink.Remote<Session>>;
+  sessions?: Map<string, Session>;
 
   constructor(metadata: MultimodalMetadata) {
     if (SessionParams.memoryLimitMB > 0 && SessionParams.memoryLimitMB < metadata.memEstimateMB) {
@@ -30,7 +29,7 @@ export class BaseMultimodalModel {
     const start = new Date();
     for (const [name, path] of this.metadata.modelPaths) {
       if (!this.sessions) {
-        this.sessions = new Map<string, Session | Comlink.Remote<Session>>();
+        this.sessions = new Map<string, Session>();
       }
       this.sessions.set(name, await createSession(path, proxy));
     }

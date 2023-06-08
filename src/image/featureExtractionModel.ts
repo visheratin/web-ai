@@ -1,4 +1,4 @@
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-node";
 import { ImageProcessingResult } from "./interfaces";
 import { Tensor } from "../tensor";
 import { normalize } from "./utils";

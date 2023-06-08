@@ -1,4 +1,4 @@
-import { Tensor as OrtTensor } from "onnxruntime-web";
+import { Tensor as OrtTensor } from "onnxruntime-node";
 
 export class Tensor {
   ortTensor: OrtTensor;
