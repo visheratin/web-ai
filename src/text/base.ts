@@ -1,4 +1,4 @@
-import { WasmTokenizer } from "@visheratin/tokenizers";
+import { WasmTokenizer } from "@visheratin/tokenizers-node";
 import { TextMetadata } from "./metadata";
 import { SessionParams } from "../sessionParams";
 

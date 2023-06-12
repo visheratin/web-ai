@@ -2,7 +2,7 @@ import Preprocessor from "../image/preprocessor";
 import { Session } from "../session";
 import { SessionParams } from "../sessionParams";
 import { MultimodalMetadata } from "./metadata";
-import { WasmTokenizer } from "@visheratin/tokenizers";
+import { WasmTokenizer } from "@visheratin/tokenizers-node";
 import { createSession } from "../sessionController";
 import PreprocessorConfig from "../image/preprocessorConfig";
 import { loadTokenizer } from "../text/tokenizer";
