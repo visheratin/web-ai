@@ -1,10 +1,6 @@
 import Head from "next/head";
 import { ChangeEvent, useRef, useState } from "react";
-import {
-  TextModel,
-  Seq2SeqModel,
-  TextModelType,
-} from "@visheratin/web-ai/text";
+import { TextModel, Seq2SeqModel, ModelType } from "@visheratin/web-ai/text";
 import { split } from "sentence-splitter";
 import ModelSelector from "../../components/modelSelect";
 
@@ -130,7 +126,7 @@ export default function Classification() {
           </div>
           <ModelSelector
             tags={["grammar"]}
-            textType={TextModelType.Seq2Seq}
+            textType={ModelType.Seq2Seq}
             imageType={undefined}
             multimodalType={undefined}
             callback={loadModel}

@@ -2,8 +2,8 @@ import Head from "next/head";
 import { useRef, useState } from "react";
 import {
   TextModel,
-  TextFeatureExtractionModel,
-  TextModelType,
+  FeatureExtractionModel,
+  ModelType,
 } from "@visheratin/web-ai/text";
 import ModelSelector from "../../components/modelSelect";
 
@@ -22,7 +22,7 @@ export default function Classification() {
   const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
     const result = await TextModel.create(id);
-    setModel({ instance: result.model as TextFeatureExtractionModel });
+    setModel({ instance: result.model as FeatureExtractionModel });
     setStatus({ message: "ready", processing: false });
   };
 
@@ -102,7 +102,7 @@ export default function Classification() {
           </div>
           <ModelSelector
             tags={undefined}
-            textType={TextModelType.FeatureExtraction}
+            textType={ModelType.FeatureExtraction}
             imageType={undefined}
             callback={loadModel}
           />

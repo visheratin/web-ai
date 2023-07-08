@@ -5,14 +5,14 @@ import { normalize } from "./utils.js";
 import { BaseImageModel } from "./base.js";
 import { prepareImagesTensor } from "./prepare.js";
 
-export type ImageFeatureExtractionResult = ImageProcessingResult & {
+export type FeatureExtractionResult = ImageProcessingResult & {
   result: number[] | number[][];
 };
 
-export class ImageFeatureExtractionModel extends BaseImageModel {
+export class FeatureExtractionModel extends BaseImageModel {
   process = async (
     inputs: string | ArrayBuffer | string[] | ArrayBuffer[]
-  ): Promise<ImageFeatureExtractionResult> => {
+  ): Promise<FeatureExtractionResult> => {
     if (!this.initialized || !this.preprocessor) {
       throw Error("the model is not initialized");
     }
@@ -27,7 +27,7 @@ export class ImageFeatureExtractionModel extends BaseImageModel {
     const output = await this.runInference(tensor);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
-    const result: ImageFeatureExtractionResult = {
+    const result: FeatureExtractionResult = {
       result: output,
       elapsed: elapsed,
     };

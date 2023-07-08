@@ -1,4 +1,4 @@
-export enum ImageModelType {
+export enum ModelType {
   Unknown = 1,
   Classification,
   Segmentation,

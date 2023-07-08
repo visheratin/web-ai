@@ -5,6 +5,6 @@ export { type GenerationConfig } from "./generationConfig.js";
 export { type Session } from "./session.js";
 export { type Metadata } from "./metadata.js";
 export { Tensor } from "./tensor.js";
-export { SessionParams, type SessionParameters } from "./sessionParams.js";
+export { type SessionParameters } from "./sessionParameters.js";
 export * from "./generationConfig.js";
 export * from "./tokenizer.js";

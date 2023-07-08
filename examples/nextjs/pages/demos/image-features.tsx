@@ -3,8 +3,8 @@ import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import {
   ImageModel,
-  ImageFeatureExtractionModel,
-  ImageModelType,
+  FeatureExtractionModel,
+  ModelType,
 } from "@visheratin/web-ai/image";
 import ModelSelector from "../../components/modelSelect";
 
@@ -71,7 +71,7 @@ export default function ImageFeatures() {
   const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
     const result = await ImageModel.create(id);
-    setModel({ instance: result.model as ImageFeatureExtractionModel });
+    setModel({ instance: result.model as FeatureExtractionModel });
     setStatus({ message: "ready", processing: false });
   };
 
@@ -203,7 +203,7 @@ export default function ImageFeatures() {
           <ModelSelector
             tags={undefined}
             textType={undefined}
-            imageType={ImageModelType.FeatureExtraction}
+            imageType={ModelType.FeatureExtraction}
             multimodalType={undefined}
             callback={loadModel}
           />

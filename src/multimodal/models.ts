@@ -1,9 +1,9 @@
 import { MultimodalMetadata } from "./metadata.js";
-import { MultimodalModelType } from "./modelType.js";
+import { ModelType } from "./modelType.js";
 
 export const ListMultimodalModels = (
   tags?: string[],
-  type?: MultimodalModelType
+  type?: ModelType
 ): MultimodalMetadata[] => {
   if (!tags && !type) {
     return models;
@@ -27,7 +27,7 @@ export const models: MultimodalMetadata[] = [
     title: "CLIP for zero-shot classification",
     description: "",
     memEstimateMB: 850,
-    type: MultimodalModelType.ZeroShotClassification,
+    type: ModelType.ZeroShotClassification,
     sizeMB: 370,
     modelPaths: new Map([
       [
@@ -52,7 +52,7 @@ export const models: MultimodalMetadata[] = [
     title: "CLIP for zero-shot classification quantized",
     description: "",
     memEstimateMB: 500,
-    type: MultimodalModelType.ZeroShotClassification,
+    type: ModelType.ZeroShotClassification,
     sizeMB: 102,
     modelPaths: new Map([
       [
@@ -77,7 +77,7 @@ export const models: MultimodalMetadata[] = [
     title: "BLIP for image captioning",
     description: "",
     memEstimateMB: 2100,
-    type: MultimodalModelType.Img2Text,
+    type: ModelType.Img2Text,
     sizeMB: 872,
     modelPaths: new Map([
       [
@@ -111,7 +111,7 @@ export const models: MultimodalMetadata[] = [
     title: "BLIP for image captioning quantized",
     description: "",
     memEstimateMB: 2100,
-    type: MultimodalModelType.Img2Text,
+    type: ModelType.Img2Text,
     sizeMB: 161,
     modelPaths: new Map([
       [
@@ -145,7 +145,7 @@ export const models: MultimodalMetadata[] = [
     title: "BLIP for question answering quantized",
     description: "",
     memEstimateMB: 2100,
-    type: MultimodalModelType.Img2Text,
+    type: ModelType.Img2Text,
     sizeMB: 161,
     modelPaths: new Map([
       [
@@ -183,7 +183,7 @@ export const models: MultimodalMetadata[] = [
     title: "ViT-GPT2 for image captioning",
     description: "",
     memEstimateMB: 1800,
-    type: MultimodalModelType.Img2Text,
+    type: ModelType.Img2Text,
     sizeMB: 980,
     modelPaths: new Map([
       [
@@ -216,7 +216,7 @@ export const models: MultimodalMetadata[] = [
     title: "ViT-GPT2 for image captioning quantized",
     description: "",
     memEstimateMB: 1800,
-    type: MultimodalModelType.Img2Text,
+    type: ModelType.Img2Text,
     sizeMB: 183,
     modelPaths: new Map([
       [

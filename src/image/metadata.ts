@@ -1,8 +1,8 @@
 import { Metadata } from "../common.js";
-import { ImageModelType } from "./modelType.js";
+import { ModelType } from "./modelType.js";
 
 export type ImageMetadata = Metadata & {
-  type?: ImageModelType;
+  type?: ModelType;
   modelPaths: Map<string, string>;
   configPath?: string;
   preprocessorPath: string;

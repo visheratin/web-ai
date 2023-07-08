@@ -1,9 +1,9 @@
 import { Metadata } from "../common.js";
 import { TokenizerParams } from "../text.js";
-import { MultimodalModelType } from "./modelType.js";
+import { ModelType } from "./modelType.js";
 
 export type MultimodalMetadata = Metadata & {
-  type?: MultimodalModelType;
+  type?: ModelType;
   modelPaths: Map<string, string>;
   outputNames?: Map<string, string>;
   preprocessorPath: string;

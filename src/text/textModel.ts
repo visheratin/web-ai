@@ -1,7 +1,7 @@
 import { models } from "./models.js";
-import { TextModelType } from "./modeType.js";
+import { ModelType } from "./modeType.js";
 import { Seq2SeqModel } from "./seq2seqModel.js";
-import { TextFeatureExtractionModel } from "./featureExtractionModel.js";
+import { FeatureExtractionModel } from "./featureExtractionModel.js";
 
 export interface InitTextModelResult {
   model: TextModel;
@@ -16,15 +16,15 @@ export class TextModel {
     for (const modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
-          case TextModelType.FeatureExtraction: {
-            const model = new TextFeatureExtractionModel(modelMetadata);
+          case ModelType.FeatureExtraction: {
+            const model = new FeatureExtractionModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {
               model: model,
               elapsed: elapsed,
             };
           }
-          case TextModelType.Seq2Seq: {
+          case ModelType.Seq2Seq: {
             const model = new Seq2SeqModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {

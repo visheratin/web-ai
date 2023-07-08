@@ -1,7 +1,7 @@
-import { Session, SessionParams, Tokenizer } from "../common.js";
+import { Session, Tokenizer } from "../common.js";
 import { MultimodalMetadata } from "./metadata.js";
 import { Preprocessor, PreprocessorConfig } from "../image.js";
-import { createSession, loadTokenizer } from "../browser.js";
+import { createSession, loadTokenizer, SessionParams } from "../browser.js";
 
 export class BaseMultimodalModel {
   metadata: MultimodalMetadata;

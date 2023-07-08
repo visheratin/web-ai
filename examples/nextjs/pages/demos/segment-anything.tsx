@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRef, useState } from "react";
 import {
   ImageModel,
-  ImageModelType,
+  ModelType,
   SegmentAnythingPrompt,
   SegmentAnythingModel,
 } from "@visheratin/web-ai/image";
@@ -24,7 +24,7 @@ export default function SegmentAnything() {
   const [samModel, setSamModel] = useState(
     new SegmentAnythingModel({
       id: "",
-      type: ImageModelType.Segmentation,
+      type: ModelType.Segmentation,
       modelPaths: new Map<string, string>(),
       configPath: "",
       preprocessorPath: "",
@@ -151,7 +151,7 @@ export default function SegmentAnything() {
           <ModelSelector
             tags={undefined}
             textType={undefined}
-            imageType={ImageModelType.SegmentAnything}
+            imageType={ModelType.SegmentAnything}
             callback={loadSamModel}
           />
           <hr />

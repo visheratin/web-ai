@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRef, useState } from "react";
 import {
   MultimodalModel,
-  MultimodalModelType,
+  ModelType,
   Img2TextModel,
 } from "@visheratin/web-ai/multimodal";
 import ModelSelector from "../../components/modelSelect";
@@ -116,7 +116,7 @@ export default function ImageCaption() {
             tags={undefined}
             textType={undefined}
             imageType={undefined}
-            multimodalType={MultimodalModelType.Img2Text}
+            multimodalType={ModelType.Img2Text}
             callback={loadModel}
           />
           <div className="row mt-3">

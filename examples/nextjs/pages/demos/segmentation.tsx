@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   ImageModel,
   SegmentationModel,
-  ImageModelType,
+  ModelType,
 } from "@visheratin/web-ai/image";
 import ModelSelector from "../../components/modelSelect";
 
@@ -41,7 +41,7 @@ export default function Segmentation() {
   const [model, setModel] = useState(
     new SegmentationModel({
       id: "segformer-b0-segmentation-quant",
-      type: ImageModelType.Segmentation,
+      type: ModelType.Segmentation,
       modelPaths: new Map<string, string>(),
       configPath: "",
       preprocessorPath: "",
@@ -162,7 +162,7 @@ export default function Segmentation() {
           <ModelSelector
             tags={undefined}
             textType={undefined}
-            imageType={ImageModelType.Segmentation}
+            imageType={ModelType.Segmentation}
             callback={loadModel}
           />
           <div className="row">

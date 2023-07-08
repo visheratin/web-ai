@@ -4,19 +4,18 @@
     "strict": true,
     "module": "CommonJS",
     "lib": ["dom", "esnext"],
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": false,
     "checkJs": false,
     "esModuleInterop": true,
     "noImplicitAny": false,
-    "outDir": "./dist",
     "sourceMap": true,
     "strictPropertyInitialization": true,
   },
   "include": [
-    "src/**/*.ts"
+    "**/*.ts"
   ],
   "exclude": [
     "node_modules",

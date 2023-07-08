@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   ZeroShotClassificationModel,
   MultimodalModel,
-  MultimodalModelType,
+  ModelType,
 } from "@visheratin/web-ai/multimodal";
 import { ClassificationPrediction } from "@visheratin/web-ai/image";
 import ModelSelector from "../../components/modelSelect";
@@ -88,7 +88,7 @@ export default function ZeroShotClassification() {
             tags={undefined}
             textType={undefined}
             imageType={undefined}
-            multimodalType={MultimodalModelType.ZeroShotClassification}
+            multimodalType={ModelType.ZeroShotClassification}
             callback={loadModel}
           />
           <div className="row">

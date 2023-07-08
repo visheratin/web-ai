@@ -1,8 +1,17 @@
 import { useRef, useState } from "react";
 import { Metadata } from "@visheratin/web-ai/common";
-import { ImageModelType, ListImageModels } from "@visheratin/web-ai/image";
-import { TextModelType, ListTextModels } from "@visheratin/web-ai/text";
-import { MultimodalModelType, ListMultimodalModels } from "@visheratin/web-ai/multimodal";
+import {
+  ModelType as ImageModelType,
+  ListImageModels,
+} from "@visheratin/web-ai/image";
+import {
+  ModelType as TextModelType,
+  ListTextModels,
+} from "@visheratin/web-ai/text";
+import {
+  ModelType as MultimodalModelType,
+  ListMultimodalModels,
+} from "@visheratin/web-ai/multimodal";
 
 interface ModelSelectorProps {
   tags: string[] | undefined;
@@ -55,7 +64,11 @@ export default function ModelSelector(props: ModelSelectorProps) {
           </select>
         </div>
         <div className="col-md-2 col-sm-12 mt-1">
-          <button className="btn btn-primary btn-block" style={{ width: "100%" }} onClick={selectModel}>
+          <button
+            className="btn btn-primary btn-block"
+            style={{ width: "100%" }}
+            onClick={selectModel}
+          >
             Select
           </button>
         </div>

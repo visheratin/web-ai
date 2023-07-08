@@ -3,7 +3,7 @@ import Jimp from "jimp";
 import { useEffect, useRef, useState } from "react";
 import {
   ImageModel,
-  ImageModelType,
+  ModelType,
   ObjectDetectionModel,
   ObjectDetectionPrediction,
 } from "@visheratin/web-ai/image";
@@ -156,7 +156,7 @@ export default function Classification() {
           <ModelSelector
             tags={undefined}
             textType={undefined}
-            imageType={ImageModelType.ObjectDetection}
+            imageType={ModelType.ObjectDetection}
             multimodalType={undefined}
             callback={loadModel}
           />

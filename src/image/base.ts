@@ -1,9 +1,9 @@
-import { Session, SessionParams } from "../common.js";
+import { Session } from "../common.js";
 import { ImageMetadata } from "./metadata.js";
 import Preprocessor from "./preprocessor.js";
 import { PreprocessorConfig } from "./preprocessorConfig.js";
 import Config from "./config.js";
-import { createSession } from "../browser.js";
+import { createSession, SessionParams } from "../browser.js";
 
 export class BaseImageModel {
   metadata: ImageMetadata;

@@ -1,5 +1,6 @@
-import { SessionParams, Tokenizer } from "../common.js";
+import { Tokenizer } from "../common.js";
 import { TextMetadata } from "./metadata.js";
+import { SessionParams } from "../browser.js";
 
 export class BaseTextModel {
   metadata: TextMetadata;

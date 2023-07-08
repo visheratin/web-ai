@@ -1,9 +1,9 @@
 import { ImageMetadata } from "./metadata.js";
-import { ImageModelType } from "./modelType.js";
+import { ModelType } from "./modelType.js";
 
 export const ListImageModels = (
   tags?: string[],
-  type?: ImageModelType
+  type?: ModelType
 ): ImageMetadata[] => {
   if (!tags && !type) {
     return models;
@@ -51,7 +51,7 @@ export const models: ImageMetadata[] = [
     title: "MobileViT small",
     description: "",
     memEstimateMB: 100,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 19,
     modelPaths: new Map([
       [
@@ -72,7 +72,7 @@ export const models: ImageMetadata[] = [
     title: "MobileViT small quantized",
     description: "",
     memEstimateMB: 100,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 4,
     modelPaths: new Map<string, string>([
       [
@@ -93,7 +93,7 @@ export const models: ImageMetadata[] = [
     title: "MobileViT extra small",
     description: "",
     memEstimateMB: 50,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 8,
     modelPaths: new Map<string, string>([
       [
@@ -114,7 +114,7 @@ export const models: ImageMetadata[] = [
     title: "MobileViT extra small quantized",
     description: "",
     memEstimateMB: 50,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 2,
     modelPaths: new Map<string, string>([
       [
@@ -135,7 +135,7 @@ export const models: ImageMetadata[] = [
     title: "MobileViT extra extra small",
     description: "",
     memEstimateMB: 40,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 5,
     modelPaths: new Map<string, string>([
       [
@@ -156,7 +156,7 @@ export const models: ImageMetadata[] = [
     title: "MobileViT extra extra small quantized",
     description: "",
     memEstimateMB: 40,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 1,
     modelPaths: new Map<string, string>([
       [
@@ -177,7 +177,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer large",
     description: "",
     memEstimateMB: 330,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 90,
     modelPaths: new Map<string, string>([
       [
@@ -199,7 +199,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer large quantized",
     description: "",
     memEstimateMB: 100,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 18,
     modelPaths: new Map<string, string>([
       [
@@ -221,7 +221,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer medium",
     description: "",
     memEstimateMB: 170,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 50,
     modelPaths: new Map<string, string>([
       [
@@ -243,7 +243,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer meduim quantized",
     description: "",
     memEstimateMB: 50,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 10,
     modelPaths: new Map<string, string>([
       [
@@ -265,7 +265,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer small",
     description: "",
     memEstimateMB: 80,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 13,
     modelPaths: new Map<string, string>([
       [
@@ -287,7 +287,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer small quantized",
     description: "",
     memEstimateMB: 40,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 3,
     modelPaths: new Map<string, string>([
       [
@@ -309,7 +309,7 @@ export const models: ImageMetadata[] = [
     title: "YOLOS tiny",
     description: "",
     memEstimateMB: 120,
-    type: ImageModelType.ObjectDetection,
+    type: ModelType.ObjectDetection,
     sizeMB: 24,
     modelPaths: new Map<string, string>([
       [
@@ -330,7 +330,7 @@ export const models: ImageMetadata[] = [
     title: "YOLOS tiny quantized",
     description: "",
     memEstimateMB: 80,
-    type: ImageModelType.ObjectDetection,
+    type: ModelType.ObjectDetection,
     sizeMB: 8,
     modelPaths: new Map<string, string>([
       [
@@ -351,7 +351,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer small quantized",
     description: "",
     memEstimateMB: 50,
-    type: ImageModelType.Segmentation,
+    type: ModelType.Segmentation,
     sizeMB: 3,
     modelPaths: new Map<string, string>([
       [
@@ -373,7 +373,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer meduim quantized",
     description: "",
     memEstimateMB: 70,
-    type: ImageModelType.Segmentation,
+    type: ModelType.Segmentation,
     sizeMB: 9,
     modelPaths: new Map<string, string>([
       [
@@ -395,7 +395,7 @@ export const models: ImageMetadata[] = [
     title: "SegFormer large quantized",
     description: "",
     memEstimateMB: 100,
-    type: ImageModelType.Segmentation,
+    type: ModelType.Segmentation,
     sizeMB: 42,
     modelPaths: new Map<string, string>([
       [
@@ -417,7 +417,7 @@ export const models: ImageMetadata[] = [
     title: "Super-resolution x2 small",
     description: "",
     memEstimateMB: 1900,
-    type: ImageModelType.Img2Img,
+    type: ModelType.Img2Img,
     sizeMB: 4,
     modelPaths: new Map<string, string>([
       [
@@ -436,7 +436,7 @@ export const models: ImageMetadata[] = [
     title: "Super-resolution x2 small quantized",
     description: "",
     memEstimateMB: 1900,
-    type: ImageModelType.Img2Img,
+    type: ModelType.Img2Img,
     sizeMB: 1.5,
     modelPaths: new Map<string, string>([
       [
@@ -455,7 +455,7 @@ export const models: ImageMetadata[] = [
     title: "Super-resolution x4 for compressed images",
     description: "",
     memEstimateMB: 3400,
-    type: ImageModelType.Img2Img,
+    type: ModelType.Img2Img,
     sizeMB: 45,
     modelPaths: new Map<string, string>([
       [
@@ -474,7 +474,7 @@ export const models: ImageMetadata[] = [
     title: "Super-resolution x4 for compressed images quantized",
     description: "",
     memEstimateMB: 2300,
-    type: ImageModelType.Img2Img,
+    type: ModelType.Img2Img,
     sizeMB: 10,
     modelPaths: new Map<string, string>([
       [
@@ -493,7 +493,7 @@ export const models: ImageMetadata[] = [
     title: "EfficientFormer small",
     description: "",
     memEstimateMB: 200,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 43,
     modelPaths: new Map<string, string>([
       [
@@ -514,7 +514,7 @@ export const models: ImageMetadata[] = [
     title: "EfficientFormer small quantized",
     description: "",
     memEstimateMB: 100,
-    type: ImageModelType.Classification,
+    type: ModelType.Classification,
     sizeMB: 11,
     modelPaths: new Map<string, string>([
       [
@@ -535,7 +535,7 @@ export const models: ImageMetadata[] = [
     title: "EfficientFormer small",
     description: "",
     memEstimateMB: 180,
-    type: ImageModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 43,
     modelPaths: new Map<string, string>([
       [
@@ -556,7 +556,7 @@ export const models: ImageMetadata[] = [
     title: "EfficientFormer small quantized",
     description: "",
     memEstimateMB: 60,
-    type: ImageModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 11,
     modelPaths: new Map<string, string>([
       [
@@ -577,7 +577,7 @@ export const models: ImageMetadata[] = [
     title: "EfficientFormer medium",
     description: "",
     memEstimateMB: 380,
-    type: ImageModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 116,
     modelPaths: new Map<string, string>([
       [
@@ -598,7 +598,7 @@ export const models: ImageMetadata[] = [
     title: "EfficientFormer medium quantized",
     description: "",
     memEstimateMB: 120,
-    type: ImageModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 30,
     modelPaths: new Map<string, string>([
       [
@@ -619,7 +619,7 @@ export const models: ImageMetadata[] = [
     title: "EfficientFormer large",
     description: "",
     memEstimateMB: 620,
-    type: ImageModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 308,
     modelPaths: new Map<string, string>([
       [
@@ -640,7 +640,7 @@ export const models: ImageMetadata[] = [
     title: "EfficientFormer large quantized",
     description: "",
     memEstimateMB: 260,
-    type: ImageModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 78,
     modelPaths: new Map<string, string>([
       [
@@ -661,7 +661,7 @@ export const models: ImageMetadata[] = [
     title: "Segment Anything quantized",
     description: "",
     memEstimateMB: 2600,
-    type: ImageModelType.SegmentAnything,
+    type: ModelType.SegmentAnything,
     sizeMB: 108,
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
@@ -685,7 +685,7 @@ export const models: ImageMetadata[] = [
     title: "Segment Anything",
     description: "",
     memEstimateMB: 2600,
-    type: ImageModelType.SegmentAnything,
+    type: ModelType.SegmentAnything,
     sizeMB: 377,
     configPath:
       "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",

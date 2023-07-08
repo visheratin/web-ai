@@ -1,9 +1,9 @@
 import { Session } from "../common.js";
 import { ClassificationModel } from "./classificationModel.js";
-import { ImageFeatureExtractionModel } from "./featureExtractionModel.js";
+import { FeatureExtractionModel } from "./featureExtractionModel.js";
 import { Img2ImgModel } from "./img2imgModel.js";
 import { models } from "./models.js";
-import { ImageModelType } from "./modelType.js";
+import { ModelType } from "./modelType.js";
 import { ObjectDetectionModel } from "./objectDetectionModel.js";
 import { SegmentAnythingModel } from "./samModel.js";
 import { SegmentationModel } from "./segmentationModel.js";
@@ -21,7 +21,7 @@ export class ImageModel {
     for (const modelMetadata of models) {
       if (modelMetadata.id === id) {
         switch (modelMetadata.type) {
-          case ImageModelType.Classification: {
+          case ModelType.Classification: {
             const model = new ClassificationModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {
@@ -29,7 +29,7 @@ export class ImageModel {
               elapsed: elapsed,
             };
           }
-          case ImageModelType.ObjectDetection: {
+          case ModelType.ObjectDetection: {
             const model = new ObjectDetectionModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {
@@ -37,7 +37,7 @@ export class ImageModel {
               elapsed: elapsed,
             };
           }
-          case ImageModelType.Segmentation: {
+          case ModelType.Segmentation: {
             const model = new SegmentationModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {
@@ -45,7 +45,7 @@ export class ImageModel {
               elapsed: elapsed,
             };
           }
-          case ImageModelType.Img2Img: {
+          case ModelType.Img2Img: {
             const model = new Img2ImgModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {
@@ -53,15 +53,15 @@ export class ImageModel {
               elapsed: elapsed,
             };
           }
-          case ImageModelType.FeatureExtraction: {
-            const model = new ImageFeatureExtractionModel(modelMetadata);
+          case ModelType.FeatureExtraction: {
+            const model = new FeatureExtractionModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {
               model: model,
               elapsed: elapsed,
             };
           }
-          case ImageModelType.SegmentAnything: {
+          case ModelType.SegmentAnything: {
             const model = new SegmentAnythingModel(modelMetadata);
             const elapsed = await model.init(proxy);
             return {

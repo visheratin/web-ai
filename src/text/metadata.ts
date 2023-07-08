@@ -1,8 +1,8 @@
 import { Metadata } from "../common.js";
-import { TextModelType } from "./modeType.js";
+import { ModelType } from "./modeType.js";
 
 export type TextMetadata = Metadata & {
-  type?: TextModelType;
+  type?: ModelType;
   modelPaths: Map<string, string>;
   outputNames: Map<string, string>;
   tokenizerPath: string;

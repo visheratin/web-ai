@@ -1,9 +1,9 @@
 import { TextMetadata } from "./metadata.js";
-import { TextModelType } from "./modeType.js";
+import { ModelType } from "./modeType.js";
 
 export const ListTextModels = (
   tags?: string[],
-  type?: TextModelType
+  type?: ModelType
 ): TextMetadata[] => {
   if (!tags && !type) {
     return models;
@@ -27,7 +27,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient tiny",
     description: "",
     memEstimateMB: 450,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 113,
     modelPaths: new Map<string, string>([
       [
@@ -59,7 +59,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient tiny quantized",
     description: "",
     memEstimateMB: 200,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 32,
     modelPaths: new Map<string, string>([
       [
@@ -91,7 +91,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient mini",
     description: "",
     memEstimateMB: 600,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 197,
     modelPaths: new Map<string, string>([
       [
@@ -123,7 +123,7 @@ export const models: TextMetadata[] = [
     title: "T5 Efficient mini quantized",
     description: "",
     memEstimateMB: 250,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 38,
     modelPaths: new Map<string, string>([
       [
@@ -155,7 +155,7 @@ export const models: TextMetadata[] = [
     title: "T5 Flan small",
     description: "",
     memEstimateMB: 1000,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 330,
     modelPaths: new Map<string, string>([
       [
@@ -186,7 +186,7 @@ export const models: TextMetadata[] = [
     title: "T5 for text summarization",
     description: "",
     memEstimateMB: 1100,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 328,
     modelPaths: new Map<string, string>([
       [
@@ -218,7 +218,7 @@ export const models: TextMetadata[] = [
     title: "T5 for text summarization quantized",
     description: "",
     memEstimateMB: 400,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 63,
     modelPaths: new Map<string, string>([
       [
@@ -250,7 +250,7 @@ export const models: TextMetadata[] = [
     title: "Sentence T5",
     description: "",
     memEstimateMB: 1000,
-    type: TextModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 190,
     modelPaths: new Map<string, string>([
       [
@@ -279,7 +279,7 @@ export const models: TextMetadata[] = [
     title: "Sentence T5 quantized",
     description: "",
     memEstimateMB: 400,
-    type: TextModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 79,
     modelPaths: new Map<string, string>([
       [
@@ -308,7 +308,7 @@ export const models: TextMetadata[] = [
     title: "Sentence T5 large quantized",
     description: "",
     memEstimateMB: 1000,
-    type: TextModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 242,
     modelPaths: new Map<string, string>([
       [
@@ -337,7 +337,7 @@ export const models: TextMetadata[] = [
     title: "GTR T5",
     description: "",
     memEstimateMB: 1000,
-    type: TextModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 185,
     modelPaths: new Map<string, string>([
       [
@@ -365,7 +365,7 @@ export const models: TextMetadata[] = [
     title: "GTR T5 quantized",
     description: "",
     memEstimateMB: 400,
-    type: TextModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 78,
     modelPaths: new Map<string, string>([
       [
@@ -393,7 +393,7 @@ export const models: TextMetadata[] = [
     title: "GTR T5 large quantized",
     description: "",
     memEstimateMB: 1000,
-    type: TextModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 242,
     modelPaths: new Map<string, string>([
       [
@@ -421,7 +421,7 @@ export const models: TextMetadata[] = [
     title: "Mini model for sentence embeddings",
     description: "",
     memEstimateMB: 300,
-    type: TextModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 80,
     modelPaths: new Map<string, string>([
       [
@@ -446,7 +446,7 @@ export const models: TextMetadata[] = [
     title: "Quantized mini model for sentence embeddings",
     description: "",
     memEstimateMB: 100,
-    type: TextModelType.FeatureExtraction,
+    type: ModelType.FeatureExtraction,
     sizeMB: 15,
     modelPaths: new Map<string, string>([
       [
@@ -471,7 +471,7 @@ export const models: TextMetadata[] = [
     title: "Flan T5 for chat summarization quantized",
     description: "",
     memEstimateMB: 400,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 185,
     modelPaths: new Map<string, string>([
       [
@@ -503,7 +503,7 @@ export const models: TextMetadata[] = [
     title: "Flan T5 quantized",
     description: "",
     memEstimateMB: 400,
-    type: TextModelType.Seq2Seq,
+    type: ModelType.Seq2Seq,
     sizeMB: 185,
     modelPaths: new Map<string, string>([
       [

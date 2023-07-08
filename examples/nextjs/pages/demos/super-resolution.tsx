@@ -1,11 +1,7 @@
 import Jimp from "jimp";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import {
-  ImageModel,
-  ImageModelType,
-  Img2ImgModel,
-} from "@visheratin/web-ai/image";
+import { ImageModel, ModelType, Img2ImgModel } from "@visheratin/web-ai/image";
 import ModelSelector from "../../components/modelSelect";
 
 export default function SuperResolution() {
@@ -119,7 +115,7 @@ export default function SuperResolution() {
           <ModelSelector
             tags={["superres"]}
             textType={undefined}
-            imageType={ImageModelType.Img2Img}
+            imageType={ModelType.Img2Img}
             callback={loadModel}
           />
           <div className="row">

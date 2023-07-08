@@ -12,11 +12,11 @@ import { BaseTextModel } from "./base.js";
 import { prepareTextTensors } from "./prepare.js";
 import { createSession, loadTokenizer } from "../browser.js";
 
-export type TextFeatureExtractionResult = TextProcessingResult & {
+export type FeatureExtractionResult = TextProcessingResult & {
   result: number[] | number[][];
 };
 
-export class TextFeatureExtractionModel extends BaseTextModel {
+export class FeatureExtractionModel extends BaseTextModel {
   private model?: Encoder;
   private dense?: Session;
   private cache: Map<string, number[]>;
@@ -51,7 +51,7 @@ export class TextFeatureExtractionModel extends BaseTextModel {
 
   process = async (
     inputs: string | string[]
-  ): Promise<TextFeatureExtractionResult> => {
+  ): Promise<FeatureExtractionResult> => {
     if (!this.initialized || !this.model || !this.tokenizer) {
       throw Error("the model is not initialized");
     }

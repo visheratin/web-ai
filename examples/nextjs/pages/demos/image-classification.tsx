@@ -5,7 +5,7 @@ import {
   ImageModel,
   ClassificationModel,
   ClassificationPrediction,
-  ImageModelType,
+  ModelType,
 } from "@visheratin/web-ai/image";
 import ModelSelector from "../../components/modelSelect";
 
@@ -125,7 +125,7 @@ export default function Classification() {
           <ModelSelector
             tags={undefined}
             textType={undefined}
-            imageType={ImageModelType.Classification}
+            imageType={ModelType.Classification}
             multimodalType={undefined}
             callback={loadModel}
           />
