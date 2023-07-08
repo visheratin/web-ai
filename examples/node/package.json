@@ -1,0 +1,20 @@
+{
+    "name": "nodejs",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "type": "commonjs",
+    "scripts": {},
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@tsconfig/node-lts-strictest-esm": "^18.12.1",
+        "@visheratin/web-ai": "file:../../core/build",
+        "@visheratin/web-ai-node": "file:../../node"
+    },
+    "devDependencies": {
+        "@types/node": "^20.4.0",
+        "typescript": "^5.1.6"
+    }
+}

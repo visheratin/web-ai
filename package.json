@@ -1,0 +1,109 @@
+{
+  "name": "@visheratin/web-ai",
+  "version": "1.1.1",
+  "description": "Run modern deep learning models in the browser and Node.js.",
+  "files": [
+    "browser/**/*.d.ts",
+    "browser/**/*.js",
+    "browser/**/*.js.map",
+    "common/**/*.d.ts",
+    "common/**/*.js",
+    "common/**/*.js.map",
+    "image/**/*.d.ts",
+    "image/**/*.js",
+    "image/**/*.js.map",
+    "multimodal/**/*.d.ts",
+    "multimodal/**/*.js",
+    "multimodal/**/*.js.map",
+    "text/**/*.d.ts",
+    "text/**/*.js",
+    "text/**/*.js.map",
+    "browser.js",
+    "browser.js.map",
+    "browser.d.ts",
+    "common.js",
+    "common.js.map",
+    "common.d.ts",
+    "image.js",
+    "image.js.map",
+    "image.d.ts",
+    "index.js",
+    "index.js.map",
+    "index.d.ts",
+    "multimodal.js",
+    "multimodal.js.map",
+    "multimodal.d.ts",
+    "text.js",
+    "text.js.map",
+    "text.d.ts"
+  ],
+  "exports": {
+    ".": null,
+    "./browser": {
+      "types": "./browser.d.ts",
+      "import": "./browser.js"
+    },
+    "./common": {
+      "types": "./common.d.ts",
+      "import": "./common.js"
+    },
+    "./image": {
+      "types": "./image.d.ts",
+      "import": "./image.js"
+    },
+    "./multimodal": {
+      "types": "./multimodal.d.ts",
+      "import": "./multimodal.js"
+    },
+    "./text": {
+      "types": "./text.d.ts",
+      "import": "./text.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "sh build.sh",
+    "lint": "eslint \"**/*.ts*\""
+  },
+  "dependencies": {
+    "onnxruntime-common": "1.15.1",
+    "@visheratin/tokenizers": "0.1.5",
+    "comlink": "4.3.1",
+    "localforage": "1.10.0",
+    "onnxruntime-web": "1.15.1",
+    "pako": "2.1.0"
+  },
+  "peerDependencies": {
+    "jimp": "^0.16.2"
+  },
+  "peerDependenciesMeta": {
+    "jimp": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "eslint": "^8.44.0",
+    "prettier": "^2.8.0",
+    "typescript": "^5.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/visheratin/web-ai.git"
+  },
+  "keywords": [
+    "deep-learning",
+    "AI",
+    "NLP",
+    "CV",
+    "computer-vision"
+  ],
+  "author": "Alexander Visheratin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/visheratin/web-ai/issues"
+  },
+  "homepage": "https://github.com/visheratin/web-ai#readme"
+}

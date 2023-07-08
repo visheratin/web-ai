@@ -1,0 +1,77 @@
+import { Session } from "../common.js";
+import { ClassificationModel } from "./classificationModel.js";
+import { ImageFeatureExtractionModel } from "./featureExtractionModel.js";
+import { Img2ImgModel } from "./img2imgModel.js";
+import { models } from "./models.js";
+import { ImageModelType } from "./modelType.js";
+import { ObjectDetectionModel } from "./objectDetectionModel.js";
+import { SegmentAnythingModel } from "./samModel.js";
+import { SegmentationModel } from "./segmentationModel.js";
+
+export interface InitImageModelResult {
+  model: ImageModel;
+  elapsed: number;
+}
+
+export class ImageModel {
+  static create = async (
+    id: string,
+    proxy = true
+  ): Promise<InitImageModelResult> => {
+    for (const modelMetadata of models) {
+      if (modelMetadata.id === id) {
+        switch (modelMetadata.type) {
+          case ImageModelType.Classification: {
+            const model = new ClassificationModel(modelMetadata);
+            const elapsed = await model.init(proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+          case ImageModelType.ObjectDetection: {
+            const model = new ObjectDetectionModel(modelMetadata);
+            const elapsed = await model.init(proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+          case ImageModelType.Segmentation: {
+            const model = new SegmentationModel(modelMetadata);
+            const elapsed = await model.init(proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+          case ImageModelType.Img2Img: {
+            const model = new Img2ImgModel(modelMetadata);
+            const elapsed = await model.init(proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+          case ImageModelType.FeatureExtraction: {
+            const model = new ImageFeatureExtractionModel(modelMetadata);
+            const elapsed = await model.init(proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+          case ImageModelType.SegmentAnything: {
+            const model = new SegmentAnythingModel(modelMetadata);
+            const elapsed = await model.init(proxy);
+            return {
+              model: model,
+              elapsed: elapsed,
+            };
+          }
+        }
+      }
+    }
+    throw Error("there is no image model with specified id");
+  };
+}

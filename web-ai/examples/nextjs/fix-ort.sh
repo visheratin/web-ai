@@ -1,1 +1,0 @@
-cd .next; find . -type f -name "*.js" -exec grep -l "n&&(S=n)," {} \; | xargs sed -i 's/n&&(S=n),//g'
