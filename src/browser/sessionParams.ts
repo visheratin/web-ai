@@ -5,7 +5,6 @@ export const SessionParams: SessionParameters = {
   executionProviders: ["wasm"],
   memoryLimitMB: 0,
   cacheSizeMB: 2500,
-  wasmRoot: "https://edge-ai-models.s3.us-east-2.amazonaws.com/onnx-15/",
-  tokenizersPath:
-    "https://edge-ai-models.s3.us-east-2.amazonaws.com/tokenizers.wasm",
+  wasmRoot: "https://web-ai-models.org/onnx-15/",
+  tokenizersPath: "https://web-ai-models.org/tokenizers.wasm",
 };

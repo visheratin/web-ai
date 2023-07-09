@@ -32,11 +32,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/encoder.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-tiny/encoder.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/decoder.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-tiny/decoder.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -44,7 +44,7 @@ export const models: TextMetadata[] = [
       ["decoder", "logits"],
     ]),
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
+      "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
@@ -64,11 +64,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/encoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-tiny/encoder-quant.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/decoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-tiny/decoder-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -76,7 +76,7 @@ export const models: TextMetadata[] = [
       ["decoder", "logits"],
     ]),
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
+      "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-tiny/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
@@ -96,11 +96,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/encoder.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-mini/encoder.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/decoder.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-mini/decoder.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -108,7 +108,7 @@ export const models: TextMetadata[] = [
       ["decoder", "logits"],
     ]),
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/tokenizer.json",
+      "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-mini/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
@@ -128,11 +128,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/encoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-mini/encoder-quant.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/decoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-mini/decoder-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -140,7 +140,7 @@ export const models: TextMetadata[] = [
       ["decoder", "logits"],
     ]),
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/grammar-correction/t5-mini/tokenizer.json",
+      "https://web-ai-models.org/text/seq2seq/grammar-correction/t5-mini/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
@@ -160,11 +160,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-small/encoder.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/general/flan-t5-small/encoder.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-small/decoder.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/general/flan-t5-small/decoder.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -172,7 +172,7 @@ export const models: TextMetadata[] = [
       ["decoder", "logits"],
     ]),
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-small/tokenizer.json",
+      "https://web-ai-models.org/text/seq2seq/general/flan-t5-small/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
@@ -191,11 +191,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/encoder.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/summarization/minhtoanphan/encoder.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/decoder.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/summarization/minhtoanphan/decoder.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -203,7 +203,7 @@ export const models: TextMetadata[] = [
       ["decoder", "logits"],
     ]),
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/tokenizer.json",
+      "https://web-ai-models.org/text/seq2seq/summarization/minhtoanphan/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
@@ -223,11 +223,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/encoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/summarization/minhtoanphan/encoder-quant.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/minhtoanphan/decoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/summarization/minhtoanphan/decoder-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -255,11 +255,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/sentence-t5/base.onnx.gz",
       ],
       [
         "dense",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base-dense.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/sentence-t5/base-dense.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
@@ -284,11 +284,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/sentence-t5/base-quant.onnx.gz",
       ],
       [
         "dense",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/base-dense-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/sentence-t5/base-dense-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
@@ -313,11 +313,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/large-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/sentence-t5/large-quant.onnx.gz",
       ],
       [
         "dense",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/sentence-t5/large-dense-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/sentence-t5/large-dense-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
@@ -342,11 +342,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/gtr-t5/base.onnx.gz",
       ],
       [
         "dense",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base-dense.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/gtr-t5/base-dense.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
@@ -370,11 +370,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/gtr-t5/base-quant.onnx.gz",
       ],
       [
         "dense",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/base-dense-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/gtr-t5/base-dense-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
@@ -398,11 +398,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/large-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/gtr-t5/large-quant.onnx.gz",
       ],
       [
         "dense",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/gtr-t5/large-dense-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/gtr-t5/large-dense-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([["encoder", "hidden_states"]]),
@@ -426,7 +426,7 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/miniLM-v2/model.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/miniLM-v2/model.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([["encoder", "last_hidden_state"]]),
@@ -451,7 +451,7 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/feature-extraction/miniLM-v2/model-quant.onnx.gz",
+        "https://web-ai-models.org/text/feature-extraction/miniLM-v2/model-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([["encoder", "last_hidden_state"]]),
@@ -476,11 +476,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/samsum/encoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/summarization/samsum/encoder-quant.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/samsum/decoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/summarization/samsum/decoder-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -488,7 +488,7 @@ export const models: TextMetadata[] = [
       ["decoder", "logits"],
     ]),
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/summarization/samsum/tokenizer.json",
+      "https://web-ai-models.org/text/seq2seq/summarization/samsum/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,
@@ -508,11 +508,11 @@ export const models: TextMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-base/encoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/general/flan-t5-base/encoder-quant.onnx.gz",
       ],
       [
         "decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-base/decoder-quant.onnx.gz",
+        "https://web-ai-models.org/text/seq2seq/general/flan-t5-base/decoder-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -520,7 +520,7 @@ export const models: TextMetadata[] = [
       ["decoder", "logits"],
     ]),
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/text/seq2seq/general/flan-t5-base/tokenizer.json",
+      "https://web-ai-models.org/text/seq2seq/general/flan-t5-base/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 1,

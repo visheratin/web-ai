@@ -22,27 +22,27 @@ export const ListImageModels = (
 };
 
 const classificationExamples: string[] = [
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/classification/image-1.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/classification/image-2.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/classification/image-3.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/classification/image-4.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/classification/image-5.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/classification/image-6.jpg",
+  "https://web-ai-models.org/images/classification/image-1.jpg",
+  "https://web-ai-models.org/images/classification/image-2.jpg",
+  "https://web-ai-models.org/images/classification/image-3.jpg",
+  "https://web-ai-models.org/images/classification/image-4.jpg",
+  "https://web-ai-models.org/images/classification/image-5.jpg",
+  "https://web-ai-models.org/images/classification/image-6.jpg",
 ];
 
 const segmentationExamples: string[] = [
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/segmentation/image-1.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/segmentation/image-2.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/segmentation/image-3.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/segmentation/image-4.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/segmentation/image-5.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/segmentation/image-6.jpg",
+  "https://web-ai-models.org/images/segmentation/image-1.jpg",
+  "https://web-ai-models.org/images/segmentation/image-2.jpg",
+  "https://web-ai-models.org/images/segmentation/image-3.jpg",
+  "https://web-ai-models.org/images/segmentation/image-4.jpg",
+  "https://web-ai-models.org/images/segmentation/image-5.jpg",
+  "https://web-ai-models.org/images/segmentation/image-6.jpg",
 ];
 
 const superresExamples: string[] = [
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/superres/butterfly.png",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/superres/shanghai.jpg",
-  "https://edge-ai-models.s3.us-east-2.amazonaws.com/images/superres/tree.jpg",
+  "https://web-ai-models.org/images/superres/butterfly.png",
+  "https://web-ai-models.org/images/superres/shanghai.jpg",
+  "https://web-ai-models.org/images/superres/tree.jpg",
 ];
 
 export const models: ImageMetadata[] = [
@@ -56,13 +56,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/model.onnx.gz",
+        "https://web-ai-models.org/image/classification/mobilevit-small/model.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-small/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
     referenceURL: "https://huggingface.co/apple/mobilevit-small",
@@ -77,13 +77,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/classification/mobilevit-small/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-small/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-small/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
     referenceURL: "https://huggingface.co/apple/mobilevit-small",
@@ -98,13 +98,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/model.onnx.gz",
+        "https://web-ai-models.org/image/classification/mobilevit-x-small/model.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-x-small/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-x-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
     referenceURL: "https://huggingface.co/apple/mobilevit-x-small",
@@ -119,13 +119,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/classification/mobilevit-x-small/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-x-small/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-x-small/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-x-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
     referenceURL: "https://huggingface.co/apple/mobilevit-x-small",
@@ -140,13 +140,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/model.onnx.gz",
+        "https://web-ai-models.org/image/classification/mobilevit-xx-small/model.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-xx-small/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-xx-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
     referenceURL: "https://huggingface.co/apple/mobilevit-xx-small",
@@ -161,13 +161,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/classification/mobilevit-xx-small/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-xx-small/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/mobilevit-xx-small/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/mobilevit-xx-small/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "mobilevit"],
     referenceURL: "https://huggingface.co/apple/mobilevit-xx-small",
@@ -182,13 +182,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/model.onnx.gz",
+        "https://web-ai-models.org/image/classification/segformer-b2/model.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/config.json",
+      "https://web-ai-models.org/image/classification/segformer-b2/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/segformer-b2/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
     referenceURL:
@@ -204,13 +204,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/classification/segformer-b2/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/config.json",
+      "https://web-ai-models.org/image/classification/segformer-b2/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b2/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/segformer-b2/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
     referenceURL:
@@ -226,13 +226,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/model.onnx.gz",
+        "https://web-ai-models.org/image/classification/segformer-b1/model.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/config.json",
+      "https://web-ai-models.org/image/classification/segformer-b1/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/segformer-b1/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
     referenceURL:
@@ -248,13 +248,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/classification/segformer-b1/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/config.json",
+      "https://web-ai-models.org/image/classification/segformer-b1/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b1/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/segformer-b1/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
     referenceURL:
@@ -270,13 +270,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/model.onnx.gz",
+        "https://web-ai-models.org/image/classification/segformer-b0/model.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/config.json",
+      "https://web-ai-models.org/image/classification/segformer-b0/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/segformer-b0/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
     referenceURL:
@@ -292,13 +292,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/classification/segformer-b0/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/config.json",
+      "https://web-ai-models.org/image/classification/segformer-b0/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/segformer-b0/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/segformer-b0/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "segformer"],
     referenceURL:
@@ -314,13 +314,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/model.onnx.gz",
+        "https://web-ai-models.org/image/object-detection/yolos/model.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/config.json",
+      "https://web-ai-models.org/image/object-detection/yolos/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/preprocessor_config.json",
+      "https://web-ai-models.org/image/object-detection/yolos/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["object-detection", "yolo"],
     referenceURL: "https://huggingface.co/hustvl/yolos-tiny",
@@ -335,13 +335,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/object-detection/yolos/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/config.json",
+      "https://web-ai-models.org/image/object-detection/yolos/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/object-detection/yolos/preprocessor_config.json",
+      "https://web-ai-models.org/image/object-detection/yolos/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["object-detection", "yolo"],
     referenceURL: "https://huggingface.co/hustvl/yolos-tiny",
@@ -356,13 +356,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/segmentation/segformer-b0/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/config.json",
+      "https://web-ai-models.org/image/segmentation/segformer-b0/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b0/preprocessor_config.json",
+      "https://web-ai-models.org/image/segmentation/segformer-b0/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
     referenceURL:
@@ -378,13 +378,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b1/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/segmentation/segformer-b1/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b1/config.json",
+      "https://web-ai-models.org/image/segmentation/segformer-b1/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b1/preprocessor_config.json",
+      "https://web-ai-models.org/image/segmentation/segformer-b1/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
     referenceURL:
@@ -400,13 +400,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b4/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/segmentation/segformer-b4/model-quant.onnx.gz",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b4/config.json",
+      "https://web-ai-models.org/image/segmentation/segformer-b4/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/segmentation/segformer-b4/preprocessor_config.json",
+      "https://web-ai-models.org/image/segmentation/segformer-b4/preprocessor_config.json",
     examples: segmentationExamples,
     tags: ["segmentation", "segformer"],
     referenceURL:
@@ -420,13 +420,10 @@ export const models: ImageMetadata[] = [
     type: ModelType.Img2Img,
     sizeMB: 4,
     modelPaths: new Map<string, string>([
-      [
-        "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/model.onnx.gz",
-      ],
+      ["model", "https://web-ai-models.org/image/img2img/small/model.onnx.gz"],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/preprocessor_config.json",
+      "https://web-ai-models.org/image/img2img/small/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
     referenceURL: "https://huggingface.co/caidas/swin2SR-lightweight-x2-64",
@@ -441,11 +438,11 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/img2img/small/model-quant.onnx.gz",
       ],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/small/preprocessor_config.json",
+      "https://web-ai-models.org/image/img2img/small/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
     referenceURL: "https://huggingface.co/caidas/swin2SR-lightweight-x2-64",
@@ -460,11 +457,11 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/model.onnx.gz",
+        "https://web-ai-models.org/image/img2img/compressed/model.onnx.gz",
       ],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/preprocessor_config.json",
+      "https://web-ai-models.org/image/img2img/compressed/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
     referenceURL: "https://huggingface.co/caidas/swin2SR-compressed-sr-x4-48",
@@ -479,11 +476,11 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/model-quant.onnx.gz",
+        "https://web-ai-models.org/image/img2img/compressed/model-quant.onnx.gz",
       ],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/img2img/compressed/preprocessor_config.json",
+      "https://web-ai-models.org/image/img2img/compressed/preprocessor_config.json",
     examples: superresExamples,
     tags: ["img2img", "superres"],
     referenceURL: "https://huggingface.co/caidas/swin2SR-compressed-sr-x4-48",
@@ -498,13 +495,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/l1.onnx",
+        "https://web-ai-models.org/image/classification/EfficientFormer/l1.onnx",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/classification/EfficientFormer/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/EfficientFormer/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l1-300",
@@ -519,13 +516,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/l1-quant.onnx",
+        "https://web-ai-models.org/image/classification/EfficientFormer/l1-quant.onnx",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/classification/EfficientFormer/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/classification/EfficientFormer/preprocessor_config.json",
+      "https://web-ai-models.org/image/classification/EfficientFormer/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["classification", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l1-300",
@@ -540,13 +537,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l1.onnx",
+        "https://web-ai-models.org/image/feature-extraction/EfficientFormer/l1.onnx",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["feature-extraction", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l1-300",
@@ -561,13 +558,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l1-quant.onnx",
+        "https://web-ai-models.org/image/feature-extraction/EfficientFormer/l1-quant.onnx",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["feature-extraction", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l1-300",
@@ -582,13 +579,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l3.onnx",
+        "https://web-ai-models.org/image/feature-extraction/EfficientFormer/l3.onnx",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["feature-extraction", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l3-300",
@@ -603,13 +600,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l3-quant.onnx",
+        "https://web-ai-models.org/image/feature-extraction/EfficientFormer/l3-quant.onnx",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["feature-extraction", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l3-300",
@@ -624,13 +621,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l7.onnx",
+        "https://web-ai-models.org/image/feature-extraction/EfficientFormer/l7.onnx",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["feature-extraction", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l7-300",
@@ -645,13 +642,13 @@ export const models: ImageMetadata[] = [
     modelPaths: new Map<string, string>([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/l7-quant.onnx",
+        "https://web-ai-models.org/image/feature-extraction/EfficientFormer/l7-quant.onnx",
       ],
     ]),
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/config.json",
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/preprocessor_config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/preprocessor_config.json",
     examples: classificationExamples,
     tags: ["feature-extraction", "efficientformer"],
     referenceURL: "https://huggingface.co/snap-research/efficientformer-l7-300",
@@ -664,7 +661,7 @@ export const models: ImageMetadata[] = [
     type: ModelType.SegmentAnything,
     sizeMB: 108,
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/config.json",
     modelPaths: new Map<string, string>([
       [
         "encoder",
@@ -688,7 +685,7 @@ export const models: ImageMetadata[] = [
     type: ModelType.SegmentAnything,
     sizeMB: 377,
     configPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/image/feature-extraction/EfficientFormer/config.json",
+      "https://web-ai-models.org/image/feature-extraction/EfficientFormer/config.json",
     modelPaths: new Map<string, string>([
       [
         "encoder",

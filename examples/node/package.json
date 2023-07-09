@@ -10,7 +10,8 @@
     "license": "ISC",
     "dependencies": {
         "@tsconfig/node-lts-strictest-esm": "^18.12.1",
-        "@visheratin/web-ai-node": "^1.2.0"
+        "@visheratin/web-ai-node": "^1.2.1",
+        "@visheratin/tokenizers-node": "^0.1.5"
     },
     "devDependencies": {
         "@types/node": "^20.4.0",

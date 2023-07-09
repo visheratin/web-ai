@@ -1,6 +1,6 @@
 {
   "name": "@visheratin/web-ai",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Run modern deep learning models in the browser.",
   "files": [
     "browser/**/*.d.ts",
@@ -64,7 +64,8 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "bash build-esm.sh",
     "build:cjs": "bash build-cjs.sh",
-    "lint": "eslint \"**/*.ts*\""
+    "lint": "eslint \"**/*.ts*\"",
+    "publish": "cd build-esm && npm publish && cd ../build-cjs && npm publish"
   },
   "dependencies": {
     "comlink": "4.3.1",

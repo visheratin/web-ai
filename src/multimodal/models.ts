@@ -30,15 +30,12 @@ export const models: MultimodalMetadata[] = [
     type: ModelType.ZeroShotClassification,
     sizeMB: 370,
     modelPaths: new Map([
-      [
-        "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/clip-base/model.onnx.gz",
-      ],
+      ["model", "https://web-ai-models.org/multimodal/clip-base/model.onnx.gz"],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/clip-base/preprocessor_config.json",
+      "https://web-ai-models.org/multimodal/clip-base/preprocessor_config.json",
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/clip-base/tokenizer.json",
+      "https://web-ai-models.org/multimodal/clip-base/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 49406,
       eosTokenID: 49407,
@@ -57,13 +54,13 @@ export const models: MultimodalMetadata[] = [
     modelPaths: new Map([
       [
         "model",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/clip-base/model-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/clip-base/model-quant.onnx.gz",
       ],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/clip-base/preprocessor_config.json",
+      "https://web-ai-models.org/multimodal/clip-base/preprocessor_config.json",
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/clip-base/tokenizer.json",
+      "https://web-ai-models.org/multimodal/clip-base/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 49406,
       eosTokenID: 49407,
@@ -82,11 +79,11 @@ export const models: MultimodalMetadata[] = [
     modelPaths: new Map([
       [
         "image-encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-base/encoder.onnx.gz",
+        "https://web-ai-models.org/multimodal/blip-base/encoder.onnx.gz",
       ],
       [
         "text-decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-base/decoder.onnx.gz",
+        "https://web-ai-models.org/multimodal/blip-base/decoder.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -94,9 +91,9 @@ export const models: MultimodalMetadata[] = [
       ["text-decoder", "logits"],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-base/preprocessor_config.json",
+      "https://web-ai-models.org/multimodal/blip-base/preprocessor_config.json",
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-base/tokenizer.json",
+      "https://web-ai-models.org/multimodal/blip-base/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 30522,
       eosTokenID: 2,
@@ -116,11 +113,11 @@ export const models: MultimodalMetadata[] = [
     modelPaths: new Map([
       [
         "image-encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-base/encoder-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/blip-base/encoder-quant.onnx.gz",
       ],
       [
         "text-decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-base/decoder-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/blip-base/decoder-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -128,9 +125,9 @@ export const models: MultimodalMetadata[] = [
       ["text-decoder", "logits"],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-base/preprocessor_config.json",
+      "https://web-ai-models.org/multimodal/blip-base/preprocessor_config.json",
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-base/tokenizer.json",
+      "https://web-ai-models.org/multimodal/blip-base/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 30522,
       eosTokenID: 102,
@@ -150,15 +147,15 @@ export const models: MultimodalMetadata[] = [
     modelPaths: new Map([
       [
         "image-encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-vqa/image-encoder-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/blip-vqa/image-encoder-quant.onnx.gz",
       ],
       [
         "text-encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-vqa/text-encoder-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/blip-vqa/text-encoder-quant.onnx.gz",
       ],
       [
         "text-decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-vqa/text-decoder-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/blip-vqa/text-decoder-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -167,9 +164,9 @@ export const models: MultimodalMetadata[] = [
       ["text-decoder", "logits"],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-vqa/preprocessor_config.json",
+      "https://web-ai-models.org/multimodal/blip-vqa/preprocessor_config.json",
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/blip-vqa/tokenizer.json",
+      "https://web-ai-models.org/multimodal/blip-vqa/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 30522,
       eosTokenID: 102,
@@ -188,11 +185,11 @@ export const models: MultimodalMetadata[] = [
     modelPaths: new Map([
       [
         "image-encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/encoder.onnx.gz",
+        "https://web-ai-models.org/multimodal/vit-gpt2/encoder.onnx.gz",
       ],
       [
         "text-decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/decoder.onnx.gz",
+        "https://web-ai-models.org/multimodal/vit-gpt2/decoder.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -200,9 +197,9 @@ export const models: MultimodalMetadata[] = [
       ["text-decoder", "logits"],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/preprocessor_config.json",
+      "https://web-ai-models.org/multimodal/vit-gpt2/preprocessor_config.json",
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/tokenizer.json",
+      "https://web-ai-models.org/multimodal/vit-gpt2/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 50256,
       eosTokenID: 50256,
@@ -221,11 +218,11 @@ export const models: MultimodalMetadata[] = [
     modelPaths: new Map([
       [
         "image-encoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/encoder-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/vit-gpt2/encoder-quant.onnx.gz",
       ],
       [
         "text-decoder",
-        "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/decoder-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/vit-gpt2/decoder-quant.onnx.gz",
       ],
     ]),
     outputNames: new Map<string, string>([
@@ -233,9 +230,9 @@ export const models: MultimodalMetadata[] = [
       ["text-decoder", "logits"],
     ]),
     preprocessorPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/preprocessor_config.json",
+      "https://web-ai-models.org/multimodal/vit-gpt2/preprocessor_config.json",
     tokenizerPath:
-      "https://edge-ai-models.s3.us-east-2.amazonaws.com/multimodal/vit-gpt2/tokenizer.json",
+      "https://web-ai-models.org/multimodal/vit-gpt2/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 50256,
       eosTokenID: 50256,
