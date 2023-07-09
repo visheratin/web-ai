@@ -9,4 +9,5 @@ export type MultimodalMetadata = Metadata & {
   preprocessorPath: string;
   tokenizerPath: string;
   tokenizerParams: TokenizerParams;
+  languages?: Map<string, string>;
 };

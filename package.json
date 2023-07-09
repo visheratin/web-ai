@@ -1,6 +1,6 @@
 {
   "name": "@visheratin/web-ai",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Run modern deep learning models in the browser.",
   "files": [
     "browser/**/*.d.ts",

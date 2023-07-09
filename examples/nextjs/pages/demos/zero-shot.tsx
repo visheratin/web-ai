@@ -1,6 +1,5 @@
-import Jimp from "jimp";
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   ZeroShotClassificationModel,
   MultimodalModel,
@@ -9,9 +8,14 @@ import {
 import { ClassificationPrediction } from "@visheratin/web-ai/image";
 import ModelSelector from "../../components/modelSelect";
 
+type Item = {
+  language: string;
+  text: string;
+};
+
 export default function ZeroShotClassification() {
   const fileSelectRef = useRef<HTMLInputElement>(null);
-  const classTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [items, setItems] = useState<Item[]>([{ language: "", text: "" }]);
 
   const [imageURL, setImageURL] = useState("");
 
@@ -19,7 +23,10 @@ export default function ZeroShotClassification() {
     results: [] as ClassificationPrediction[],
   });
 
-  const [model, setModel] = useState({});
+  const [model, setModel] = useState<ZeroShotClassificationModel>();
+  const [languages, setLanguages] = useState<Map<string, string> | undefined>(
+    undefined
+  );
 
   const [status, setStatus] = useState({
     message: "select and load the model",
@@ -29,7 +36,10 @@ export default function ZeroShotClassification() {
   const loadModel = async (id: string) => {
     setStatus({ message: "loading the model", processing: true });
     const result = await MultimodalModel.create(id);
-    setModel(result.model as ZeroShotClassificationModel);
+    const model = result.model as ZeroShotClassificationModel;
+    setModel(model);
+    setLanguages(model.metadata.languages);
+    setItems([{ language: "", text: "" }]);
     setStatus({ message: "ready", processing: false });
   };
 
@@ -51,13 +61,37 @@ export default function ZeroShotClassification() {
   };
 
   const process = async () => {
-    const classes = classTextAreaRef.current!.value.split("\n");
+    if (model === undefined) {
+      return;
+    }
+    const classes = items.map((item) =>
+      item.language !== "" ? item.language + " " + item.text : item.text
+    );
     setStatus({ message: "processing the image", processing: true });
-    // @ts-ignore
     const result = await model.process(imageURL, classes);
     console.log(`Inference finished in ${result.elapsed} seconds.`);
-    setPredictions({ results: result.results });
+    result.results.forEach((prediction) => {
+      // @ts-ignore
+      prediction.class = prediction.class.split(" ").slice(1).join(" ");
+    });
+    setPredictions({ results: result.results as ClassificationPrediction[] });
     setStatus({ message: "processing finished", processing: false });
+  };
+
+  const handleInputChange = (index: number, value: string) => {
+    const newItems = [...items];
+    newItems[index].text = value;
+    setItems(newItems);
+  };
+
+  const handleSelectChange = (index: number, value: string) => {
+    const newItems = [...items];
+    newItems[index].language = value;
+    setItems(newItems);
+  };
+
+  const addItem = () => {
+    setItems([...items, { language: "", text: "" }]);
   };
 
   return (
@@ -91,74 +125,112 @@ export default function ZeroShotClassification() {
             multimodalType={ModelType.ZeroShotClassification}
             callback={loadModel}
           />
-          <div className="row">
-            <div className="col-md-6 col-sm-12 mb-2">
-              <div className="row">
-                <div className="col-sm-12">
-                  <form action="#" onSubmit={(e) => e.preventDefault()}>
-                    <h6>Select the image</h6>
-                    <div className="row">
-                      <div className="mb-3">
-                        <input
-                          className="form-control"
-                          type="file"
-                          ref={fileSelectRef}
-                          onChange={selectFileImage}
-                          disabled={status.processing}
-                        />
+          {model && (
+            <div className="row">
+              <div className="col-md-6 col-sm-12 mb-2">
+                <div className="row">
+                  <div className="col-sm-12">
+                    <form action="#" onSubmit={(e) => e.preventDefault()}>
+                      <h6>Select the image</h6>
+                      <div className="row">
+                        <div className="mb-3">
+                          <input
+                            className="form-control"
+                            type="file"
+                            ref={fileSelectRef}
+                            onChange={selectFileImage}
+                            disabled={status.processing}
+                          />
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="col-sm-12 mb-2">
+                    <h6>Set the classes</h6>
+                    <div>
+                      {items.map((item, index) => (
+                        <div key={index} className="d-flex mt-1">
+                          {languages && (
+                            <div className="col-sm-12 col-md-6 px-1">
+                              <select
+                                className="form-select"
+                                value={item.language}
+                                onChange={(e) =>
+                                  handleSelectChange(index, e.target.value)
+                                }
+                              >
+                                {[...languages.entries()].map(
+                                  ([key, value]) => (
+                                    <option key={value} value={value}>
+                                      {key}
+                                    </option>
+                                  )
+                                )}
+                              </select>
+                            </div>
+                          )}
+                          <div className="col-sm-12 col-md-6 px-1">
+                            <input
+                              className="form-control"
+                              type="text"
+                              value={item.text}
+                              onChange={(e) =>
+                                handleInputChange(index, e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      ))}
+                      <div className="d-grid gap-2 col-md-3 col-sm-12 mt-2">
+                        <button className="btn btn-success" onClick={addItem}>
+                          Add class
+                        </button>
                       </div>
                     </div>
-                  </form>
-                </div>
-                <div className="col-sm-12 mb-2">
-                  <h6>Set the classes</h6>
-                  <textarea
-                    ref={classTextAreaRef}
-                    className="form-control"
-                    rows={6}
-                    disabled={status.processing}
-                  ></textarea>
-                </div>
-                <div className="d-grid gap-2 col-md-6 col-sm-12 mx-auto">
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={process}
-                    disabled={status.processing}
-                  >
-                    Process
-                  </button>
+                  </div>
+                  <div className="d-grid gap-2 col-md-6 col-sm-12 mx-auto mt-3">
+                    <button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={process}
+                      disabled={status.processing}
+                    >
+                      Process
+                    </button>
+                  </div>
                 </div>
               </div>
+              <div className="col-md-6 col-sm-12 mb-2">
+                {imageURL !== "" && (
+                  <div className="card">
+                    <img src={imageURL} className="card-img-top" alt="" />
+                  </div>
+                )}
+                {predictions.results && predictions.results.length > 0 && (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Class</th>
+                        <th>Confidence</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {predictions.results.map((item, _) => {
+                        return (
+                          <tr key={item.class}>
+                            <td>{item.class}</td>
+                            <td>
+                              {Math.round(item.confidence * 10000) / 10000}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
             </div>
-            <div className="col-md-6 col-sm-12 mb-2">
-              {imageURL !== "" && (
-                <div className="card">
-                  <img src={imageURL} className="card-img-top" alt="" />
-                </div>
-              )}
-              {predictions.results && predictions.results.length > 0 && (
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Class</th>
-                      <th>Confidence</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {predictions.results.map((item, _) => {
-                      return (
-                        <tr key={item.class}>
-                          <td>{item.class}</td>
-                          <td>{Math.round(item.confidence * 10000) / 10000}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          </div>
+          )}
         </div>
       </main>
     </>
