@@ -18,13 +18,13 @@ function browser_to_index() {
   done
 }
 
-dir="build-cjs"
+dir="build-node"
 
 rm -rf "$dir"
 
 mkdir "$dir"
 
-cp tsconfig.cjs.json "$dir"/tsconfig.json
+cp tsconfig.node.json "$dir"/tsconfig.json
 
 cp -r src/* "$dir"
 cd "$dir"
@@ -38,6 +38,6 @@ tsc
 
 cd ..
 
-cp package.cjs.json "$dir"/package.json
+cp package.node.json "$dir"/package.json
 
 cp README.md "$dir"

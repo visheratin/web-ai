@@ -1,6 +1,6 @@
 {
   "name": "@visheratin/web-ai-node",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Run modern deep learning models in Node.js.",
   "files": [
     "node/**/*.d.ts",

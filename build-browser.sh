@@ -18,7 +18,7 @@ function browser_to_index() {
   done
 }
 
-dir="build-esm"
+dir="build-browser"
 
 rm -rf "$dir"
 

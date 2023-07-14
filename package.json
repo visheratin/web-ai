@@ -1,6 +1,6 @@
 {
   "name": "@visheratin/web-ai",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Run modern deep learning models in the browser.",
   "files": [
     "browser/**/*.d.ts",
@@ -18,9 +18,6 @@
     "text/**/*.d.ts",
     "text/**/*.js",
     "text/**/*.js.map",
-    "browser.js",
-    "browser.js.map",
-    "browser.d.ts",
     "common.js",
     "common.js.map",
     "common.d.ts",
@@ -38,9 +35,9 @@
     "text.d.ts"
   ],
   "exports": {
-    "./core": {
-      "types": "./browser.d.ts",
-      "import": "./browser.js"
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
     },
     "./common": {
       "types": "./common.d.ts",
@@ -61,11 +58,11 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "npm run build:esm && npm run build:cjs",
-    "build:esm": "bash build-esm.sh",
-    "build:cjs": "bash build-cjs.sh",
+    "build": "npm run build:browser && npm run build:node",
+    "build:browser": "bash build-browser.sh",
+    "build:node": "bash build-node.sh",
     "lint": "eslint \"**/*.ts*\"",
-    "publish": "cd build-esm && npm publish && cd ../build-cjs && npm publish"
+    "publish": "cd build-browser && npm publish && cd ../build-node && npm publish"
   },
   "dependencies": {
     "comlink": "4.3.1",
