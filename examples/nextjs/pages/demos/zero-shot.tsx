@@ -70,9 +70,11 @@ export default function ZeroShotClassification() {
     setStatus({ message: "processing the image", processing: true });
     const result = await model.process(imageURL, classes);
     console.log(`Inference finished in ${result.elapsed} seconds.`);
-    result.results.forEach((prediction) => {
-      // @ts-ignore
-      prediction.class = prediction.class.split(" ").slice(1).join(" ");
+    result.results.forEach((prediction, index) => {
+      if (items[index].language !== "") {
+        // @ts-ignore
+        prediction.class = prediction.class.split(" ").slice(1).join(" ");
+      }
     });
     setPredictions({ results: result.results as ClassificationPrediction[] });
     setStatus({ message: "processing finished", processing: false });

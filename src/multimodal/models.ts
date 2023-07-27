@@ -30,7 +30,12 @@ export const models: MultimodalMetadata[] = [
     type: ModelType.ZeroShotClassification,
     sizeMB: 370,
     modelPaths: new Map([
-      ["model", "https://web-ai-models.org/multimodal/clip-base/model.onnx.gz"],
+      ["image", "https://web-ai-models.org/multimodal/clip-base/image.onnx.gz"],
+      ["text", "https://web-ai-models.org/multimodal/clip-base/text.onnx.gz"],
+      [
+        "combine",
+        "https://web-ai-models.org/multimodal/clip-base/combine.onnx.gz",
+      ],
     ]),
     preprocessorPath:
       "https://web-ai-models.org/multimodal/clip-base/preprocessor_config.json",
@@ -53,8 +58,16 @@ export const models: MultimodalMetadata[] = [
     sizeMB: 102,
     modelPaths: new Map([
       [
-        "model",
-        "https://web-ai-models.org/multimodal/clip-base/model-quant.onnx.gz",
+        "image",
+        "https://web-ai-models.org/multimodal/clip-base/image-quant.onnx.gz",
+      ],
+      [
+        "text",
+        "https://web-ai-models.org/multimodal/clip-base/text-quant.onnx.gz",
+      ],
+      [
+        "combine",
+        "https://web-ai-models.org/multimodal/clip-base/combine.onnx.gz",
       ],
     ]),
     preprocessorPath:
@@ -250,8 +263,16 @@ export const models: MultimodalMetadata[] = [
     sizeMB: 360,
     modelPaths: new Map([
       [
-        "model",
-        "https://web-ai-models.org/multimodal/nllb-clip-base/model-quant.onnx.gz",
+        "image",
+        "http://web-ai-models.org/multimodal/nllb-clip-base/image-quant.onnx.gz",
+      ],
+      [
+        "text",
+        "https://web-ai-models.org/multimodal/nllb-clip-base/text-quant.onnx.gz",
+      ],
+      [
+        "combine",
+        "https://web-ai-models.org/multimodal/nllb-clip-base/combine.onnx.gz",
       ],
     ]),
     preprocessorPath:

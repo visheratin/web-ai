@@ -9,6 +9,16 @@ import {
 import { prepareTextTensors } from "../text.js";
 import { BaseMultimodalModel } from "./base.js";
 
+interface textInferenceResult {
+  embedding: number[][];
+  outputTensor: ort.Tensor;
+}
+
+interface imageInferenceResult {
+  embedding: number[][];
+  outputTensor: ort.Tensor;
+}
+
 export type ZeroShotResult = ImageProcessingResult & {
   results: ClassificationPrediction[] | ClassificationPrediction[][];
   textFeatures: number[][];
@@ -34,34 +44,142 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
       true,
       this.metadata.tokenizerParams.padTokenID
     );
-    const result = await this.runInference(
-      imageTensor,
-      textTensors[0],
-      textTensors[1],
-      classes
-    );
+
+    const [imageEmbeds, textEmbeds] = await Promise.all([
+      this.imageInference(imageTensor),
+      this.textInference(textTensors[0], textTensors[1]),
+    ]);
+
+    const result = await this.generateLogits(textEmbeds, imageEmbeds, classes);
     const end = new Date();
     const elapsed = (end.getTime() - start.getTime()) / 1000;
     result.elapsed = elapsed;
     return result;
   };
 
-  private runInference = async (
-    imageInput: ort.Tensor,
+  embedImages = async (inputs: string | string[]): Promise<number[][]> => {
+    if (!this.initialized || !this.preprocessor || !this.tokenizer) {
+      throw Error("the model is not initialized");
+    }
+    if (typeof inputs === "string") {
+      inputs = [inputs];
+    }
+    const imageTensor = await prepareImagesTensor(inputs, this.preprocessor);
+    const imageEmbeds = await this.imageInference(imageTensor);
+    return imageEmbeds.embedding;
+  };
+
+  embedTexts = async (inputs: string | string[]): Promise<number[][]> => {
+    if (!this.initialized || !this.tokenizer) {
+      throw Error("the model is not initialized");
+    }
+    if (typeof inputs === "string") {
+      inputs = [inputs];
+    }
+    const textTensors = await prepareTextTensors(
+      inputs,
+      this.tokenizer,
+      true,
+      this.metadata.tokenizerParams.padTokenID
+    );
+    const textEmbeds = await this.textInference(textTensors[0], textTensors[1]);
+    return textEmbeds.embedding;
+  };
+
+  private imageInference = async (
+    imageInput: ort.Tensor
+  ): Promise<imageInferenceResult> => {
+    if (!this.initialized || !this.sessions) {
+      throw Error("the model is not initialized");
+    }
+    const feeds: Record<string, ort.Tensor> = {};
+    feeds["pixel_values"] = imageInput;
+    const session = this.sessions.get("image");
+    if (!session) {
+      throw Error("the image model is absent in the sessions map");
+    }
+    const outputData = await session.run(feeds);
+    const outputNames = await session.outputNames();
+
+    if (!outputNames.includes("image_embeds")) {
+      throw Error("the image model does not contain image_embeds output");
+    }
+    let imageEmbeds: number[][] = [];
+    imageEmbeds = new Array(outputData["image_embeds"].dims[0]);
+    for (let i = 0; i < outputData["image_embeds"].dims[0]; i++) {
+      imageEmbeds[i] = new Array(outputData["image_embeds"].dims[1]);
+      for (let j = 0; j < outputData["image_embeds"].dims[1]; j++) {
+        imageEmbeds[i][j] = Number(
+          outputData["image_embeds"].data[
+            i * outputData["image_embeds"].dims[1] + j
+          ]
+        );
+      }
+    }
+    for (let i = 0; i < imageEmbeds.length; i++) {
+      imageEmbeds[i] = normalize(imageEmbeds[i]);
+    }
+    return {
+      embedding: imageEmbeds,
+      outputTensor: outputData["image_embeds"],
+    };
+  };
+
+  private textInference = async (
     inputIDs: ort.Tensor,
-    attentionMask: ort.Tensor,
+    attentionMask: ort.Tensor
+  ): Promise<textInferenceResult> => {
+    if (!this.initialized || !this.sessions) {
+      throw Error("the model is not initialized");
+    }
+    const feeds: Record<string, ort.Tensor> = {};
+    feeds["input_ids"] = inputIDs;
+    feeds["attention_mask"] = attentionMask;
+    const session = this.sessions.get("text");
+    if (!session) {
+      throw Error("the text model is absent in the sessions map");
+    }
+    const outputData = await session.run(feeds);
+    const outputNames = await session.outputNames();
+
+    if (!outputNames.includes("text_embeds")) {
+      throw Error("the model does not contain text_embeds output");
+    }
+    let textEmbeds: number[][] = [];
+    textEmbeds = new Array(outputData["text_embeds"].dims[0]);
+    for (let i = 0; i < outputData["text_embeds"].dims[0]; i++) {
+      textEmbeds[i] = new Array(outputData["text_embeds"].dims[1]);
+      for (let j = 0; j < outputData["text_embeds"].dims[1]; j++) {
+        textEmbeds[i][j] = Number(
+          outputData["text_embeds"].data[
+            i * outputData["text_embeds"].dims[1] + j
+          ]
+        );
+      }
+    }
+    for (let i = 0; i < textEmbeds.length; i++) {
+      textEmbeds[i] = normalize(textEmbeds[i]);
+    }
+    return {
+      embedding: textEmbeds,
+      outputTensor: outputData["text_embeds"],
+    };
+  };
+
+  private generateLogits = async (
+    textResults: textInferenceResult,
+    imageResults: imageInferenceResult,
     classes: string[]
   ): Promise<ZeroShotResult> => {
     if (!this.initialized || !this.sessions) {
       throw Error("the model is not initialized");
     }
     const feeds: Record<string, ort.Tensor> = {};
-    feeds["pixel_values"] = imageInput;
-    feeds["input_ids"] = inputIDs;
-    feeds["attention_mask"] = attentionMask;
-    const session = this.sessions.get("model");
+    feeds["text_embeds"] = textResults.outputTensor;
+    feeds["image_embeds"] = imageResults.outputTensor;
+    const session = this.sessions.get("combine");
     if (!session) {
-      throw Error("the model is absent in the sessions map");
+      throw Error("the combine model is absent in the sessions map");
     }
     const outputData = await session.run(feeds);
     const outputNames = await session.outputNames();
@@ -91,45 +209,10 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
       predictions.push(res);
     }
 
-    let imageEmbeds: number[][] = [];
-    if (outputNames.includes("image_embeds")) {
-      imageEmbeds = new Array(outputData["image_embeds"].dims[0]);
-      for (let i = 0; i < outputData["image_embeds"].dims[0]; i++) {
-        imageEmbeds[i] = new Array(outputData["image_embeds"].dims[1]);
-        for (let j = 0; j < outputData["image_embeds"].dims[1]; j++) {
-          imageEmbeds[i][j] = Number(
-            outputData["image_embeds"].data[
-              i * outputData["image_embeds"].dims[1] + j
-            ]
-          );
-        }
-      }
-      for (let i = 0; i < imageEmbeds.length; i++) {
-        imageEmbeds[i] = normalize(imageEmbeds[i]);
-      }
-    }
-
-    let textEmbeds: number[][] = [];
-    if (outputNames.includes("text_embeds")) {
-      textEmbeds = new Array(outputData["text_embeds"].dims[0]);
-      for (let i = 0; i < outputData["text_embeds"].dims[0]; i++) {
-        textEmbeds[i] = new Array(outputData["text_embeds"].dims[1]);
-        for (let j = 0; j < outputData["text_embeds"].dims[1]; j++) {
-          textEmbeds[i][j] = Number(
-            outputData["text_embeds"].data[
-              i * outputData["text_embeds"].dims[1] + j
-            ]
-          );
-        }
-      }
-      for (let i = 0; i < textEmbeds.length; i++) {
-        textEmbeds[i] = normalize(textEmbeds[i]);
-      }
-    }
     const result: ZeroShotResult = {
       results: predictions,
-      imageFeatures: imageEmbeds,
-      textFeatures: textEmbeds,
+      imageFeatures: imageResults.embedding,
+      textFeatures: textResults.embedding,
       elapsed: 0,
     };
     if (predictions.length === 1) {
