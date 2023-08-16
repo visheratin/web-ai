@@ -110,27 +110,6 @@ export const models: ImageMetadata[] = [
     referenceURL: "https://huggingface.co/apple/mobilevit-x-small",
   },
   {
-    id: "mobilevit-xsmall-quant",
-    title: "MobileViT extra small quantized",
-    description: "",
-    memEstimateMB: 50,
-    type: ModelType.Classification,
-    sizeMB: 2,
-    modelPaths: new Map<string, string>([
-      [
-        "model",
-        "https://web-ai-models.org/image/classification/mobilevit-x-small/model-quant.onnx.gz",
-      ],
-    ]),
-    configPath:
-      "https://web-ai-models.org/image/classification/mobilevit-x-small/config.json",
-    preprocessorPath:
-      "https://web-ai-models.org/image/classification/mobilevit-x-small/preprocessor_config.json",
-    examples: classificationExamples,
-    tags: ["classification", "mobilevit"],
-    referenceURL: "https://huggingface.co/apple/mobilevit-x-small",
-  },
-  {
     id: "mobilevit-xxsmall",
     title: "MobileViT extra extra small",
     description: "",
@@ -141,27 +120,6 @@ export const models: ImageMetadata[] = [
       [
         "model",
         "https://web-ai-models.org/image/classification/mobilevit-xx-small/model.onnx.gz",
-      ],
-    ]),
-    configPath:
-      "https://web-ai-models.org/image/classification/mobilevit-xx-small/config.json",
-    preprocessorPath:
-      "https://web-ai-models.org/image/classification/mobilevit-xx-small/preprocessor_config.json",
-    examples: classificationExamples,
-    tags: ["classification", "mobilevit"],
-    referenceURL: "https://huggingface.co/apple/mobilevit-xx-small",
-  },
-  {
-    id: "mobilevit-xxsmall-quant",
-    title: "MobileViT extra extra small quantized",
-    description: "",
-    memEstimateMB: 40,
-    type: ModelType.Classification,
-    sizeMB: 1,
-    modelPaths: new Map<string, string>([
-      [
-        "model",
-        "https://web-ai-models.org/image/classification/mobilevit-xx-small/model-quant.onnx.gz",
       ],
     ]),
     configPath:
@@ -700,5 +658,89 @@ export const models: ImageMetadata[] = [
       "https://huggingface.co/visheratin/segment-anything-vit-b/resolve/main/preprocessor_config.json",
     tags: ["segment-anything"],
     referenceURL: "https://huggingface.co/visheratin/segment-anything-vit-b",
+  },
+  {
+    id: "fastvit-tiny",
+    title: "FastViT tiny",
+    description: "",
+    memEstimateMB: 20,
+    type: ModelType.Classification,
+    sizeMB: 16,
+    modelPaths: new Map([
+      [
+        "model",
+        "https://web-ai-models.org/image/classification/fastvit/model-t8.onnx.gz",
+      ],
+    ]),
+    configPath:
+      "https://web-ai-models.org/image/classification/mobilevit-small/config.json",
+    preprocessorPath:
+      "https://web-ai-models.org/image/classification/mobilevit-small/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["classification", "fastvit"],
+    referenceURL: "https://github.com/apple/ml-fastvit",
+  },
+  {
+    id: "fastvit-small",
+    title: "FastViT small",
+    description: "",
+    memEstimateMB: 50,
+    type: ModelType.Classification,
+    sizeMB: 34,
+    modelPaths: new Map([
+      [
+        "model",
+        "https://web-ai-models.org/image/classification/fastvit/model-s12.onnx.gz",
+      ],
+    ]),
+    configPath:
+      "https://web-ai-models.org/image/classification/mobilevit-small/config.json",
+    preprocessorPath:
+      "https://web-ai-models.org/image/classification/mobilevit-small/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["classification", "fastvit"],
+    referenceURL: "https://github.com/apple/ml-fastvit",
+  },
+  {
+    id: "fastvit-large",
+    title: "FastViT large",
+    description: "",
+    memEstimateMB: 200,
+    type: ModelType.Classification,
+    sizeMB: 163,
+    modelPaths: new Map([
+      [
+        "model",
+        "https://web-ai-models.org/image/classification/fastvit/model-ma36.onnx.gz",
+      ],
+    ]),
+    configPath:
+      "https://web-ai-models.org/image/classification/mobilevit-small/config.json",
+    preprocessorPath:
+      "https://web-ai-models.org/image/classification/mobilevit-small/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["classification", "fastvit"],
+    referenceURL: "https://github.com/apple/ml-fastvit",
+  },
+  {
+    id: "fastvit-large-quant",
+    title: "FastViT large quantized",
+    description: "",
+    memEstimateMB: 50,
+    type: ModelType.Classification,
+    sizeMB: 36,
+    modelPaths: new Map([
+      [
+        "model",
+        "https://web-ai-models.org/image/classification/fastvit/model-ma36-quant.onnx.gz",
+      ],
+    ]),
+    configPath:
+      "https://web-ai-models.org/image/classification/mobilevit-small/config.json",
+    preprocessorPath:
+      "https://web-ai-models.org/image/classification/mobilevit-small/preprocessor_config.json",
+    examples: classificationExamples,
+    tags: ["classification", "fastvit"],
+    referenceURL: "https://github.com/apple/ml-fastvit",
   },
 ];
