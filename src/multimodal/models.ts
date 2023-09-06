@@ -264,7 +264,7 @@ export const models: MultimodalMetadata[] = [
     modelPaths: new Map([
       [
         "image",
-        "http://web-ai-models.org/multimodal/nllb-clip-base/image-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/nllb-clip-base/image-quant.onnx.gz",
       ],
       [
         "text",
