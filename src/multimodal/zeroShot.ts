@@ -8,6 +8,7 @@ import {
 } from "../image.js";
 import { prepareTextTensors } from "../text.js";
 import { BaseMultimodalModel } from "./base.js";
+import { Tensor } from "../common.js";
 
 interface textInferenceResult {
   embedding: number[][];
@@ -106,14 +107,11 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
     }
     let imageEmbeds: number[][] = [];
     imageEmbeds = new Array(outputData["image_embeds"].dims[0]);
+    const tensor = new Tensor(outputData["image_embeds"]);
     for (let i = 0; i < outputData["image_embeds"].dims[0]; i++) {
       imageEmbeds[i] = new Array(outputData["image_embeds"].dims[1]);
       for (let j = 0; j < outputData["image_embeds"].dims[1]; j++) {
-        imageEmbeds[i][j] = Number(
-          outputData["image_embeds"].data[
-            i * outputData["image_embeds"].dims[1] + j
-          ]
-        );
+        imageEmbeds[i][j] = tensor.at([i, j]) as number;
       }
     }
     for (let i = 0; i < imageEmbeds.length; i++) {
@@ -146,15 +144,12 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
       throw Error("the model does not contain text_embeds output");
     }
     let textEmbeds: number[][] = [];
+    const tensor = new Tensor(outputData["text_embeds"]);
     textEmbeds = new Array(outputData["text_embeds"].dims[0]);
     for (let i = 0; i < outputData["text_embeds"].dims[0]; i++) {
       textEmbeds[i] = new Array(outputData["text_embeds"].dims[1]);
       for (let j = 0; j < outputData["text_embeds"].dims[1]; j++) {
-        textEmbeds[i][j] = Number(
-          outputData["text_embeds"].data[
-            i * outputData["text_embeds"].dims[1] + j
-          ]
-        );
+        textEmbeds[i][j] = tensor.at([i, j]) as number;
       }
     }
     for (let i = 0; i < textEmbeds.length; i++) {
@@ -164,6 +159,45 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
       embedding: textEmbeds,
       outputTensor: outputData["text_embeds"],
     };
+  };
+
+  imageLogits = async (
+    imageEmbeds: number[][],
+    textEmbeds: number[][]
+  ): Promise<number[][]> => {
+    if (!this.initialized || !this.sessions) {
+      throw Error("the model is not initialized");
+    }
+    const feeds: Record<string, ort.Tensor> = {};
+    feeds["text_embeds"] = new ort.Tensor(
+      Float32Array.from(textEmbeds.flat()),
+      [textEmbeds.length, textEmbeds[0].length]
+    );
+    feeds["image_embeds"] = new ort.Tensor(
+      Float32Array.from(imageEmbeds.flat()),
+      [imageEmbeds.length, imageEmbeds[0].length]
+    );
+    const session = this.sessions.get("combine");
+    if (!session) {
+      throw Error("the combine model is absent in the sessions map");
+    }
+    const outputData = await session.run(feeds);
+    const outputNames = await session.outputNames();
+
+    if (!outputNames.includes("logits_per_image")) {
+      throw Error("the model does not contain logits_per_image output");
+    }
+    const logits = outputData["logits_per_image"];
+    const predictions: number[][] = [];
+    for (let i = 0; i < logits.dims[0]; i++) {
+      const sm = softmax(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        logits.data.slice(i * logits.dims[1], (i + 1) * logits.dims[1])
+      );
+      predictions.push(sm);
+    }
+    return predictions;
   };
 
   private generateLogits = async (

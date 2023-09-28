@@ -17,14 +17,21 @@ export class Tokenizer {
     this.instance = new WasmTokenizer(JSON.stringify(tokenizerData));
   }
 
-  decode(ids: Uint32Array, skip_special_tokens: boolean): string {
+  async decode(
+    ids: Uint32Array,
+    skip_special_tokens: boolean
+  ): Promise<string> {
     if (this.instance === undefined) {
       throw new Error("Tokenizer is not initialized");
     }
-    return this.instance.decode(ids, skip_special_tokens);
+    const res = this.instance.decode(ids, skip_special_tokens);
+    return res;
   }
 
-  encode(text: string, add_special_tokens: boolean): Uint32Array {
+  async encode(
+    text: string,
+    add_special_tokens: boolean
+  ): Promise<Uint32Array> {
     if (this.instance === undefined) {
       throw new Error("Tokenizer is not initialized");
     }

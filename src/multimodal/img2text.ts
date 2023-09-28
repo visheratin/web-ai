@@ -170,7 +170,9 @@ export class Img2TextModel extends BaseMultimodalModel {
           outputTokenIDs[i].push(tokenIDs[i]);
         }
         const outputTokens = new Uint32Array(outputTokenIDs[i]);
-        const output: string = this.tokenizer.decode(outputTokens, true).trim();
+        const output: string = (
+          await this.tokenizer.decode(outputTokens, true)
+        ).trim();
         result[i] = output;
       }
     }
@@ -261,7 +263,7 @@ export class Img2TextModel extends BaseMultimodalModel {
           outputTokenIDs[i].push(tokenIDs[i]);
         }
         const outputTokens = new Uint32Array(outputTokenIDs[i]);
-        const output: string = this.tokenizer.decode(outputTokens, true);
+        const output: string = await this.tokenizer.decode(outputTokens, true);
         newOutput.push(output);
         diffs[i] = output.substring(oldOutput[i].length);
       }

@@ -272,7 +272,7 @@ export const models: MultimodalMetadata[] = [
       ],
       [
         "combine",
-        "https://web-ai-models.org/multimodal/nllb-clip-base/combine.onnx.gz",
+        "https://web-ai-models.org/multimodal/nllb-clip-base/combine.onnx",
       ],
     ]),
     preprocessorPath:
