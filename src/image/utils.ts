@@ -1,16 +1,8 @@
 export const softmax = (arr: number[]) => {
-  return arr.map((value, _) => {
-    return (
-      Math.exp(value) /
-      arr
-        .map((y) => {
-          return Math.exp(y);
-        })
-        .reduce((a, b) => {
-          return a + b;
-        })
-    );
-  });
+  const max = Math.max(...arr);
+  const exps = arr.map((val) => Math.exp(val - max));
+  const sum = exps.reduce((acc, val) => acc + val, 0);
+  return exps.map((val) => val / sum);
 };
 
 export const normalize = (input: number[]): number[] => {

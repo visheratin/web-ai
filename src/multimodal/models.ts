@@ -264,21 +264,21 @@ export const models: MultimodalMetadata[] = [
     modelPaths: new Map([
       [
         "image",
-        "https://web-ai-models.org/multimodal/nllb-clip-base/image-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/nllb-clip-siglip/image-quant.onnx.gz",
       ],
       [
         "text",
-        "https://web-ai-models.org/multimodal/nllb-clip-base/text-quant.onnx.gz",
+        "https://web-ai-models.org/multimodal/nllb-clip-siglip/text-quant.onnx.gz",
       ],
       [
         "combine",
-        "https://web-ai-models.org/multimodal/nllb-clip-base/combine.onnx",
+        "https://web-ai-models.org/multimodal/nllb-clip-siglip/combine.onnx",
       ],
     ]),
     preprocessorPath:
-      "https://web-ai-models.org/multimodal/nllb-clip-base/preprocessor_config.json",
+      "https://web-ai-models.org/multimodal/nllb-clip-siglip/preprocessor_config.json",
     tokenizerPath:
-      "https://web-ai-models.org/multimodal/nllb-clip-base/tokenizer.json",
+      "https://web-ai-models.org/multimodal/nllb-clip-siglip/tokenizer.json",
     tokenizerParams: {
       bosTokenID: 0,
       eosTokenID: 2,
@@ -488,6 +488,6 @@ export const models: MultimodalMetadata[] = [
       ["Zulu", "zul_Latn"],
     ]),
     tags: ["classification", "nllb-clip"],
-    referenceURL: "https://huggingface.co/openai/clip-vit-base-patch32",
+    referenceURL: "https://huggingface.co/visheratin/nllb-clip-base-siglip",
   },
 ];

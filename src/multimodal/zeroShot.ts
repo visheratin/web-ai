@@ -130,12 +130,15 @@ export class ZeroShotClassificationModel extends BaseMultimodalModel {
     if (!this.initialized || !this.sessions) {
       throw Error("the model is not initialized");
     }
-    const feeds: Record<string, ort.Tensor> = {};
-    feeds["input_ids"] = inputIDs;
-    feeds["attention_mask"] = attentionMask;
     const session = this.sessions.get("text");
     if (!session) {
       throw Error("the text model is absent in the sessions map");
+    }
+    const feeds: Record<string, ort.Tensor> = {};
+    feeds["input_ids"] = inputIDs;
+    const inputNames = await session.inputNames();
+    if (inputNames.includes("attention_mask")) {
+      feeds["attention_mask"] = attentionMask;
     }
     const outputData = await session.run(feeds);
     const outputNames = await session.outputNames();
